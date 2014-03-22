@@ -173,11 +173,7 @@ function taxonomy_image_plugin_get_image_src( $id ) {
 		if ( is_file( $path ) ) {
 
 			/* Attempt to create a new downsized version of the original image. */
-			$new = image_resize( $path,
-				$detail['size'][0],
-				$detail['size'][1],
-				$detail['size'][2]
-				);
+			$new = wp_get_image_editor( $path, $detail['size'] );
 
 			/* Image creation successful. Generate and cache image metadata. Return url. */
 			if ( ! is_wp_error( $new ) ) {
