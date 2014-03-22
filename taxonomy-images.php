@@ -69,7 +69,7 @@ function taxonomy_image_plugin_url( $file = '' ) {
 function taxonomy_image_plugin_detail_image_size() {
 	return array(
 		'name' => 'detail',
-		'size' => array( 75, 75, true )
+		'size' => array( 150, 150, true )
 	);
 }
 
