@@ -55,3 +55,6 @@
 .taxonomy-image-control .show {
 	visibility: visible;
 }
+body.taxonomy-images-modal {
+	background: #F1F1F1 !important;
+}
