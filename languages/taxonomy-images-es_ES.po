@@ -1,0 +1,234 @@
+# Copyright (C) 2011 Taxonomy Images
+# This file is distributed under the same license as the Taxonomy Images package.
+msgid ""
+msgstr ""
+"Project-Id-Version: Taxonomy Images 0.7.2\n"
+"Report-Msgid-Bugs-To: http://wordpress.org/tag/taxonomy-images\n"
+"POT-Creation-Date: 2015-09-29 11:32+0200\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2015-09-29 14:20+0200\n"
+"Language-Team: \n"
+"X-Generator: Poedit 1.8.5\n"
+"Last-Translator: David <david@closemarketing.es>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language: es_ES\n"
+
+#: taxonomy-images.php:125
+msgid "Associate with %1$s"
+msgstr "Asociado con %1$s"
+
+#: taxonomy-images.php:125 taxonomy-images.php:127
+msgid "this term"
+msgstr "este término"
+
+#: taxonomy-images.php:127
+msgid "Remove association with %1$s"
+msgstr "Retirar asociación con %1$s"
+
+#. translators: Notice displayed on the custom administration page.
+#: taxonomy-images.php:281
+msgid "Image support for taxonomies successfully updated"
+msgstr "Soporte Imágenes para Taxonomía se actualizó correctamente"
+
+#. translators: Notice displayed on the custom administration page.
+#: taxonomy-images.php:284
+msgid "Image support has been disabled for all taxonomies."
+msgstr ""
+"Soporte Imágenes para Taxonomía se deshabilitó para todas las taxonomías."
+
+#: taxonomy-images.php:324 taxonomy-images.php:1170
+msgid "Settings"
+msgstr "Configuración"
+
+#: taxonomy-images.php:330
+msgid "Taxonomies"
+msgstr "Taxonomías"
+
+#. Plugin Name of the plugin/theme
+#: taxonomy-images.php:349 taxonomy-images.php:350
+msgid "Taxonomy Images"
+msgstr "Imágenes Taxonomía"
+
+#. translators: Heading of the custom administration page.
+#: taxonomy-images.php:377
+msgid "Taxonomy Images Plugin Settings"
+msgstr "Ajustes Módulo Imágenes Taxonomía"
+
+#. translators: Button on the custom administration page.
+#: taxonomy-images.php:385
+msgid "Save Changes"
+msgstr "Guardar Cambios"
+
+#. translators: An ajax request has failed for an unknown reason.
+#: taxonomy-images.php:432
+msgid "Unknown error encountered"
+msgstr "Se encontró un error desconocido"
+
+#: taxonomy-images.php:507 taxonomy-images.php:589
+msgid "tt_id not sent"
+msgstr "tt_id no enviado"
+
+#: taxonomy-images.php:515 taxonomy-images.php:597
+msgid "tt_id is empty"
+msgstr "tt_id está vacía"
+
+#: taxonomy-images.php:522 taxonomy-images.php:604
+msgid "You do not have the correct capability to manage this term"
+msgstr "No tienes permisos para gestionar este término"
+
+#: taxonomy-images.php:529
+msgid "No nonce included."
+msgstr "Nonce no incluido."
+
+#: taxonomy-images.php:536 taxonomy-images.php:618
+msgid "Nonce did not match"
+msgstr "Nonce no coincide"
+
+#: taxonomy-images.php:543
+msgid "Image id not sent"
+msgstr "ID de la imagen no enviado"
+
+#: taxonomy-images.php:551
+msgid "Image id is not a positive integer"
+msgstr "Id de la imagen no es un número entero positivo"
+
+#: taxonomy-images.php:560
+msgid "Image successfully associated"
+msgstr "Imagen asociada con éxito"
+
+#: taxonomy-images.php:567
+msgid "Association could not be created"
+msgstr "No se pudo crear la Asociación"
+
+#: taxonomy-images.php:611
+msgid "No nonce included"
+msgstr "Nonce no incluido."
+
+#: taxonomy-images.php:626
+msgid "Nothing to remove"
+msgstr "No hay nada que quitar"
+
+#: taxonomy-images.php:635
+msgid "Association successfully removed"
+msgstr "Asociación eliminada correctamente"
+
+#: taxonomy-images.php:641
+msgid "Association could not be removed"
+msgstr "No se pudo eliminar la Asociación"
+
+#: taxonomy-images.php:711 taxonomy-images.php:760
+msgid "Image"
+msgstr "Imagen"
+
+#: taxonomy-images.php:754 taxonomy-images.php:790
+msgid "term"
+msgstr "término"
+
+#: taxonomy-images.php:764
+msgid "Associate an image from your media library to this %1$s."
+msgstr "Asociar una imagen de tu biblioteca de medios para este%1$s."
+
+#: taxonomy-images.php:808
+msgid "Associate an image with the %1$s named &#8220;%2$s&#8221;."
+msgstr "Asociar una imagen con los %1$s llamado &#8220;%2$s&#8221;."
+
+#: taxonomy-images.php:809
+msgid "Upload a new image for this %s."
+msgstr "Sube una nueva imagen para este %s."
+
+#: taxonomy-images.php:809
+msgid "Upload."
+msgstr "Subir."
+
+#: taxonomy-images.php:810
+msgid "Remove image from this %s."
+msgstr "Eliminar la imagen de este %s."
+
+#: taxonomy-images.php:810
+msgid "Delete"
+msgstr "Eliminar"
+
+#: taxonomy-images.php:839
+msgid "&#8220;"
+msgstr "&#8220;"
+
+#: taxonomy-images.php:840
+msgid "&#8221;"
+msgstr "&#8221;"
+
+#: taxonomy-images.php:841
+msgid "Associating &#8230;"
+msgstr "Asociando &#8230;"
+
+#: taxonomy-images.php:842
+msgid "Successfully Associated"
+msgstr "Asociado correctamente"
+
+#: taxonomy-images.php:843
+msgid "Removing &#8230;"
+msgstr "Eliminando &#8230;"
+
+#: taxonomy-images.php:844
+msgid "Successfully Removed"
+msgstr "Eliminado correctamente"
+
+#: taxonomy-images.php:1098
+msgid ""
+"The %1$s argument for %2$s is set to %3$s which is not a registered taxonomy. "
+"Please check the spelling and update the argument."
+msgstr ""
+"Las argumento %1$s para%2$s se establece en%3$s que no es una taxonomía "
+"registrada. Por favor, comprueba la ortografía y actualiza el argumento."
+
+#: taxonomy-images.php:1099
+msgid "taxonomy"
+msgstr "taxonomía"
+
+#: taxonomy-images.php:1109
+msgid "No taxonomies have image support. %1$s"
+msgstr "No hay taxonomías con soporte de imágenes. %1$s"
+
+#: taxonomy-images.php:1114
+msgid "The %1$s taxonomy does not have image support. %2$s"
+msgstr "La taxonomía de %1$s no tiene soporte para la imagen. %2$s"
+
+#: taxonomy-images.php:1139
+msgid "The %1$s has been called directly. Please use the %2$s filter instead."
+msgstr "El%1$s se ha llamado directamente. Utiliza el filtro de%2$s en su lugar."
+
+#: taxonomy-images.php:1175
+msgid "Donate"
+msgstr "Donar"
+
+#: taxonomy-images.php:1193
+msgid "Manage Settings"
+msgstr "Administrar configuración"
+
+#: public-filters.php:376
+msgid ""
+"%1$s is not a property of the current queried object. This usually happens "
+"when the %2$s filter is used in an unsupported template file. This filter has "
+"been designed to work in taxonomy archives which are traditionally served by "
+"one of the following template files: category.php, tag.php or taxonomy.php. "
+"Learn more about %3$s."
+msgstr ""
+"%1$s no es una propiedad del objeto consultado actual. Esto suele suceder "
+"cuando se utiliza filtro de los %2$s en un archivo de plantilla no compatible. "
+"Este filtro ha sido diseñado para trabajar en los archivos de taxonomía que "
+"tradicionalmente son atendidos por uno de los siguientes archivos de "
+"plantilla: category.php, tag.php o taxonomy.php. Obten más información acerca "
+"de %3$s."
+
+#: public-filters.php:377
+msgid "term_taxonomy_id"
+msgstr "term_taxonomy_id"
+
+#. Description of the plugin/theme
+msgid ""
+"Associate images from your media library to categories, tags and custom "
+"taxonomies."
+msgstr ""
+"Asociar imágenes desde biblioteca de medios a categorías, etiquetas y "
+"taxonomías personalizadas."
