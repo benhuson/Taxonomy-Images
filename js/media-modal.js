@@ -38,7 +38,7 @@ var taxonomy_images_file_frame;
 						selector.find( 'a.upload' ).data( 'attachment-id', 0 );
 
 						/* Show delete control on the screen below */
-						selector.find( '.remove' ).hide();
+						selector.find( '.remove' ).addClass( 'hide' );
 
 					}
 					else if ( 'bad' === response.status ) {
