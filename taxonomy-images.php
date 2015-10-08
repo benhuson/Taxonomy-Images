@@ -939,7 +939,7 @@ function taxonomy_image_plugin_css_public() {
 		'screen'
 	);
 }
-add_action( 'wp_print_styles', 'taxonomy_image_plugin_css_public' );
+add_action( 'wp_enqueue_scripts', 'taxonomy_image_plugin_css_public' );
 
 
 /**
