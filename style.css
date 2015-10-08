@@ -1,8 +1,10 @@
+
 .taxonomy-images-the-terms {
 	margin: 10px 0;
 	padding: 0;
 	zoom: 1;
 }
+
 .taxonomy-images-the-terms:before,
 .taxonomy-images-the-terms:after {
 	clear: both;
@@ -11,14 +13,16 @@
 	height: 0;
 	visibility: hidden;
 }
+
 .taxonomy-images-the-terms li,
 .taxonomy-images-the-terms a,
 .taxonomy-images-the-terms img {
-	float:left;
-	margin:0;
-	padding:0;
+	float: left;
+	margin: 0;
+	padding: 0;
 }
+
 .taxonomy-images-the-terms li {
-	list-style-type:none;
-	margin:0 10px 10px 0;
+	list-style-type: none;
+	margin: 0 10px 10px 0;
 }

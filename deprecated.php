@@ -39,14 +39,14 @@ function taxonomy_images_plugin_shortcode_deprecated( $atts = array() ) { // DEP
 
 			if( $template === 'grid' ) {
 				$o.= "\n\t" . '<div class="taxonomy_image_plugin-' . $template . '">';
-				$o.= "\n\t\t" . '<a style="float:left;" title="' . $title_attr . '" href="' . $url . '">' . $img . '</a>';
+				$o.= "\n\t\t" . '<a style="float: left;" title="' . $title_attr . '" href="' . $url . '">' . $img . '</a>';
 				$o.= "\n\t" . '</div>';
 			}
 			else {
 				$o.= "\n\t\t" . '<a title="' . $title_attr . '" href="' . $url . '">' . $img . '</a>';;
-				$o.= "\n\t\t" . '<h2 style="clear:none;margin-top:0;padding-top:0;line-height:1em;"><a href="' . $url . '">' . $title . '</a></h2>';
+				$o.= "\n\t\t" . '<h2 style="clear: none; margin-top: 0; padding-top: 0; line-height: 1em;"><a href="' . $url . '">' . $title . '</a></h2>';
 				$o.= $description;
-				$o.= "\n\t" . '<div style="clear:both;height:1.5em"></div>';
+				$o.= "\n\t" . '<div style="clear: both; height: 1.5em;"></div>';
 				$o.= "\n";
 			}
 		}

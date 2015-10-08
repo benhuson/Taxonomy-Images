@@ -1,19 +1,24 @@
+
 .taxonomy-images-modal .create-association .term-name {
 	font-style: italic;
 }
+
 .taxonomy-images-modal .create-association {
 	display: inline;
 }
+
 .taxonomy-images-modal .remove-association {
 	color: #bc0b0b;
 	cursor: pointer;
 	display: none;
 	text-decoration: underline;
 }
+
 .taxonomy-images-modal #tab-type_url,
 .taxonomy-images-modal .savesend input {
 	display: none !important;
 }
+
 .taxonomy-image-thumbnail {
 	display: block;
 	margin-bottom: 3px;
@@ -22,10 +27,12 @@
 	width: 75px;
 	height: 75px;
 }
+
 .taxonomy-image-thumbnail img {
 	width: 75px;
 	height: 75px;
 }
+
 .taxonomy-image-control .control {
 	background: url( controls.png );
 	background-repeat: no-repeat;
@@ -35,30 +42,39 @@
 	width: 15px;
 	height: 15px;
 }
+
 .taxonomy-image-control .control:hover {
 	cursor: pointer;
 }
+
 .taxonomy-image-control .upload {
 	background-position: 0 0;
 }
+
 .taxonomy-image-control .upload:hover {
 	background-position: -15px 0;
 }
+
 .taxonomy-image-control .remove {
 	background-position: -30px 0;
 }
+
 .taxonomy-image-control .remove:hover {
 	background-position: -45px 0;
 }
+
 .taxonomy-image-control .library {
 	background-position: -60px 0;
 }
+
 .taxonomy-image-control .hide {
 	visibility: hidden;
 }
+
 .taxonomy-image-control .show {
 	visibility: visible;
 }
+
 body.taxonomy-images-modal {
-	background: #F1F1F1 !important;
+	background: #f1f1f1 !important;
 }
