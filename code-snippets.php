@@ -1,9 +1,16 @@
 <?php
+
 /**
- * Tests for various filters.
+ * @package     Taxonomy Images
+ * @subpackage  Code Snippets
+ *
+ * The following are a series of example tests to check the output
+ * of the Taxonomy Images filters.
  */
 
 
+
+// Don't actually output any of this!
 exit;
 
 
@@ -11,13 +18,13 @@ exit;
 /*
  * Append the term images to content + excerpt.
  */
-function mytheme_append_the_term_images( $content ) {
+function taxonomy_images_test_theme_append_the_term_images( $content ) {
 	return $content . apply_filters( 'taxonomy-images-list-the-terms', '', array(
 		'image_size' => 'detail',
 		) );
 }
-add_filter( 'the_content', 'mytheme_append_the_term_images' );
-add_filter( 'the_excerpt', 'mytheme_append_the_term_images' );
+add_filter( 'the_content', 'taxonomy_images_test_theme_append_the_term_images' );
+add_filter( 'the_excerpt', 'taxonomy_images_test_theme_append_the_term_images' );
 
 
 
