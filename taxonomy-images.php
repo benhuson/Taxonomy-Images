@@ -1218,7 +1218,7 @@ function taxonomy_images_admin_enqueue_scripts() {
 	wp_localize_script( 'taxonomy-images-media-modal', 'TaxonomyImagesMediaModal', array(
 		'wp_media_post_id'     => 0,
 		'attachment_id'        => 0,
-		'uploader_title'       => __( 'Set Featured Image', 'taxonomy-images' ),
+		'uploader_title'       => __( 'Set featured image', 'taxonomy-images' ),
 		'uploader_button_text' => __( 'Set featured image', 'taxonomy-images' ),
 		'default_img_src'      => taxonomy_image_plugin_url( 'default.png' )
 	) );
