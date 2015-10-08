@@ -1164,11 +1164,11 @@ function taxonomy_images_plugin_row_meta( $links, $file ) {
 	if ( $plugin_name != $file )
 		return $links;
 
-	$link = taxonomy_images_plugin_settings_page_link( __( 'Settings', 'taxonomy-images' ) );
+	$link = taxonomy_images_plugin_settings_page_link( esc_html__( 'Settings', 'taxonomy-images' ) );
 	if ( ! empty( $link ) )
 		$links[] = $link;
 
-	$links[] = '<a href="http://wordpress.mfields.org/donate/">' . __( 'Donate', 'taxonomy-images' ) . '</a>';
+	$links[] = '<a href="http://wordpress.mfields.org/donate/">' . esc_html__( 'Donate', 'taxonomy-images' ) . '</a>';
 
 	return $links;
 }
