@@ -408,7 +408,7 @@ function taxonomy_image_plugin_control_taxonomies() {
 			$checked = ' checked="checked"';
 
 		print "\n" . '<p><label for="' . esc_attr( $id ) . '">';
-		print '<input' . $checked . ' id="' . esc_attr( $id ) . '" type="checkbox" name="taxonomy_image_plugin_settings[taxonomies][]" value="' . esc_attr( $taxonomy->name ) . '">';
+		print '<input' . $checked . ' id="' . esc_attr( $id ) . '" type="checkbox" name="taxonomy_image_plugin_settings[taxonomies][]" value="' . esc_attr( $taxonomy->name ) . '" />';
 		print ' ' . esc_html( $taxonomy->label ) . '</label></p>';
 	}
 }
