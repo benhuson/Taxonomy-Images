@@ -889,7 +889,7 @@ function taxonomy_image_plugin_css_admin() {
 
 	wp_enqueue_style(
 		'taxonomy-image-plugin-edit-tags',
-		taxonomy_image_plugin_url( 'admin.css' ),
+		taxonomy_image_plugin_url( 'css/admin.css' ),
 		array(),
 		taxonomy_image_plugin_version(),
 		'screen'
@@ -933,7 +933,7 @@ function taxonomy_image_plugin_css_public() {
 
 	wp_enqueue_style(
 		'taxonomy-image-plugin-public',
-		taxonomy_image_plugin_url( 'style.css' ),
+		taxonomy_image_plugin_url( 'css/style.css' ),
 		array(),
 		taxonomy_image_plugin_version(),
 		'screen'
