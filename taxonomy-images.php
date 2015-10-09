@@ -832,7 +832,7 @@ function taxonomy_image_plugin_media_upload_popup_js() {
 
 	wp_enqueue_script(
 		'taxonomy-images-media-upload-popup',
-		taxonomy_image_plugin_url( 'media-upload-popup.js' ),
+		taxonomy_image_plugin_url( 'js/media-upload-popup.js' ),
 		array( 'jquery' ),
 		taxonomy_image_plugin_version()
 	);
@@ -863,7 +863,7 @@ function taxonomy_image_plugin_edit_tags_js() {
 
 	wp_enqueue_script(
 		'taxonomy-image-plugin-edit-tags',
-		taxonomy_image_plugin_url( 'edit-tags.js' ),
+		taxonomy_image_plugin_url( 'js/edit-tags.js' ),
 		array( 'jquery', 'thickbox' ),
 		taxonomy_image_plugin_version()
 	);
