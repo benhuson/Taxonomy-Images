@@ -207,6 +207,14 @@ Installation
 Changelog
 ---------
 
+__0.9.0__
+
+* Add support for WordPress 3.5+ media modal.
+* Add Spanish translation.
+* Make images retina sized in the admin.
+* Stop using deprecated image_resize() function.
+* Move JavaScript and CSS files to subfolders.
+
 __0.8.0__
 
 * Pass an empty array as default second parameter of `taxonomy_images_plugin_get_the_terms()` and `taxonomy_images_plugin_list_the_terms()`.

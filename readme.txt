@@ -4,7 +4,7 @@ Contributors:         mfields, jamiemchale
 Donate link:          http://wordpress.mfields.org/donate/
 Tags:                 taxonomy, tag, category, image, upload, media
 Requires at least:    3.4
-Tested up to:         3.6
+Tested up to:         4.3.1
 Stable tag:           trunk
 
 Associate images from your media library to categories, tags and custom taxonomies.
@@ -205,13 +205,26 @@ I've released a handfull of plugins dealing with taxonomies. Please see my [plug
 
 == Upgrade Notice ==
 
+= 0.9 =
+Fixes media modal for newer versions of WordPress. WordPress 3.4+ required - tested up to 4.3.1
+
 = 0.8 =
-Major and minor bug fixes tested with WordPres 3.6
+Major and minor bug fixes tested with WordPress 3.6
 
 = 0.7 =
 Complete rewrite. Better everything. Many bug fixes.
 
 ==Changelog==
+
+= 0.9 =
+* Add support for WordPress 3.5+ media modal.
+* Confirmed minium WordPress 3.4 required.
+* Add Spanish translation.
+* Make images retina sized in the admin.
+* Re-color admin image and icons to fit with more recent versions of WordPress.
+* Stop using deprecated image_resize() function.
+* Stop using deprecated screen_icon() function.
+* Move JavaScript and CSS files to subfolders.
 
 = 0.8.0 =
 * Pass an empty array as default second parameter of `taxonomy_images_plugin_get_the_terms()` and `taxonomy_images_plugin_list_the_terms()`.
