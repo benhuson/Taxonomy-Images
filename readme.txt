@@ -3,7 +3,7 @@
 Contributors:         mfields, jamiemchale
 Donate link:          http://wordpress.mfields.org/donate/
 Tags:                 taxonomy, tag, category, image, upload, media
-Requires at least:    3.1
+Requires at least:    3.4
 Tested up to:         3.6
 Stable tag:           trunk
 
