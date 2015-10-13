@@ -1,10 +1,11 @@
 <?php
 /*
 Plugin Name:          Taxonomy Images
-Plugin URI:           http://wordpress.mfields.org/plugins/taxonomy-images/
+Plugin URI:           https://github.com/benhuson/Taxonomy-Images
 Description:          Associate images from your media library to categories, tags and custom taxonomies.
 Author:               Michael Fields
 Version:              0.9
+Author:               Michael Fields, Ben Huson
 Author URI:           http://wordpress.mfields.org/
 License:              GNU General Public License v2 or later
 License URI:          http://www.gnu.org/licenses/gpl-2.0.html

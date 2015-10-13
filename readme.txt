@@ -1,11 +1,12 @@
 ===Taxonomy Images===
 
-Contributors:         mfields, jamiemchale
+Contributors:         mfields, husobj, jamiemchale
 Donate link:          http://wordpress.mfields.org/donate/
 Tags:                 taxonomy, tag, category, image, upload, media
 Requires at least:    3.4
 Tested up to:         4.3.1
 Stable tag:           trunk
+License:              GPLv2 or later
 
 Associate images from your media library to categories, tags and custom taxonomies.
 
@@ -176,7 +177,7 @@ If you have questions about integrating this plugin into your site, please [add 
 
 = Bugs, Suggestions =
 
-Development of this plugin is hosted in a public repository on [Github](https://github.com/mfields/Taxonomy-Images). If you find a bug in this plugin or have a suggestion to make it better, please [create a new issue](https://github.com/mfields/Taxonomy-Images/issues/new)
+Development of this plugin is hosted in a public repository on [Github](https://github.com/benhuson/Taxonomy-Images). If you find a bug in this plugin or have a suggestion to make it better, please [create a new issue](https://github.com/benhuson/Taxonomy-Images/issues/new)
 
 = Hook it up yo! =
 
@@ -193,7 +194,7 @@ If you have fallen in love with this plugin and would not be able to sleep witho
 * __Are you Super-Wicked-Awesome?__ If so, you can always [make a donation](http://wordpress.mfields.org/donate/).
 
 = Need More Taxonomy Plugins? =
-I've released a handfull of plugins dealing with taxonomies. Please see my [plugin page](http://wordpress.org/extend/plugins/profile/mfields) for more info.
+The original author of this plugin, Michael Fields, has released a handful of plugins dealing with taxonomies. Please see my [plugin page](http://wordpress.org/extend/plugins/profile/mfields) for more info.
 
 ==Installation==
 
