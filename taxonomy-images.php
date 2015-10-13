@@ -367,7 +367,6 @@ add_action( 'admin_menu', 'taxonomy_images_settings_menu' );
  */
 function taxonomy_image_plugin_settings_page() {
 	print "\n" . '<div class="wrap">';
-	screen_icon();
 
 	/* translators: Heading of the custom administration page. */
 	print "\n" . '<h2>' . esc_html__( 'Taxonomy Images Plugin Settings', 'taxonomy-images' ) . '</h2>';
