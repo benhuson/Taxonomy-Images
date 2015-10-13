@@ -427,9 +427,7 @@ function taxonomy_image_plugin_json_response( $args ) {
 		'status' => 'bad',
 		'why'    => esc_html__( 'Unknown error encountered', 'taxonomy-images' )
 	) );
-	header( 'Content-type: application/jsonrequest' );
-	print json_encode( $response );
-	exit;
+	wp_send_json( $response );
 }
 
 
