@@ -203,6 +203,12 @@ I've released a handfull of plugins dealing with taxonomies. Please see my [plug
 1. Activate the plugin.
 1. Click the "Taxonomy Images" link under the Settings section in the admin menu. There you can select the taxonomies that you would like to add image support for.
 
+== Screenshots ==
+
+1. Edit terms admin page.
+2. Edit term admin page.
+3. Media Modal
+
 == Upgrade Notice ==
 
 = 0.9 =
