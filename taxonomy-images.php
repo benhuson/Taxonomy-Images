@@ -1195,7 +1195,11 @@ function taxonomy_images_plugin_settings_page_link( $link_text = '' ) {
 	return $link;
 }
 
-
+/**
+ * Enqueue Admin Scripts
+ *
+ * @since  0.9
+ */
 function taxonomy_images_admin_enqueue_scripts() {
 
 	if ( false == taxonomy_image_plugin_is_screen_active() ) {
