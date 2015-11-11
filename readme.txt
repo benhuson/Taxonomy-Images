@@ -4,7 +4,7 @@ Contributors:         mfields, husobj, jamiemchale
 Tags:                 taxonomy, tag, category, image, upload, media
 Requires at least:    3.4
 Tested up to:         4.3.1
-Stable tag:           trunk
+Stable tag:           0.9
 License:              GPLv2 or later
 
 Associate images from your media library to categories, tags and custom taxonomies.
