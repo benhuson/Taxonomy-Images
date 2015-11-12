@@ -15,20 +15,20 @@ exit;
 
 
 
-/*
+/**
  * Append the term images to content + excerpt.
  */
 function taxonomy_images_test_theme_append_the_term_images( $content ) {
 	return $content . apply_filters( 'taxonomy-images-list-the-terms', '', array(
 		'image_size' => 'detail',
-		) );
+	) );
 }
 add_filter( 'the_content', 'taxonomy_images_test_theme_append_the_term_images' );
 add_filter( 'the_excerpt', 'taxonomy_images_test_theme_append_the_term_images' );
 
 
 
-/*
+/**
  * Queried Term Image.
  *
  * Return html markup representing the image associated with the
@@ -48,7 +48,7 @@ print '<pre>' . htmlentities( $img ) . '</pre>';
 
 /* Inside a yellow box */
 $img = apply_filters( 'taxonomy-images-queried-term-image', 'PLEASE INSTALL PLUGIN', array(
-	'before' => '<div style="padding:20px;background-color:yellow;">',
+	'before' => '<div style="padding: 20px; background-color: yellow;">',
 	'after'  => '</div>',
 	) );
 print '<h2>taxonomy-images-queried-term-image - custom wrapper element.</h2>';
@@ -58,7 +58,7 @@ print '<pre>' . htmlentities( $img ) . '</pre>';
 /* Medium Size */
 $img = apply_filters( 'taxonomy-images-queried-term-image', 'PLEASE INSTALL PLUGIN', array(
 	'image_size' => 'medium',
-	) );
+) );
 print '<h2>taxonomy-images-queried-term-image - medium image size</h2>';
 print '<pre>' . htmlentities( $img ) . '</pre>';
 
@@ -66,7 +66,7 @@ print '<pre>' . htmlentities( $img ) . '</pre>';
 /* Unrecognized size */
 $img = apply_filters( 'taxonomy-images-queried-term-image', 'PLEASE INSTALL PLUGIN', array(
 	'image_size' => 'this-is-probably-not-a-real-image-size',
-	) );
+) );
 print '<h2>taxonomy-images-queried-term-image - unknown image size</h2>';
 print '<pre>' . htmlentities( $img ) . '</pre>';
 
@@ -78,14 +78,14 @@ $img = apply_filters( 'taxonomy-images-queried-term-image', 'PLEASE INSTALL PLUG
 		'class' => 'my-class-list bunnies turtles',
 		'src'   => 'this-is-where-the-image-lives.png',
 		'title' => 'Custom Title',
-		),
-	) );
+	),
+) );
 print '<h2>taxonomy-images-queried-term-image - custom attributes</h2>';
 print '<pre>' . htmlentities( $img ) . '</pre>';
 
 
 
-/*
+/**
  * Queried Term Image ID.
  *
  * Return the id of the image associated with the currently
@@ -96,14 +96,13 @@ print '<pre>' . htmlentities( $img ) . '</pre>';
  * apply_filters() will return it's second parameter.
  */
 $img = apply_filters( 'taxonomy-images-queried-term-image-id', 'PLEASE INSTALL PLUGIN' );
-
 print '<h2>taxonomy-images-queried-term-image-id</h2>';
 print '<pre>'; var_dump( $img ); print '</pre>';
 
 
 
 
-/*
+/**
  * Queried Term Image Object.
  *
  * Return an object representing the image associated with the
@@ -114,14 +113,13 @@ print '<pre>'; var_dump( $img ); print '</pre>';
  * apply_filters() will return it's second parameter.
  */
 $img = apply_filters( 'taxonomy-images-queried-term-image-object', 'PLEASE INSTALL PLUGIN' );
-
 print '<h2>taxonomy-images-queried-term-image-object</h2>';
 print '<pre>'; var_dump( $img ); print '</pre>';
 
 
 
 
-/*
+/**
  * Queried Term Image URL.
  *
  * Return a url to the image associated with the current queried
@@ -157,7 +155,7 @@ print '<pre>'; var_dump( $img ); print '</pre>';
 
 
 
-/*
+/**
  * Queried Term Image Data.
  *
  * Return an array of data about the image associated with the current

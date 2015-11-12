@@ -3,23 +3,25 @@
 /**
  * Deprecated Shortcode.
  *
- * @return    void
- * @access    private
+ * @deprecated  Deprecated since version 0.7
+ *
+ * @return  void
+ * @access  private
  */
-function taxonomy_images_plugin_shortcode_deprecated( $atts = array() ) { // DEPRECATED
+function taxonomy_images_plugin_shortcode_deprecated( $atts = array() ) {
 	$o = '';
 	$defaults = array(
 		'taxonomy' => 'category',
 		'size'     => 'detail',
 		'template' => 'list'
-		);
+	);
 
 	extract( shortcode_atts( $defaults, $atts ) );
 
 	/* No taxonomy defined return an html comment. */
 	if ( ! taxonomy_exists( $taxonomy ) ) {
 		$tax = strip_tags( trim( $taxonomy ) );
-		return '<!-- taxonomy_image_plugin error: Taxonomy "' . $taxonomy . '" is not defined.-->';
+		return '<!-- taxonomy_image_plugin error: Taxonomy "' . esc_html( $taxonomy ) . '" is not defined.-->';
 	}
 
 	$terms = get_terms( $taxonomy );
@@ -34,20 +36,19 @@ function taxonomy_images_plugin_shortcode_deprecated( $atts = array() ) { // DEP
 
 			$img = '';
 			if ( array_key_exists( $term->term_taxonomy_id, $associations ) ) {
-				$img = wp_get_attachment_image( $associations[$term->term_taxonomy_id], 'detail', false );
+				$img = wp_get_attachment_image( $associations[ $term->term_taxonomy_id ], 'detail', false );
 			}
 
-			if( $template === 'grid' ) {
-				$o.= "\n\t" . '<div class="taxonomy_image_plugin-' . $template . '">';
-				$o.= "\n\t\t" . '<a style="float: left;" title="' . $title_attr . '" href="' . $url . '">' . $img . '</a>';
-				$o.= "\n\t" . '</div>';
-			}
-			else {
-				$o.= "\n\t\t" . '<a title="' . $title_attr . '" href="' . $url . '">' . $img . '</a>';;
-				$o.= "\n\t\t" . '<h2 style="clear: none; margin-top: 0; padding-top: 0; line-height: 1em;"><a href="' . $url . '">' . $title . '</a></h2>';
-				$o.= $description;
-				$o.= "\n\t" . '<div style="clear: both; height: 1.5em;"></div>';
-				$o.= "\n";
+			if ( 'grid' == $template ) {
+				$o .= "\n\t" . '<div class="taxonomy_image_plugin-' . $template . '">';
+				$o .= "\n\t\t" . '<a style="float: left;" title="' . $title_attr . '" href="' . $url . '">' . $img . '</a>';
+				$o .= "\n\t" . '</div>';
+			} else {
+				$o .= "\n\t\t" . '<a title="' . $title_attr . '" href="' . $url . '">' . $img . '</a>';;
+				$o .= "\n\t\t" . '<h2 style="clear: none; margin-top: 0; padding-top: 0; line-height: 1em;"><a href="' . $url . '">' . $title . '</a></h2>';
+				$o .= $description;
+				$o .= "\n\t" . '<div style="clear: both; height: 1.5em;"></div>';
+				$o .= "\n";
 			}
 		}
 	}
@@ -61,20 +62,26 @@ add_shortcode( 'taxonomy_image_plugin', 'taxonomy_images_plugin_shortcode_deprec
  * of this plugin 0.5 and under. Please do not use any methods or
  * properties directly in your theme.
  *
- * @access     private        This class is deprecated. Do not use!!!
+ * @deprecated  Deprecated since version 0.5
+ * @access      private
  */
 class taxonomy_images_plugin {
+
 	public $settings = array();
+
 	public function __construct() {
 		$this->settings = taxonomy_image_plugin_get_associations();
 		add_action( 'taxonomy_image_plugin_print_image_html', array( &$this, 'print_image_html' ), 1, 3 );
 	}
+
 	public function get_thumb( $id ) {
 		return taxonomy_image_plugin_get_image_src( $id );
 	}
+
 	public function print_image_html( $size = 'medium', $term_tax_id = false, $title = true, $align = 'none' ) {
 		print $this->get_image_html( $size, $term_tax_id, $title, $align );
 	}
+
 	public function get_image_html( $size = 'medium', $term_tax_id = false, $title = true, $align = 'none' ) {
 		$o = '';
 		if ( false === $term_tax_id ) {
@@ -82,8 +89,7 @@ class taxonomy_images_plugin {
 			$obj = $wp_query->get_queried_object();
 			if ( isset( $obj->term_taxonomy_id ) ) {
 				$term_tax_id = $obj->term_taxonomy_id;
-			}
-			else {
+			} else {
 				return false;
 			}
 		}
@@ -99,5 +105,6 @@ class taxonomy_images_plugin {
 		}
 		return $o;
 	}
+
 }
 $taxonomy_images_plugin = new taxonomy_images_plugin();

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Interface.
  *
@@ -77,7 +78,7 @@ function taxonomy_images_plugin_get_terms( $default, $args = array() ) {
 		'having_images' => true,
 		'taxonomy'      => 'category',
 		'term_args'     => array(),
-		) );
+	) );
 
 	$args['taxonomy'] = explode( ',', $args['taxonomy'] );
 	$args['taxonomy'] = array_map( 'trim', $args['taxonomy'] );
@@ -101,12 +102,12 @@ function taxonomy_images_plugin_get_terms( $default, $args = array() ) {
 	$image_ids = array();
 	$terms_with_images = array();
 	foreach ( (array) $terms as $key => $term ) {
-		$terms[$key]->image_id = 0;
+		$terms[ $key ]->image_id = 0;
 		if ( array_key_exists( $term->term_taxonomy_id, $assoc ) ) {
-			$terms[$key]->image_id = $assoc[$term->term_taxonomy_id];
-			$image_ids[] = $assoc[$term->term_taxonomy_id];
+			$terms[ $key ]->image_id = $assoc[ $term->term_taxonomy_id ];
+			$image_ids[] = $assoc[ $term->term_taxonomy_id ];
 			if ( ! empty( $args['having_images'] ) ) {
-				$terms_with_images[] = $terms[$key];
+				$terms_with_images[] = $terms[ $key ];
 			}
 		}
 	}
@@ -168,7 +169,7 @@ function taxonomy_images_plugin_get_the_terms( $default, $args = array() ) {
 		'having_images' => true,
 		'post_id'       => 0,
 		'taxonomy'      => 'category',
-		) );
+	) );
 
 	if ( ! taxonomy_image_plugin_check_taxonomy( $args['taxonomy'], $filter ) ) {
 		return array();
@@ -192,11 +193,11 @@ function taxonomy_images_plugin_get_the_terms( $default, $args = array() ) {
 
 	$terms_with_images = array();
 	foreach ( (array) $terms as $key => $term ) {
-		$terms[$key]->image_id = 0;
+		$terms[ $key ]->image_id = 0;
 		if ( array_key_exists( $term->term_taxonomy_id, $assoc ) ) {
-			$terms[$key]->image_id = $assoc[$term->term_taxonomy_id];
+			$terms[ $key ]->image_id = $assoc[ $term->term_taxonomy_id ];
 			if ( ! empty( $args['having_images'] ) ) {
-				$terms_with_images[] = $terms[$key];
+				$terms_with_images[] = $terms[ $key ];
 			}
 		}
 	}
@@ -262,7 +263,7 @@ function taxonomy_images_plugin_list_the_terms( $default, $args = array() ) {
 		'image_size'   => 'thumbnail',
 		'post_id'      => 0,
 		'taxonomy'     => 'category',
-		) );
+	) );
 
 	$args['having_images'] = true;
 
@@ -333,7 +334,7 @@ function taxonomy_images_plugin_get_queried_term_image( $default, $args = array(
 		'attr'       => array(),
 		'before'     => '',
 		'image_size' => 'thumbnail',
-		) );
+	) );
 
 	$ID = apply_filters( 'taxonomy-images-queried-term-image-id', 0 );
 
@@ -386,7 +387,7 @@ function taxonomy_images_plugin_get_queried_term_image_id( $default ) {
 			'<code>' . esc_html__( 'term_taxonomy_id', 'taxonomy-images' ) . '</code>',
 			'<code>' . esc_html( $filter ) . '</code>',
 			'<a href="http://codex.wordpress.org/Template_Hierarchy">' . esc_html( 'template hierarchy', 'taxonomy-images' ) . '</a>'
-			) );
+		) );
 		return 0;
 	}
 
@@ -475,7 +476,7 @@ function taxonomy_images_plugin_get_queried_term_image_url( $default, $args = ar
 
 	$args = wp_parse_args( $args, array(
 		'image_size' => 'thumbnail',
-		) );
+	) );
 
 	$data = apply_filters( 'taxonomy-images-queried-term-image-data', array(), $args );
 
@@ -521,7 +522,7 @@ function taxonomy_images_plugin_get_queried_term_image_data( $default, $args = a
 
 	$args = wp_parse_args( $args, array(
 		'image_size' => 'thumbnail',
-		) );
+	) );
 
 	$ID = apply_filters( 'taxonomy-images-queried-term-image-id', 0 );
 
@@ -543,8 +544,7 @@ function taxonomy_images_plugin_get_queried_term_image_data( $default, $args = a
 		if ( isset( $src[2] ) ) {
 			$data['height'] = $src[2];
 		}
-	}
-	else {
+	} else {
 		$data = image_get_intermediate_size( $ID, $args['image_size'] );
 	}
 

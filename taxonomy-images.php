@@ -1,4 +1,5 @@
 <?php
+
 /*
 Plugin Name:          Taxonomy Images
 Plugin URI:           https://github.com/benhuson/Taxonomy-Images
@@ -121,19 +122,13 @@ function taxonomy_image_plugin_modal_button( $fields, $post ) {
 	if ( isset( $fields['image-size'] ) && isset( $post->ID ) ) {
 		$image_id = (int) $post->ID;
 
-		$o = '<div class="taxonomy-image-modal-control" id="' . esc_attr( 'taxonomy-image-modal-control-' . $image_id ) . '">';
-
-		$o.= '<span class="button create-association">' . sprintf( esc_html__( 'Associate with %1$s', 'taxonomy-images' ), '<span class="term-name">' . esc_html__( 'this term', 'taxonomy-images' ) . '</span>' ) . '</span>';
-
-		$o.= '<span class="remove-association">' . sprintf( esc_html__( 'Remove association with %1$s', 'taxonomy-images' ), '<span class="term-name">' . esc_html__( 'this term', 'taxonomy-images' ) . '</span>' ) . '</span>';
-
-		$o.= '<input class="taxonomy-image-button-image-id" name="' . esc_attr( 'taxonomy-image-button-image-id-' . $image_id ) . '" type="hidden" value="' . esc_attr( $image_id ) . '" />';
-
-		$o.= '<input class="taxonomy-image-button-nonce-create" name="' . esc_attr( 'taxonomy-image-button-nonce-create-' . $image_id ) . '" type="hidden" value="' . esc_attr( wp_create_nonce( 'taxonomy-image-plugin-create-association' ) ) . '" />';
-
-		$o.= '<input class="taxonomy-image-button-nonce-remove" name="' . esc_attr( 'taxonomy-image-button-nonce-remove-' . $image_id ) . '" type="hidden" value="' . esc_attr( wp_create_nonce( 'taxonomy-image-plugin-remove-association' ) ) . '" />';
-
-		$o.= '</div>';
+		$o  = '<div class="taxonomy-image-modal-control" id="' . esc_attr( 'taxonomy-image-modal-control-' . $image_id ) . '">';
+		$o .= '<span class="button create-association">' . sprintf( esc_html__( 'Associate with %1$s', 'taxonomy-images' ), '<span class="term-name">' . esc_html__( 'this term', 'taxonomy-images' ) . '</span>' ) . '</span>';
+		$o .= '<span class="remove-association">' . sprintf( esc_html__( 'Remove association with %1$s', 'taxonomy-images' ), '<span class="term-name">' . esc_html__( 'this term', 'taxonomy-images' ) . '</span>' ) . '</span>';
+		$o .= '<input class="taxonomy-image-button-image-id" name="' . esc_attr( 'taxonomy-image-button-image-id-' . $image_id ) . '" type="hidden" value="' . esc_attr( $image_id ) . '" />';
+		$o .= '<input class="taxonomy-image-button-nonce-create" name="' . esc_attr( 'taxonomy-image-button-nonce-create-' . $image_id ) . '" type="hidden" value="' . esc_attr( wp_create_nonce( 'taxonomy-image-plugin-create-association' ) ) . '" />';
+		$o .= '<input class="taxonomy-image-button-nonce-remove" name="' . esc_attr( 'taxonomy-image-button-nonce-remove-' . $image_id ) . '" type="hidden" value="' . esc_attr( wp_create_nonce( 'taxonomy-image-plugin-remove-association' ) ) . '" />';
+		$o .= '</div>';
 
 		$fields['image-size']['extra_rows']['taxonomy-image-plugin-button']['html'] = $o;
 	}
@@ -178,7 +173,7 @@ function taxonomy_image_plugin_get_image_src( $id ) {
 				$detail['size'][0],
 				$detail['size'][1],
 				$detail['size'][2]
-				);
+			);
 
 			/* Image creation successful. Generate and cache image metadata. Return url. */
 			if ( ! is_wp_error( $new ) ) {
@@ -204,7 +199,7 @@ function taxonomy_image_plugin_get_image_src( $id ) {
 		return $url;
 	}
 
-	/*
+	/**
 	 * No image can be found.
 	 * This is most likely caused by a user deleting an attachment before deleting it's association with a taxonomy.
 	 * If we are in the administration panels:
@@ -215,7 +210,7 @@ function taxonomy_image_plugin_get_image_src( $id ) {
 		$assoc = taxonomy_image_plugin_get_associations();
 		foreach ( $assoc as $term => $img ) {
 			if ( $img === $id ) {
-				unset( $assoc[$term] );
+				unset( $assoc[ $term ] );
 			}
 		}
 		update_option( 'taxonomy_image_plugin', $assoc );
@@ -247,7 +242,7 @@ function taxonomy_image_plugin_sanitize_associations( $associations ) {
 		$tt_id = absint( $tt_id );
 		$im_id = absint( $im_id );
 		if ( 0 < $tt_id && 0 < $im_id )
-			$o[$tt_id] = $im_id;
+			$o[ $tt_id ] = $im_id;
 	}
 	return $o;
 }
@@ -345,8 +340,8 @@ add_action( 'admin_init', 'taxonomy_image_plugin_register_settings' );
  */
 function taxonomy_images_settings_menu() {
 	add_options_page(
-		esc_html__( 'Taxonomy Images', 'taxonomy-images' ), /* HTML <title> tag. */
-		esc_html__( 'Taxonomy Images', 'taxonomy-images' ), /* Link text in admin menu. */
+		esc_html__( 'Taxonomy Images', 'taxonomy-images' ), // HTML <title> tag.
+		esc_html__( 'Taxonomy Images', 'taxonomy-images' ), // Link text in admin menu.
 		'manage_options',
 		'taxonomy_image_plugin_settings',
 		'taxonomy_image_plugin_settings_page'
@@ -452,8 +447,8 @@ function taxonomy_image_plugin_json_response( $args ) {
  */
 function taxonomy_image_plugin_get_term_info( $tt_id ) {
 	static $cache = array();
-	if ( isset( $cache[$tt_id] ) ) {
-		return $cache[$tt_id];
+	if ( isset( $cache[ $tt_id ] ) ) {
+		return $cache[ $tt_id ];
 	}
 
 	global $wpdb;
@@ -561,15 +556,14 @@ function taxonomy_image_plugin_create_association() {
 	}
 
 	$assoc = taxonomy_image_plugin_get_associations();
-	$assoc[$tt_id] = $image_id;
+	$assoc[ $tt_id ] = $image_id;
 	if ( update_option( 'taxonomy_image_plugin', taxonomy_image_plugin_sanitize_associations( $assoc ) ) ) {
 		taxonomy_image_plugin_json_response( array(
 			'status' => 'good',
 			'why'    => esc_html__( 'Image successfully associated', 'taxonomy-images' ),
 			'attachment_thumb_src' => taxonomy_image_plugin_get_image_src( $image_id )
 		) );
-	}
-	else {
+	} else {
 		taxonomy_image_plugin_json_response( array(
 			'status' => 'bad',
 			'why'    => esc_html__( 'Association could not be created', 'taxonomy-images' )
@@ -628,22 +622,21 @@ function taxonomy_image_plugin_remove_association() {
 	}
 
 	$assoc = taxonomy_image_plugin_get_associations();
-	if ( ! isset( $assoc[$tt_id] ) ) {
+	if ( ! isset( $assoc[ $tt_id ] ) ) {
 		taxonomy_image_plugin_json_response( array(
 			'status' => 'good',
 			'why'    => esc_html__( 'Nothing to remove', 'taxonomy-images' )
 		) );
 	}
 
-	unset( $assoc[$tt_id] );
+	unset( $assoc[ $tt_id ] );
 
 	if ( update_option( 'taxonomy_image_plugin', $assoc ) ) {
 		taxonomy_image_plugin_json_response( array(
 			'status' => 'good',
 			'why'    => esc_html__( 'Association successfully removed', 'taxonomy-images' )
 		) );
-	}
-	else {
+	} else {
 		taxonomy_image_plugin_json_response( array(
 			'status' => 'bad',
 			'why'    => esc_html__( 'Association could not be removed', 'taxonomy-images' )
@@ -816,19 +809,18 @@ function taxonomy_image_plugin_control_image( $term_id, $taxonomy ) {
 	$nonce = wp_create_nonce( 'taxonomy-image-plugin-create-association' );
 	$nonce_remove = wp_create_nonce( 'taxonomy-image-plugin-remove-association' );
 
-	$o = "\n" . '<div id="' . esc_attr( 'taxonomy-image-control-' . $tt_id ) . '" class="taxonomy-image-control hide-if-no-js">';
-	$o.= "\n" . '<a class="thickbox taxonomy-image-thumbnail" data-tt-id="' . $tt_id . '" data-attachment-id="' . $attachment_id . '" data-nonce="' . $nonce . '" href="' . esc_url( admin_url( 'media-upload.php' ) . '?type=image&tab=library&post_id=0&TB_iframe=true' ) . '" title="' . esc_attr( sprintf( __( 'Associate an image with the %1$s named &#8220;%2$s&#8221;.', 'taxonomy-images' ), $name, $term->name ) ) . '"><img id="' . esc_attr( 'taxonomy_image_plugin_' . $tt_id ) . '" src="' . esc_url( $img ) . '" alt="" /></a>';
-	$o.= "\n" . '<a class="control upload thickbox" data-tt-id="' . $tt_id . '" data-attachment-id="' . $attachment_id . '" data-nonce="' . $nonce . '" href="' . esc_url( admin_url( 'media-upload.php' ) . '?type=image&tab=type&post_id=0&TB_iframe=true' ) . '" title="' . esc_attr( sprintf( __( 'Upload a new image for this %s.', 'taxonomy-images' ), $name ) ) . '">' . esc_html__( 'Upload.', 'taxonomy-images' ) . '</a>';
-	$o.= "\n" . '<a class="control remove' . $hide . '" data-tt-id="' . $tt_id . '" data-nonce="' . $nonce_remove . '" href="#" id="' . esc_attr( 'remove-' . $tt_id ) . '" rel="' . esc_attr( $tt_id ) . '" title="' . esc_attr( sprintf( __( 'Remove image from this %s.', 'taxonomy-images' ), $name ) ) . '">' . esc_html__( 'Delete', 'taxonomy-images' ) . '</a>';
-	$o.= "\n" . '<input type="hidden" class="tt_id" name="' . esc_attr( 'tt_id-' . $tt_id ) . '" value="' . esc_attr( $tt_id ) . '" />';
-
-	$o.= "\n" . '<input type="hidden" class="image_id" name="' . esc_attr( 'image_id-' . $tt_id ) . '" value="' . esc_attr( $attachment_id ) . '" />';
+	$o  = "\n" . '<div id="' . esc_attr( 'taxonomy-image-control-' . $tt_id ) . '" class="taxonomy-image-control hide-if-no-js">';
+	$o .= "\n" . '<a class="thickbox taxonomy-image-thumbnail" data-tt-id="' . $tt_id . '" data-attachment-id="' . $attachment_id . '" data-nonce="' . $nonce . '" href="' . esc_url( admin_url( 'media-upload.php' ) . '?type=image&tab=library&post_id=0&TB_iframe=true' ) . '" title="' . esc_attr( sprintf( __( 'Associate an image with the %1$s named &#8220;%2$s&#8221;.', 'taxonomy-images' ), $name, $term->name ) ) . '"><img id="' . esc_attr( 'taxonomy_image_plugin_' . $tt_id ) . '" src="' . esc_url( $img ) . '" alt="" /></a>';
+	$o .= "\n" . '<a class="control upload thickbox" data-tt-id="' . $tt_id . '" data-attachment-id="' . $attachment_id . '" data-nonce="' . $nonce . '" href="' . esc_url( admin_url( 'media-upload.php' ) . '?type=image&tab=type&post_id=0&TB_iframe=true' ) . '" title="' . esc_attr( sprintf( __( 'Upload a new image for this %s.', 'taxonomy-images' ), $name ) ) . '">' . esc_html__( 'Upload.', 'taxonomy-images' ) . '</a>';
+	$o .= "\n" . '<a class="control remove' . $hide . '" data-tt-id="' . $tt_id . '" data-nonce="' . $nonce_remove . '" href="#" id="' . esc_attr( 'remove-' . $tt_id ) . '" rel="' . esc_attr( $tt_id ) . '" title="' . esc_attr( sprintf( __( 'Remove image from this %s.', 'taxonomy-images' ), $name ) ) . '">' . esc_html__( 'Delete', 'taxonomy-images' ) . '</a>';
+	$o .= "\n" . '<input type="hidden" class="tt_id" name="' . esc_attr( 'tt_id-' . $tt_id ) . '" value="' . esc_attr( $tt_id ) . '" />';
+	$o .= "\n" . '<input type="hidden" class="image_id" name="' . esc_attr( 'image_id-' . $tt_id ) . '" value="' . esc_attr( $attachment_id ) . '" />';
 
 	if ( isset( $term->name ) && isset( $term->slug ) ) {
 		$o .= "\n" . '<input type="hidden" class="term_name" name="' . esc_attr( 'term_name-' . $term->slug ) . '" value="' . esc_attr( $term->name ) . '" />';
 	}
 
-	$o.= "\n" . '</div>';
+	$o .= "\n" . '</div>';
 	return $o;
 }
 
@@ -852,7 +844,7 @@ function taxonomy_image_plugin_media_upload_popup_js() {
 		array( 'jquery' ),
 		taxonomy_image_plugin_version()
 	);
-	wp_localize_script( 'taxonomy-images-media-upload-popup', 'TaxonomyImagesModal', array (
+	wp_localize_script( 'taxonomy-images-media-upload-popup', 'TaxonomyImagesModal', array(
 		'termBefore'  => esc_html__( '&#8220;', 'taxonomy-images' ),
 		'termAfter'   => esc_html__( '&#8221;', 'taxonomy-images' ),
 		'associating' => esc_html__( 'Associating &#8230;', 'taxonomy-images' ),
@@ -884,7 +876,7 @@ function taxonomy_image_plugin_edit_tags_js() {
 		array( 'jquery', 'thickbox' ),
 		taxonomy_image_plugin_version()
 	);
-	wp_localize_script( 'taxonomy-image-plugin-edit-tags', 'taxonomyImagesPlugin', array (
+	wp_localize_script( 'taxonomy-image-plugin-edit-tags', 'taxonomyImagesPlugin', array(
 		'nonce'    => wp_create_nonce( 'taxonomy-image-plugin-remove-association' ),
 		'img_src'  => taxonomy_image_plugin_url( 'default.png' ),
 		'tt_id'    => 0,
@@ -1076,7 +1068,7 @@ function taxonomy_image_plugin_cache_images( $posts ) {
 			continue;
 		}
 
-		$image_ids[] = $assoc[$tt_id];
+		$image_ids[] = $assoc[ $tt_id ];
 	}
 
 	if ( empty( $image_ids ) ) {
@@ -1125,9 +1117,9 @@ add_action( 'template_redirect', 'taxonomy_image_plugin_cache_queried_images' );
 function taxonomy_image_plugin_check_taxonomy( $taxonomy, $filter ) {
 	if ( ! taxonomy_exists( $taxonomy ) ) {
 		trigger_error( sprintf( esc_html__( 'The %1$s argument for %2$s is set to %3$s which is not a registered taxonomy. Please check the spelling and update the argument.', 'taxonomy-images' ),
-		'<var>' . esc_html__( 'taxonomy', 'taxonomy-images' ) . '</var>',
-		'<code>' . esc_html( $filter ) . '</code>',
-		'<strong>' . esc_html( $taxonomy ) . '</strong>'
+			'<var>' . esc_html__( 'taxonomy', 'taxonomy-images' ) . '</var>',
+			'<code>' . esc_html( $filter ) . '</code>',
+			'<strong>' . esc_html( $taxonomy ) . '</strong>'
 		) );
 		return false;
 	}
