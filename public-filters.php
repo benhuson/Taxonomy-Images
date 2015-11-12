@@ -68,7 +68,7 @@ add_filter( 'taxonomy-images-queried-term-image-url',    'taxonomy_images_plugin
  */
 function taxonomy_images_plugin_get_terms( $default, $args = array() ) {
 	$filter = 'taxonomy-images-get-terms';
-	if ( $filter !== current_filter() ) {
+	if ( current_filter() !== $filter ) {
 		taxonomy_image_plugin_please_use_filter( __FUNCTION__, $filter );
 	}
 
@@ -250,7 +250,7 @@ function taxonomy_images_plugin_get_the_terms( $default, $args = array() ) {
  */
 function taxonomy_images_plugin_list_the_terms( $default, $args = array() ) {
 	$filter = 'taxonomy-images-list-the-terms';
-	if ( $filter !== current_filter() ) {
+	if ( current_filter() !== $filter ) {
 		taxonomy_image_plugin_please_use_filter( __FUNCTION__, $filter );
 	}
 
@@ -324,7 +324,7 @@ function taxonomy_images_plugin_list_the_terms( $default, $args = array() ) {
  */
 function taxonomy_images_plugin_get_queried_term_image( $default, $args = array() ) {
 	$filter = 'taxonomy-images-queried-term-image';
-	if ( $filter !== current_filter() ) {
+	if ( current_filter() !== $filter ) {
 		taxonomy_image_plugin_please_use_filter( __FUNCTION__, $filter );
 	}
 
@@ -374,7 +374,7 @@ function taxonomy_images_plugin_get_queried_term_image( $default, $args = array(
  */
 function taxonomy_images_plugin_get_queried_term_image_id( $default ) {
 	$filter = 'taxonomy-images-queried-term-image-id';
-	if ( $filter !== current_filter() ) {
+	if ( current_filter() !== $filter ) {
 		taxonomy_image_plugin_please_use_filter( __FUNCTION__, $filter );
 	}
 
@@ -429,7 +429,7 @@ function taxonomy_images_plugin_get_queried_term_image_id( $default ) {
  */
 function taxonomy_images_plugin_get_queried_term_image_object( $default ) {
 	$filter = 'taxonomy-images-queried-term-image-object';
-	if ( $filter !== current_filter() ) {
+	if ( current_filter() !== $filter ) {
 		taxonomy_image_plugin_please_use_filter( __FUNCTION__, $filter );
 	}
 
@@ -469,7 +469,7 @@ function taxonomy_images_plugin_get_queried_term_image_object( $default ) {
  */
 function taxonomy_images_plugin_get_queried_term_image_url( $default, $args = array() ) {
 	$filter = 'taxonomy-images-queried-term-image-url';
-	if ( $filter !== current_filter() ) {
+	if ( current_filter() !== $filter ) {
 		taxonomy_image_plugin_please_use_filter( __FUNCTION__, $filter );
 	}
 
@@ -515,7 +515,7 @@ function taxonomy_images_plugin_get_queried_term_image_url( $default, $args = ar
  */
 function taxonomy_images_plugin_get_queried_term_image_data( $default, $args = array() ) {
 	$filter = 'taxonomy-images-queried-term-image-data';
-	if ( $filter !== current_filter() ) {
+	if ( current_filter() !== $filter ) {
 		taxonomy_image_plugin_please_use_filter( __FUNCTION__, $filter );
 	}
 
