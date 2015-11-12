@@ -161,8 +161,9 @@ function taxonomy_image_plugin_get_image_src( $id ) {
 
 	/* Return url to custom intermediate size if it exists. */
 	$img = image_get_intermediate_size( $id, $detail['name'] );
-	if ( isset( $img['url'] ) )
+	if ( isset( $img['url'] ) ) {
 		return $img['url'];
+	}
 
 	/* Detail image does not exist, attempt to create it. */
 	$wp_upload_dir = wp_upload_dir();
@@ -193,13 +194,15 @@ function taxonomy_image_plugin_get_image_src( $id ) {
 
 	/* Custom intermediate size cannot be created, try for thumbnail. */
 	$img = image_get_intermediate_size( $id, 'thumbnail' );
-	if ( isset( $img['url'] ) )
+	if ( isset( $img['url'] ) ) {
 		return $img['url'];
+	}
 
 	/* Thumbnail cannot be found, try fullsize. */
 	$url = wp_get_attachment_url( $id );
-	if ( ! empty( $url ) )
+	if ( ! empty( $url ) ) {
 		return $url;
+	}
 
 	/*
 	 * No image can be found.
@@ -391,20 +394,24 @@ function taxonomy_image_plugin_control_taxonomies() {
 	$settings = get_option( 'taxonomy_image_plugin_settings' );
 	$taxonomies = get_taxonomies( array(), 'objects' );
 	foreach ( (array) $taxonomies as $taxonomy ) {
-		if ( ! isset( $taxonomy->name ) )
+		if ( ! isset( $taxonomy->name ) ) {
 			continue;
+		}
 
-		if ( ! isset( $taxonomy->label ) )
+		if ( ! isset( $taxonomy->label ) ) {
 			continue;
+		}
 
-		if ( ! isset( $taxonomy->show_ui ) || empty( $taxonomy->show_ui ) )
+		if ( ! isset( $taxonomy->show_ui ) || empty( $taxonomy->show_ui ) ) {
 			continue;
+		}
 
 		$id = 'taxonomy-images-' . $taxonomy->name;
 
 		$checked = '';
-		if ( isset( $settings['taxonomies'] ) && in_array( $taxonomy->name, (array) $settings['taxonomies'] ) )
+		if ( isset( $settings['taxonomies'] ) && in_array( $taxonomy->name, (array) $settings['taxonomies'] ) ) {
 			$checked = ' checked="checked"';
+		}
 
 		print "\n" . '<p><label for="' . esc_attr( $id ) . '">';
 		print '<input' . $checked . ' id="' . esc_attr( $id ) . '" type="checkbox" name="taxonomy_image_plugin_settings[taxonomies][]" value="' . esc_attr( $taxonomy->name ) . '" />';
@@ -452,14 +459,17 @@ function taxonomy_image_plugin_get_term_info( $tt_id ) {
 	global $wpdb;
 
 	$data = $wpdb->get_results( $wpdb->prepare( "SELECT term_id, taxonomy FROM $wpdb->term_taxonomy WHERE term_taxonomy_id = %d LIMIT 1", $tt_id ) );
-	if ( isset( $data[0]->term_id ) )
-		$cache[$tt_id]['term_id'] = absint( $data[0]->term_id );
+	if ( isset( $data[0]->term_id ) ) {
+		$cache[ $tt_id ]['term_id'] = absint( $data[0]->term_id );
+	}
 
-	if ( isset( $data[0]->taxonomy ) )
-		$cache[$tt_id]['taxonomy'] = sanitize_title_with_dashes( $data[0]->taxonomy );
+	if ( isset( $data[0]->taxonomy ) ) {
+		$cache[ $tt_id ]['taxonomy'] = sanitize_title_with_dashes( $data[0]->taxonomy );
+	}
 
-	if ( isset( $cache[$tt_id] ) )
-		return $cache[$tt_id];
+	if ( isset( $cache[ $tt_id ] ) ) {
+		return $cache[ $tt_id ];
+	}
 
 	return array();
 }
@@ -478,12 +488,14 @@ function taxonomy_image_plugin_get_term_info( $tt_id ) {
  */
 function taxonomy_image_plugin_check_permissions( $tt_id ) {
 	$data = taxonomy_image_plugin_get_term_info( $tt_id );
-	if ( ! isset( $data['taxonomy'] ) )
+	if ( ! isset( $data['taxonomy'] ) ) {
 		return false;
+	}
 
 	$taxonomy = get_taxonomy( $data['taxonomy'] );
-	if ( ! isset( $taxonomy->cap->edit_terms ) )
+	if ( ! isset( $taxonomy->cap->edit_terms ) ) {
 		return false;
+	}
 
 	return current_user_can( $taxonomy->cap->edit_terms );
 }
@@ -655,8 +667,9 @@ add_action( 'wp_ajax_taxonomy_image_plugin_remove_association', 'taxonomy_image_
  */
 function taxonomy_image_plugin_get_associations( $refresh = false ) {
 	static $associations = array();
-	if ( empty( $associations ) || $refresh )
+	if ( empty( $associations ) || $refresh ) {
 		$associations = taxonomy_image_plugin_sanitize_associations( get_option( 'taxonomy_image_plugin' ) );
+	}
 
 	return $associations;
 }
@@ -676,8 +689,9 @@ add_action( 'init', 'taxonomy_image_plugin_get_associations' );
  */
 function taxonomy_image_plugin_add_dynamic_hooks() {
 	$settings = get_option( 'taxonomy_image_plugin_settings' );
-	if ( ! isset( $settings['taxonomies'] ) )
+	if ( ! isset( $settings['taxonomies'] ) ) {
 		return;
+	}
 
 	foreach ( $settings['taxonomies'] as $taxonomy ) {
 		add_filter( 'manage_' . $taxonomy . '_custom_column', 'taxonomy_image_plugin_taxonomy_rows', 15, 3 );
@@ -776,14 +790,16 @@ function taxonomy_image_plugin_control_image( $term_id, $taxonomy ) {
 	$term = get_term( $term_id, $taxonomy );
 
 	$tt_id = 0;
-	if ( isset( $term->term_taxonomy_id ) )
+	if ( isset( $term->term_taxonomy_id ) ) {
 		$tt_id = (int) $term->term_taxonomy_id;
+	}
 
 	$taxonomy = get_taxonomy( $taxonomy );
 
 	$name = esc_html__( 'term', 'taxonomy-images' );
-	if ( isset( $taxonomy->labels->singular_name ) )
+	if ( isset( $taxonomy->labels->singular_name ) ) {
 		$name = strtolower( $taxonomy->labels->singular_name );
+	}
 
 	$hide = ' hide';
 	$attachment_id = 0;
@@ -808,8 +824,9 @@ function taxonomy_image_plugin_control_image( $term_id, $taxonomy ) {
 
 	$o.= "\n" . '<input type="hidden" class="image_id" name="' . esc_attr( 'image_id-' . $tt_id ) . '" value="' . esc_attr( $attachment_id ) . '" />';
 
-	if ( isset( $term->name ) && isset( $term->slug ) )
-		$o.= "\n" . '<input type="hidden" class="term_name" name="' . esc_attr( 'term_name-' . $term->slug ) . '" value="' . esc_attr( $term->name ) . '" />';
+	if ( isset( $term->name ) && isset( $term->slug ) ) {
+		$o .= "\n" . '<input type="hidden" class="term_name" name="' . esc_attr( 'term_name-' . $term->slug ) . '" value="' . esc_attr( $term->name ) . '" />';
+	}
 
 	$o.= "\n" . '</div>';
 	return $o;
@@ -853,8 +870,9 @@ add_action( 'admin_print_scripts-media-upload-popup', 'taxonomy_image_plugin_med
  * @access    private
  */
 function taxonomy_image_plugin_edit_tags_js() {
-	if ( false == taxonomy_image_plugin_is_screen_active() )
+	if ( false == taxonomy_image_plugin_is_screen_active() ) {
 		return;
+	}
 
 	if ( version_compare( get_bloginfo( 'version' ), 3.5 ) >= 0 ) {
 		return;
@@ -906,8 +924,9 @@ add_action( 'admin_print_styles-media-upload-popup', 'taxonomy_image_plugin_css_
  * @access    private
  */
 function taxonomy_image_plugin_css_thickbox() {
-	if ( false == taxonomy_image_plugin_is_screen_active() )
+	if ( false == taxonomy_image_plugin_is_screen_active() ) {
 		return;
+	}
 
 	wp_enqueue_style( 'thickbox' );
 }
@@ -928,8 +947,9 @@ add_action( 'admin_print_styles-edit-tags.php', 'taxonomy_image_plugin_css_thick
  * @access    private
  */
 function taxonomy_image_plugin_css_public() {
-	if ( apply_filters( 'taxonomy-images-disable-public-css', false ) )
+	if ( apply_filters( 'taxonomy-images-disable-public-css', false ) ) {
 		return;
+	}
 
 	wp_enqueue_style(
 		'taxonomy-image-plugin-public',
@@ -963,8 +983,9 @@ add_action( 'wp_enqueue_scripts', 'taxonomy_image_plugin_css_public' );
  */
 function taxonomy_image_plugin_activate() {
 	$associations = get_option( 'taxonomy_image_plugin' );
-	if ( false === $associations )
+	if ( false === $associations ) {
 		add_option( 'taxonomy_image_plugin', array() );
+	}
 
 	$settings = get_option( 'taxonomy_image_plugin_settings' );
 	if ( false === $settings ) {
@@ -986,15 +1007,18 @@ register_activation_hook( __FILE__, 'taxonomy_image_plugin_activate' );
  */
 function taxonomy_image_plugin_is_screen_active() {
 	$screen = get_current_screen();
-	if ( ! isset( $screen->taxonomy ) )
+	if ( ! isset( $screen->taxonomy ) ) {
 		return false;
+	}
 
 	$settings = get_option( 'taxonomy_image_plugin_settings' );
-	if ( ! isset( $settings['taxonomies'] ) )
+	if ( ! isset( $settings['taxonomies'] ) ) {
 		return false;
+	}
 
-	if ( in_array( $screen->taxonomy, $settings['taxonomies'] ) )
+	if ( in_array( $screen->taxonomy, $settings['taxonomies'] ) ) {
 		return true;
+	}
 
 	return false;
 }
@@ -1015,17 +1039,20 @@ function taxonomy_image_plugin_is_screen_active() {
  */
 function taxonomy_image_plugin_cache_images( $posts ) {
 	$assoc = taxonomy_image_plugin_get_associations();
-	if ( empty( $assoc ) )
+	if ( empty( $assoc ) ) {
 		return;
+	}
 
 	$tt_ids = array();
 	foreach ( (array) $posts as $post ) {
-		if ( ! isset( $post->ID ) || ! isset( $post->post_type ) )
+		if ( ! isset( $post->ID ) || ! isset( $post->post_type ) ) {
 			continue;
+		}
 
 		$taxonomies = get_object_taxonomies( $post->post_type );
-		if ( empty( $taxonomies ) )
+		if ( empty( $taxonomies ) ) {
 			continue;
+		}
 
 		foreach ( $taxonomies as $taxonomy ) {
 			$the_terms = get_the_terms( $post->ID, $taxonomy );
@@ -1041,17 +1068,20 @@ function taxonomy_image_plugin_cache_images( $posts ) {
 
 	$image_ids = array();
 	foreach ( $tt_ids as $tt_id ) {
-		if ( ! isset( $assoc[$tt_id] ) )
+		if ( ! isset( $assoc[ $tt_id ] ) ) {
 			continue;
+		}
 
-		if ( in_array( $assoc[$tt_id], $image_ids ) )
+		if ( in_array( $assoc[ $tt_id ], $image_ids ) ) {
 			continue;
+		}
 
 		$image_ids[] = $assoc[$tt_id];
 	}
 
-	if ( empty( $image_ids ) )
+	if ( empty( $image_ids ) ) {
 		return;
+	}
 
 	$images = get_posts( array(
 		'include'   => $image_ids,
@@ -1158,15 +1188,18 @@ function taxonomy_image_plugin_please_use_filter( $function, $filter ) {
 function taxonomy_images_plugin_row_meta( $links, $file ) {
 	static $plugin_name = '';
 
-	if ( empty( $plugin_name ) )
+	if ( empty( $plugin_name ) ) {
 		$plugin_name = plugin_basename( __FILE__ );
+	}
 
-	if ( $plugin_name != $file )
+	if ( $plugin_name != $file ) {
 		return $links;
+	}
 
 	$link = taxonomy_images_plugin_settings_page_link( esc_html__( 'Settings', 'taxonomy-images' ) );
-	if ( ! empty( $link ) )
+	if ( ! empty( $link ) ) {
 		$links[] = $link;
+	}
 
 	$links[] = '<a href="http://wordpress.mfields.org/donate/">' . esc_html__( 'Donate', 'taxonomy-images' ) . '</a>';
 
@@ -1185,12 +1218,14 @@ add_filter( 'plugin_row_meta', 'taxonomy_images_plugin_row_meta', 10, 2 );
  * @since     0.7
  */
 function taxonomy_images_plugin_settings_page_link( $link_text = '' ) {
-	if ( empty( $link_text ) )
+	if ( empty( $link_text ) ) {
 		$link_text = __( 'Manage Settings', 'taxonomy-images' );
+	}
 
 	$link = '';
-	if ( current_user_can( 'manage_options' ) )
+	if ( current_user_can( 'manage_options' ) ) {
 		$link = '<a href="' . esc_url( add_query_arg( array( 'page' => 'taxonomy_image_plugin_settings' ), admin_url( 'options-general.php' ) ) ) . '">' . esc_html( $link_text ) . '</a>';
+	}
 
 	return $link;
 }
