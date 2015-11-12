@@ -1,11 +1,12 @@
 === Taxonomy Images ===
-
 Contributors:         mfields, husobj, jamiemchale
-Tags:                 taxonomy, tag, category, image, upload, media
+Donate link:          https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=QSYTTQZBRKQVE
+Tags:                 taxonomy, tag, category, term, image, upload, media
 Requires at least:    3.4
 Tested up to:         4.3.1
 Stable tag:           0.9
 License:              GPLv2 or later
+License URI:          http://www.gnu.org/licenses/gpl-2.0.html
 
 Associate images from your media library to categories, tags and custom taxonomies.
 
@@ -190,7 +191,7 @@ If you have fallen in love with this plugin and would not be able to sleep witho
 
 = Need More Taxonomy Plugins? =
 
-The original author of this plugin, Michael Fields, released a handful of plugins dealing with taxonomies. Please see his [plugin page](http://wordpress.org/extend/plugins/profile/mfields) for more information.
+The original author of this plugin, Michael Fields, released a handful of plugins dealing with taxonomies. Please see his [WordPress.org profile](https://profiles.wordpress.org/mfields/) for more information.
 
 == Installation ==
 

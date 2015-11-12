@@ -207,7 +207,7 @@ If you have fallen in love with this plugin and would not be able to sleep witho
 Need More Taxonomy Plugins?
 ---------------------------
 
-The original author of this plugin, Michael Fields, released a handful of plugins dealing with taxonomies. Please see his [plugin page](http://wordpress.org/extend/plugins/profile/mfields) for more information.
+The original author of this plugin, Michael Fields, released a handful of plugins dealing with taxonomies. Please see his [WordPress.org profile](https://profiles.wordpress.org/mfields/) for more information.
 
 Installation
 ------------
