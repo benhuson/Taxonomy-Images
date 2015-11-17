@@ -10,7 +10,7 @@ var taxonomy_images_file_frame;
 		TaxonomyImagesMediaModal.wp_media_post_id = wp.media.model.settings.post.id;
 
 		// When the remove icon is clicked...
-		$( '.taxonomy-image-control a.remove' ).on( 'click', function( event ) {
+		$( '.wp-list-table, .form-table' ).on( 'click', '.taxonomy-image-control a.remove', function( event ) {
 
 			event.preventDefault();
 
@@ -50,7 +50,7 @@ var taxonomy_images_file_frame;
 		} );
 
 		// When image or upload icon clicked...
-		$( '.taxonomy-image-control a.upload, .taxonomy-image-control a.taxonomy-image-thumbnail' ).on( 'click', function( event ) {
+		$( '.wp-list-table, .form-table' ).on( 'click', '.taxonomy-image-control a.upload, .taxonomy-image-control a.taxonomy-image-thumbnail', function( event ) {
 
 			event.preventDefault();
 
