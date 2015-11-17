@@ -221,6 +221,9 @@ Installation
 Upgrade Notice
 --------------
 
+### 0.9.1
+Fixes media modal not opening on newly created terms.
+
 ### 0.9 
 Fixes media modal for newer versions of WordPress. Tested up to WordPress 4.3.1 (requires 3.4+).
 
@@ -232,6 +235,10 @@ Complete rewrite. Better everything. Many bug fixes.
 
 Changelog
 ---------
+
+### 0.9.1
+* __BUGFIX:__ Fixes media modal not opening on newly created terms.
+* __UPDATE:__ Adhere to WordPress PHP coding standards.
 
 ### 0.9
 * __COMPAT:__ Add support for WordPress 3.5+ media modal.

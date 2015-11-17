@@ -4,7 +4,7 @@ Donate link:          https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted
 Tags:                 taxonomy, tag, category, term, image, upload, media
 Requires at least:    3.4
 Tested up to:         4.3.1
-Stable tag:           0.9
+Stable tag:           0.9.1
 License:              GPLv2 or later
 License URI:          http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -209,6 +209,9 @@ The original author of this plugin, Michael Fields, released a handful of plugin
 
 == Upgrade Notice ==
 
+= 0.9.1 =
+Fixes media modal not opening on newly created terms.
+
 = 0.9 =
 Fixes media modal for newer versions of WordPress. Tested up to WordPress 4.3.1 (requires 3.4+).
 
@@ -219,6 +222,10 @@ Major and minor bug fixes tested with WordPress 3.6.
 Complete rewrite. Better everything. Many bug fixes.
 
 == Changelog ==
+
+= 0.9.1 =
+* __BUGFIX:__ Fixes media modal not opening on newly created terms.
+* __UPDATE:__ Adhere to WordPress PHP coding standards.
 
 = 0.9 =
 * __COMPAT:__ Add support for WordPress 3.5+ media modal.
