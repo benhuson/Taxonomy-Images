@@ -383,7 +383,7 @@ function taxonomy_images_plugin_get_queried_term_image_id( $default ) {
 
 	/* Return early is we are not in a term archive. */
 	if ( ! isset( $obj->term_taxonomy_id ) ) {
-		trigger_error( sprintf( esc_html__( '%1$s is not a property of the current queried object. This usually happens when the %2$s filter is used in an unsupported template file. This filter has been designed to work in taxonomy archives which are traditionally served by one of the following template files: category.php, tag.php or taxonomy.php. Learn more about %3$s.', 'taxonomy-images' ),
+		$error = new Taxonomy_Images_Error( sprintf( esc_html__( '%1$s is not a property of the current queried object. This usually happens when the %2$s filter is used in an unsupported template file. This filter has been designed to work in taxonomy archives which are traditionally served by one of the following template files: category.php, tag.php or taxonomy.php. Learn more about %3$s.', 'taxonomy-images' ),
 			'<code>' . esc_html__( 'term_taxonomy_id', 'taxonomy-images' ) . '</code>',
 			'<code>' . esc_html( $filter ) . '</code>',
 			'<a href="http://codex.wordpress.org/Template_Hierarchy">' . esc_html( 'template hierarchy', 'taxonomy-images' ) . '</a>'

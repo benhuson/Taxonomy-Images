@@ -1117,7 +1117,7 @@ add_action( 'template_redirect', 'taxonomy_image_plugin_cache_queried_images' );
  */
 function taxonomy_image_plugin_check_taxonomy( $taxonomy, $filter ) {
 	if ( ! taxonomy_exists( $taxonomy ) ) {
-		trigger_error( sprintf( esc_html__( 'The %1$s argument for %2$s is set to %3$s which is not a registered taxonomy. Please check the spelling and update the argument.', 'taxonomy-images' ),
+		$error = new Taxonomy_Images_Error( sprintf( esc_html__( 'The %1$s argument for %2$s is set to %3$s which is not a registered taxonomy. Please check the spelling and update the argument.', 'taxonomy-images' ),
 			'<var>' . esc_html__( 'taxonomy', 'taxonomy-images' ) . '</var>',
 			'<code>' . esc_html( $filter ) . '</code>',
 			'<strong>' . esc_html( $taxonomy ) . '</strong>'
@@ -1128,12 +1128,12 @@ function taxonomy_image_plugin_check_taxonomy( $taxonomy, $filter ) {
 	$settings = get_option( 'taxonomy_image_plugin_settings' );
 
 	if ( ! isset( $settings['taxonomies'] ) ) {
-		trigger_error( sprintf( esc_html__( 'No taxonomies have image support. %1$s', 'taxonomy-images' ), taxonomy_images_plugin_settings_page_link() ) );
+		$error = new Taxonomy_Images_Error( sprintf( esc_html__( 'No taxonomies have image support. %1$s', 'taxonomy-images' ), taxonomy_images_plugin_settings_page_link() ) );
 		return false;
 	}
 
 	if ( ! in_array( $taxonomy, (array) $settings['taxonomies'] ) ) {
-		trigger_error( sprintf( esc_html__( 'The %1$s taxonomy does not have image support. %2$s', 'taxonomy-images' ),
+		$error = new Taxonomy_Images_Error( sprintf( esc_html__( 'The %1$s taxonomy does not have image support. %2$s', 'taxonomy-images' ),
 			'<strong>' . esc_html( $taxonomy ) . '</strong>',
 			taxonomy_images_plugin_settings_page_link()
 		) );
@@ -1158,7 +1158,7 @@ function taxonomy_image_plugin_check_taxonomy( $taxonomy, $filter ) {
  * @since     0.7
  */
 function taxonomy_image_plugin_please_use_filter( $function, $filter ) {
-	trigger_error( sprintf( esc_html__( 'The %1$s has been called directly. Please use the %2$s filter instead.', 'taxonomy-images' ),
+	$error = new Taxonomy_Images_Error( sprintf( esc_html__( 'The %1$s has been called directly. Please use the %2$s filter instead.', 'taxonomy-images' ),
 		'<code>' . esc_html( $function . '()' ) . '</code>',
 		'<code>' . esc_html( $filter ) . '</code>'
 	) );
