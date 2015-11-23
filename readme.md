@@ -11,7 +11,7 @@ There are a few filters that you can use in your theme to display the image asso
 Display a single image representing the term archive
 ----------------------------------------------------
 
-The following filter will display the image associated with the term asked for in the query string of the url. This filter only works in views that naturally use templates like category.php, tag.php, taxonomy.php and all of their derivatives. Please read about [template hierarchy](http://codex.wordpress.org/Template_Hierarchy) for more information about these templates. The simplest use of this filter looks like:
+The following filter will display the image associated with the term asked for in the query string of the URL. This filter only works in views that naturally use templates like category.php, tag.php, taxonomy.php and all of their derivatives. Please read about [template hierarchy](http://codex.wordpress.org/Template_Hierarchy) for more information about these templates. The simplest use of this filter looks like:
 
 ```php
 print apply_filters( 'taxonomy-images-queried-term-image', '' );
@@ -21,7 +21,7 @@ This code will generate and print an image tag. It's output can be modifed by pa
 
 * __after__ _(string)_ - Text to append to the image's HTML.
 
-* __attr__ _(array)_ - Key/value pairs representing the attributes of the img tag. Available options include: alt, class, src and title. This array will be passed as the fourth parameter to WordPress core function wp_get_attachment_image() without modification.
+* __attr__ _(array)_ - Key / value pairs representing the attributes of the `img` tag. Available options include: `alt`, `class`, `src` and `title`. This array will be passed as the fourth parameter to WordPress core function `wp_get_attachment_image()` without modification.
 
 * __before__ _(string)_ - Text to prepend to the image's HTML.
 
@@ -59,7 +59,7 @@ If you need to get the full object of the image, you may want to use:
 $image = apply_filters( 'taxonomy-images-queried-term-image-object', '' );
 ```
 
-If you need to get the url to the image, you may want to use the following:
+If you need to get the URL to the image, you may want to use the following:
 
 ```php
 $image_url = apply_filters( 'taxonomy-images-queried-term-image-url', '' );
@@ -98,19 +98,19 @@ print apply_filters( 'taxonomy-images-list-the-terms', '' );
 
 This filter accepts an optional third parameter that you can use to customize its output. It is an array which recognizes the following keys:
 
-* __after__ _(string)_ - Text to append to the output. Default value is a closing unordered list element.
+* __after__ _(string)_ - Text to append to the output. Default value is a closing unordered list tag.
 
-* __after_image__ _(string)_ - Text to append to each image. Default value is a closing list-item element.
+* __after_image__ _(string)_ - Text to append to each image. Default value is a closing list-item tag.
 
-* __before__ _(string)_ - Text to prepend to the output. Default value is an open unordered list element with an class attribute of "taxonomy-images-the-terms".
+* __before__ _(string)_ - Text to prepend to the output. Default value is an open unordered list tag with an class attribute of "taxonomy-images-the-terms".
 
-* __before_image__ _(string)_ - Text to prepend to each image. Default value is an open list-item element.
+* __before_image__ _(string)_ - Text to prepend to each image. Default value is an open list-item tag.
 
 * __image_size__ _(string)_ - Any registered image size. Values will vary from installation to installation. Image sizes defined in core include: "thumbnail", "medium" and "large". "full" may also be used to get the unmodified image that was uploaded. Defaults to "thumbnail".
 
-* __post_id__ _(int)_ - The post to retrieve terms from. Defaults to the ID property of the global $post object.
+* __post_id__ _(int)_ - The post to retrieve terms from. Defaults to the ID property of the global `$post object`.
 
-* __taxonomy__ _(string)_ - Name of a registered taxonomy to return terms from. Defaults to "category".
+* __taxonomy__ _(string)_ - Name of a registered taxonomy to return terms from. Defaults to `category`.
 
 Here's an example of what a fully customized version of this filter might look like:
 
@@ -129,13 +129,13 @@ print apply_filters( 'taxonomy-images-list-the-terms', '', array(
 Working with all terms of a given taxonomy
 ------------------------------------------
 
-You will want to use the 'taxonomy-images-get-terms' filter. This filter is basically a wrapper for WordPress core function [get_terms()](http://codex.wordpress.org/Function_Reference/get_terms). It will return an array of enhanced term objects: each term object will have a custom property named image_id which is an integer representing the database ID of the image associated with the term. This filter can be used to create custom lists of terms. Here's what it's default useage looks like:
+You will want to use the `taxonomy-images-get-terms` filter. This filter is basically a wrapper for WordPress core function [get_terms()](http://codex.wordpress.org/Function_Reference/get_terms). It will return an array of enhanced term objects: each term object will have a custom property named `image_id` which is an integer representing the database ID of the image associated with the term. This filter can be used to create custom lists of terms. Here's what it's default useage looks like:
 
 ```php
 $terms = apply_filters( 'taxonomy-images-get-terms', '' );
 ```
 
-Here is what php's print_r() function may return:
+Here is what php's `print_r()` function may return:
 
 ```
 Array
@@ -156,17 +156,17 @@ Array
 )
 ```
 
-As you can see, all of the goodness of get_terms() is there with an added bonus: the image_id parameter!
+As you can see, all of the goodness of `get_terms()` is there with an added bonus: the `image_id` parameter!
 
 This filter recognizes an optional third parameter which is an array of arguments that can be used to modify its output:
 
-* __cache_images__ _(bool)_ If this value is true all associated images will be queried and cached for later use in various template tags. If it is set to false, this query will be suppressed. Do not set this value to false unless you have a really good reason for doing so :) Default value is true.
+* __cache_images__ _(bool)_ If this value is `true` all associated images will be queried and cached for later use in various template tags. If it is set to `false`, this query will be suppressed. Do not set this value to `false` unless you have a really good reason for doing so :) Default value is `true`.
 
-* __having_images__ _(bool)_ If this value is true then only terms that have associated images will be returned. Setting it to false will return all terms. Default value is true.
+* __having_images__ _(bool)_ If this value is `true` then only terms that have associated images will be returned. Setting it to `false` will return all terms. Default value is `true`.
 
-* __taxonomy__ _(string)_ Name of a registered taxonomy to return terms from. Multiple taxonomies may be specified by separating each name by a comma. Defaults to "category".
+* __taxonomy__ _(string)_ Name of a registered taxonomy to return terms from. Multiple taxonomies may be specified by separating each name by a comma. Defaults to `category`.
 
-* __term_args__ _(array)_ Arguments to pass to [get_terms()](http://codex.wordpress.org/Function_Reference/get_terms) as the second parameter. Default value is an empty array.
+* __term_args__ _(array)_ Arguments to pass to [`get_terms()`](http://codex.wordpress.org/Function_Reference/get_terms) as the second parameter. Default value is an empty array.
 
 Here's an example of a simple custom loop that you can use to display all term images:
 
@@ -184,7 +184,7 @@ if ( ! empty( $terms ) ) {
 Support
 -------
 
-If you have questions about integrating this plugin into your site, please [add a new thread to the WordPress Support Forum](http://wordpress.org/tags/taxonomy-images?forum_id=10#postform). I try to answer these, but I may not always be able to. In the event that I cannot there may be someone else who can help.
+If you have questions about integrating this plugin into your site, please [add a new thread to the WordPress Support Forum](https://wordpress.org/tags/taxonomy-images?forum_id=10#postform). I try to answer these, but I may not always be able to. In the event that I cannot there may be someone else who can help.
 
 Bugs, Suggestions
 -----------------
@@ -196,9 +196,9 @@ Hook it up yo!
 
 If you have fallen in love with this plugin and would not be able to sleep without helping out in some way, please see the following list of ways that you can _hook it up!_:
 
-* __Rate it!__ - Use the star tool on the right-hand sidebar of the [plugin homepage](http://wordpress.org/extend/plugins/taxonomy-images/).
+* __Rate it!__ - Use the star tool on the right-hand sidebar of the [plugin homepage](https://wordpress.org/plugins/taxonomy-images/).
 
-* __Let me know if it works__ - Use the _Compatibility_ widget on the [plugin homepage](http://wordpress.org/extend/plugins/taxonomy-images/) to let everyone know that the current version works with your version of WordPress.
+* __Let me know if it works__ - Use the _Compatibility_ widget on the [plugin homepage](https://wordpress.org/plugins/taxonomy-images/) to let everyone know that the current version works with your version of WordPress.
 
 * __Do you Twitter?__ Help promote by using this shortlink: [http://bit.ly/taxonomy-images](http://bit.ly/taxonomy-images)
 
@@ -213,7 +213,7 @@ Installation
 ------------
 
 1. Download
-1. Unzip the package and upload to your /wp-content/plugins/ directory.
+1. Unzip the package and upload to your `/wp-content/plugins/` directory.
 1. Log into WordPress and navigate to the "Plugins" panel.
 1. Activate the plugin.
 1. Click the "Taxonomy Images" link under the Settings section in the admin menu. There you can select the taxonomies that you would like to add image support for.
@@ -246,18 +246,18 @@ Changelog
 * __UPDATE:__ Add Spanish translation.
 * __UPDATE:__ Make images retina sized in the admin.
 * __UPDATE:__ Re-color admin image and icons to fit with more recent versions of WordPress.
-* __UPDATE:__ Stop using deprecated image_resize() function.
-* __UPDATE:__ Stop using deprecated screen_icon() function.
+* __UPDATE:__ Stop using deprecated `image_resize()` function.
+* __UPDATE:__ Stop using deprecated `screen_icon()` function.
 * __UPDATE:__ Move JavaScript and CSS files to subfolders.
 * __UPDATE:__ Added screenshots for WordPress.org
 * __UPDATE:__ Add husobj as a contributor.
 
 ### 0.8.0
-* __COMPAT:__ Use jQuery.on() instead of jQuery.live(). Props [jamiemchale](http://profiles.wordpress.org/jamiemchale).
+* __COMPAT:__ Use `jQuery.on()` instead of `jQuery.live()`. Props [jamiemchale](https://profiles.wordpress.org/jamiemchale).
 * __UPDATE:__ Pass an empty array as default second parameter of `taxonomy_images_plugin_get_the_terms()` and `taxonomy_images_plugin_list_the_terms()`.
 * __UPDATE:__ Give the button on the custom admin screen a class of `button-primary`.
 * __UPDATE:__ Store the return value of `get_posts()` in a variable called `$images`. Not sure why, but this should not harm anything.
-* __UPDATE:__ Change license to GPLv2 or later for maximum flexibility and compatibility.
+* __UPDATE:__ Change license to `GPLv2 or later` for maximum flexibility and compatibility.
 * __UPDATE:__ Random whitespace fixes.
 * __UPDATE:__ Update Documentation.
 * __UPDATE:__ CSS coding standards.
@@ -268,16 +268,16 @@ Changelog
 ### 0.7.3
 * __BUGFIX:__ Fixed the delete image button on edit-terms.php.
 * __UPDATE:__ Better escaping.
-* __UPDATE:__ Introduced pot file and languages directory.
+* __UPDATE:__ Introduced `.pot` file and languages directory.
 
 ### 0.7.2
-* __UPDATE:__ Return data for fullsize images in archive views. [See this thread](http://wordpress.org/support/topic/image-size-full).
+* __UPDATE:__ Return data for fullsize images in archive views. [See this thread](https://wordpress.org/support/topic/image-size-full).
 
 ### 0.7.1
 * __BUGFIX:__ Remove unused link code which is throwing an error when no taxonomies support images.
 
 ### 0.7
-* __COMPAT:__ No longer breaks display of the [Better Plugin Compatibility Control](http://wordpress.org/extend/plugins/better-plugin-compatibility-control/) plugin.
+* __COMPAT:__ No longer breaks display of the [Better Plugin Compatibility Control](https://wordpress.org/plugins/better-plugin-compatibility-control/) plugin.
 * __UPDATE:__ Created a custom filter interface for plugin and theme integration.
 * __UPDATE:__ Lots of inline documentation added.
 * __UPDATE:__ Added custom notices if plugin is used in an unsupported way.
@@ -298,7 +298,7 @@ Changelog
 * Never released.
 
 ### 0.5
-* __UPDATE:__ Direct link to upload new files from edit-tag.php has been introduced.
+* __UPDATE:__ Direct link to upload new files from `edit-tag.php` has been introduced.
 * __UPDATE:__ Ability to create an image/term association immediately after upload has been introduced.
 * __UPDATE:__ Users can now delete image/term associations.
 * __UPDATE:__ Created standalone javascript files - removed inline scripts.
@@ -307,11 +307,11 @@ Changelog
 * __UPDATE:__ Removed all debug functions.
 
 ### 0.4.4
-* __BUGFIX:__ get_image_html() Now populates the image's alt attribute with appropriate data. Props to [jaygoldman](http://wordpress.org/support/profile/jaygoldman).
+* __BUGFIX:__ `get_image_html()` Now populates the image's `alt` attribute with appropriate data. Props to [jaygoldman](https://wordpress.org/support/profile/jaygoldman).
 
 ### 0.4.3
-* __COMPAT:__ Removed use of deprecated function is_taxonomy() - props to [anointed](http://profiles.wordpress.org/users/anointed).
-* __COMPAT:__ Included a definition for taxonomy_exists() function for backwards compatibility with 2.9 branch. This function is new in WordPress version 3.0.
+* __COMPAT:__ Removed use of deprecated function `is_taxonomy()` - props to [anointed](https://profiles.wordpress.org/users/anointed).
+* __COMPAT:__ Included a definition for `taxonomy_exists()` function for backwards compatibility with 2.9 branch. This function is new in WordPress version 3.0.
 * __UPDATE:__ Support for WordPress 3.0 has been added. Support for all beta versions of 3.0 has been dropped.
 
 ### 0.4.2
@@ -319,20 +319,20 @@ Changelog
 * __UPDATE:__ Support for 2.9 branch has been added again.
 
 ### 0.4.1
-* __UPDATE:__ Added support for dynamic taxonomy hooks for _tag_row().
+* __UPDATE:__ Added support for dynamic taxonomy hooks for `_tag_row()`.
 * __BROKEN:__ Support for 2.9 branch has been temporarily removed.
 
 ### 0.4
-* __BUGFIX:__ get_thumb() now returns the fullsize url if there is no appropriate intermediate image.
+* __BUGFIX:__ `get_thumb()` now returns the fullsize URL if there is no appropriate intermediate image.
 * __UPDATE:__ Added "taxonomy_images_shortcode".
 
 ### 0.3
-* __BUGFIX:__ Deleted the register_deactivation_hook() function - sorry to all 8 who downloaded this plugin so far :)
-* __COMPAT:__ Changed the firing order of every hook untilizing the 'category_rows' method to 15. This allows this plugin to be compatible with [Reveal IDs for WP Admin](http://wordpress.org/extend/plugins/reveal-ids-for-wp-admin-25/). Thanks to [Peter Kahoun](http://profiles.wordpress.org/kahi/)
+* __BUGFIX:__ Deleted the `register_deactivation_hook()` function - sorry to all 8 who downloaded this plugin so far :)
+* __COMPAT:__ Changed the firing order of every hook utilizing the `category_rows` method to 15. This allows this plugin to be compatible with [Reveal IDs for WP Admin](https://wordpress.org/plugins/reveal-ids-for-wp-admin-25/). Thanks to [Peter Kahoun](https://profiles.wordpress.org/kahi/)
 * __COMPAT:__ Added Version check for PHP5.
 * __UPDATE:__ `$settings` and `$locale` are now public properties.
-* __UPDATE:__ Object name changed to $taxonomy_images_plugin.
-* __UPDATE:__ Added argument $term_tax_id to both print_image_html() and get_image_html().
+* __UPDATE:__ Object name changed to `$taxonomy_images_plugin`.
+* __UPDATE:__ Added argument `$term_tax_id` to both `print_image_html()` and `get_image_html()`.
 
 ### 0.2
 * Original Release - Works with WordPress 2.9.1.
