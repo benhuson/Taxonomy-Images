@@ -181,9 +181,9 @@ Development of this plugin is hosted in a public repository on [Github](https://
 
 If you have fallen in love with this plugin and would not be able to sleep without helping out in some way, please see the following list of ways that you can _hook it up!_:
 
-* __Rate it!__ - Use the star tool on the right-hand sidebar of the [plugin homepage](https://wordpress.org/extend/plugins/taxonomy-images/).
+* __Rate it!__ - Use the star tool on the right-hand sidebar of the [plugin homepage](https://wordpress.org/plugins/taxonomy-images/).
 
-* __Let me know if it works__ - Use the _Compatibility_ widget on the [plugin homepage](https://wordpress.org/extend/plugins/taxonomy-images/) to let everyone know that the current version works with your version of WordPress.
+* __Let me know if it works__ - Use the _Compatibility_ widget on the [plugin homepage](https://wordpress.org/plugins/taxonomy-images/) to let everyone know that the current version works with your version of WordPress.
 
 * __Do you Twitter?__ Help promote by using this shortlink: [http://bit.ly/taxonomy-images](http://bit.ly/taxonomy-images)
 
@@ -264,7 +264,7 @@ Complete rewrite. Better everything. Many bug fixes.
 * __BUGFIX:__ Remove unused link code which is throwing an error when no taxonomies support images.
 
 = 0.7 =
-* __COMPAT:__ No longer breaks display of the [Better Plugin Compatibility Control](https://wordpress.org/extend/plugins/better-plugin-compatibility-control/) plugin.
+* __COMPAT:__ No longer breaks display of the [Better Plugin Compatibility Control](https://wordpress.org/plugins/better-plugin-compatibility-control/) plugin.
 * __UPDATE:__ Created a custom filter interface for plugin and theme integration.
 * __UPDATE:__ Lots of inline documentation added.
 * __UPDATE:__ Added custom notices if plugin is used in an unsupported way.
@@ -315,7 +315,7 @@ Complete rewrite. Better everything. Many bug fixes.
 
 = 0.3 =
 * __BUGFIX:__ Deleted the `register_deactivation_hook()` function - sorry to all 8 who downloaded this plugin so far :)
-* __COMPAT:__ Changed the firing order of every hook utilizing the `category_rows` method to 15. This allows this plugin to be compatible with [Reveal IDs for WP Admin](https://wordpress.org/extend/plugins/reveal-ids-for-wp-admin-25/). Thanks to [Peter Kahoun](https://profiles.wordpress.org/kahi/)
+* __COMPAT:__ Changed the firing order of every hook utilizing the `category_rows` method to 15. This allows this plugin to be compatible with [Reveal IDs for WP Admin](https://wordpress.org/plugins/reveal-ids-for-wp-admin-25/). Thanks to [Peter Kahoun](https://profiles.wordpress.org/kahi/)
 * __COMPAT:__ Added Version check for PHP5.
 * __UPDATE:__ `$settings` and `$locale` are now public properties.
 * __UPDATE:__ Object name changed to `$taxonomy_images_plugin`.
