@@ -236,4 +236,4 @@ Complete rewrite. Better everything. Many bug fixes.
 Changelog
 ---------
 
-View a list of all plugin changes in [README.md](https://github.com/benhuson/Taxonomy-Images/blob/master/CHANGELOG.md).
+View a list of all plugin changes in [CHANGELOG.md](https://github.com/benhuson/Taxonomy-Images/blob/master/CHANGELOG.md).
