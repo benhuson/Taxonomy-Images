@@ -123,12 +123,12 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 - Removed all debug functions.
 
-## [0.4.4] - Unreleased
+## 0.4.4 - Unreleased
 
 ### Fixed
 - `get_image_html()` Now populates the image's `alt` attribute with appropriate data. Props to [jaygoldman](https://wordpress.org/support/profile/jaygoldman).
 
-## [0.4.3] - Unreleased
+## 0.4.3 - Unreleased
 
 ### Added
 - Support for WordPress 3.0 has been added.
@@ -140,7 +140,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 - Support for all beta versions of 3.0 has been dropped.
 
-## [0.4.2] - Unreleased
+## 0.4.2 - Unreleased
 
 ### Added
 - Support for 2.9 branch has been added again.
@@ -148,7 +148,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 - Changed button name from "Category" to "Taxonomy".
 
-## [0.4.1] - Unreleased
+## 0.4.1 - Unreleased
 
 ### Added
 - Added support for dynamic taxonomy hooks for `_tag_row()`.
@@ -156,7 +156,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 - Support for 2.9 branch has been temporarily removed.
 
-## [0.4] - Unreleased
+## 0.4 - Unreleased
 
 ### Added
 - Added "taxonomy_images_shortcode".
@@ -164,7 +164,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 - `get_thumb()` now returns the fullsize URL if there is no appropriate intermediate image.
 
-## [0.3] - Unreleased
+## 0.3 - Unreleased
 
 ### Added
 - Added Version check for PHP5.
@@ -178,7 +178,17 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 - Deleted the `register_deactivation_hook()` function - sorry to all 8 who downloaded this plugin so far :)
 
-## [0.2] - Unreleased
+## 0.2 - Unreleased
 
 ### Added
 - Original Release - Works with WordPress 2.9.1.
+
+[Unreleased]: https://github.com/benhuson/Taxonomy-Images/compare/0.9.1...HEAD
+[0.9.1]: https://github.com/benhuson/Taxonomy-Images/compare/0.9...0.9.1
+[0.9]: https://github.com/benhuson/Taxonomy-Images/compare/0.8.0...0.9
+[0.8.0]: https://github.com/benhuson/Taxonomy-Images/compare/0.7.3...0.8.0
+[0.7.3]: https://github.com/benhuson/Taxonomy-Images/compare/0.7.2...0.7.3
+[0.7.2]: https://github.com/benhuson/Taxonomy-Images/compare/0.7.1...0.7.2
+[0.7.1]: https://github.com/benhuson/Taxonomy-Images/compare/0.7...0.7.1
+[0.7]: https://github.com/benhuson/Taxonomy-Images/compare/v0.5...0.7
+[0.5]: https://github.com/benhuson/Taxonomy-Images/tree/v0.5
