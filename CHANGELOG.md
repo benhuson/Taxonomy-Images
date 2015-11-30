@@ -103,7 +103,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Security
 - Security updates.
 
-## [0.6] - Unreleased
+## 0.6 - Unreleased
 
 ### Changed
 -  Completely recoded.
