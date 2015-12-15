@@ -188,7 +188,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - Original Release - Works with WordPress 2.9.1.
 
-[Unreleased]: https://github.com/benhuson/Taxonomy-Images/compare/0.9.1...HEAD
+[Unreleased]: https://github.com/benhuson/Taxonomy-Images/compare/0.9.2...HEAD
+[0.9.2]: https://github.com/benhuson/Taxonomy-Images/compare/0.9.1...0.9.2
 [0.9.1]: https://github.com/benhuson/Taxonomy-Images/compare/0.9...0.9.1
 [0.9]: https://github.com/benhuson/Taxonomy-Images/compare/0.8.0...0.9
 [0.8.0]: https://github.com/benhuson/Taxonomy-Images/compare/0.7.3...0.8.0
