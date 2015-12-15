@@ -221,6 +221,9 @@ Installation
 Upgrade Notice
 --------------
 
+### 0.9.2
+Fix old and new media modal opening simultaneously in some circumstances.
+
 ### 0.9.1
 Fixes media modal not opening on newly created terms.
 

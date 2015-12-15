@@ -4,11 +4,16 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [0.9.2] - 2015-12-15
+
 ### Added
 - Added CHANGELOG.md
 
 ### Changed
 - Documentation: Pedantic corrections. Props [Gary Jones](https://profiles.wordpress.org/garyj)
+
+### Fixed
+- Fix old and new media modal opening simultaneously in some circumstances.
 
 ## [0.9.1] - 2015-11-17
 
