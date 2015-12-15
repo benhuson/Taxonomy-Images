@@ -6,7 +6,7 @@ Plugin URI:           https://github.com/benhuson/Taxonomy-Images
 Description:          Associate images from your media library to categories, tags and custom taxonomies.
 Version:              0.9.1
 Author:               Michael Fields, Ben Huson
-Author URI:           http://wordpress.mfields.org/
+Author URI:           https://github.com/benhuson
 License:              GNU General Public License v2 or later
 License URI:          http://www.gnu.org/licenses/gpl-2.0.html
 
