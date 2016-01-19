@@ -7,7 +7,7 @@ var taxonomy_images_file_frame;
 	$( document ).ready( function() {
 
 		// Store the old id (not sure if this is application when editing a term)
-		TaxonomyImagesMediaModal.wp_media_post_id = wp.media.model.settings.post.id;
+		TaxonomyImagesMediaModal.ttID = 0;
 
 		// When the remove icon is clicked...
 		$( '.wp-list-table, .form-table' ).on( 'click', '.taxonomy-image-control a.remove', function( event ) {
@@ -56,6 +56,7 @@ var taxonomy_images_file_frame;
 
 			button = $( this );
 
+			TaxonomyImagesMediaModal.ttID = $( this ).data( 'tt-id' );
 			TaxonomyImagesMediaModal.attachment_id = $( this ).data( 'attachment-id' );
 			TaxonomyImagesMediaModal.nonce = $( this ).data( 'nonce' );
 
@@ -63,24 +64,21 @@ var taxonomy_images_file_frame;
 			if ( taxonomy_images_file_frame ) {
 
 				// Set the post ID to the term being edited and open
-				wp.media.model.settings.post.id = $( this ).data( 'tt-id' );
-				taxonomy_images_file_frame.uploader.uploader.param( 'post_id', $( this ).data( 'tt-id' ) );
 				taxonomy_images_file_frame.open();
 				return;
 
 			} else {
 
 				// Set the wp.media post id so the uploader grabs the term ID being edited
-				wp.media.model.settings.post.id = $( this ).data( 'tt-id' );
+				TaxonomyImagesMediaModal.ttID = $( this ).data( 'tt-id' );
 
 			}
 
 			// Create the media frame.
 			taxonomy_images_file_frame = wp.media.frames.taxonomy_images_file_frame = wp.media( {
 				title    : TaxonomyImagesMediaModal.uploader_title,
-				button   : {
-					text : TaxonomyImagesMediaModal.uploader_button_text,
-				},
+				button   : { text : TaxonomyImagesMediaModal.uploader_button_text },
+				library  : { type: 'image' },
 				multiple : false
 			} );
 
@@ -101,7 +99,7 @@ var taxonomy_images_file_frame;
 				// We set multiple to false so only get one image from the uploader
 				attachment = taxonomy_images_file_frame.state().get( 'selection' ).first().toJSON();
 
-				var tt_id = wp.media.model.settings.post.id;
+				var tt_id = TaxonomyImagesMediaModal.ttID;
 				var attachment_id = attachment.id;
 
 				// Do something with attachment.id and/or attachment.url here
@@ -113,7 +111,7 @@ var taxonomy_images_file_frame;
 						'action'        : 'taxonomy_image_create_association',
 						'wp_nonce'      : TaxonomyImagesMediaModal.nonce,
 						'attachment_id' : attachment.id,
-						'tt_id'         : parseInt( wp.media.model.settings.post.id )
+						'tt_id'         : parseInt( TaxonomyImagesMediaModal.ttID )
 					},
 					success  : function ( response ) {
 						if ( 'good' === response.status ) {
@@ -147,8 +145,6 @@ var taxonomy_images_file_frame;
 						}
 					}
 				} );
-
-				wp.media.model.settings.post.id = TaxonomyImagesMediaModal.wp_media_post_id;
 
 			} );
 
