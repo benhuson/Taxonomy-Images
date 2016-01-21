@@ -221,6 +221,9 @@ Installation
 Upgrade Notice
 --------------
 
+### 0.9.3
+Fix post permissions error when using media modal.
+
 ### 0.9.2
 Fix old and new media modal opening simultaneously in some circumstances.
 
