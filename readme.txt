@@ -4,7 +4,7 @@ Donate link:          https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted
 Tags:                 taxonomy, tag, category, term, image, upload, media
 Requires at least:    3.4
 Tested up to:         4.4.1
-Stable tag:           0.9.3
+Stable tag:           0.9.4
 License:              GPLv2 or later
 License URI:          http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -208,6 +208,9 @@ The original author of this plugin, Michael Fields, released a handful of plugin
 3. Media Modal
 
 == Upgrade Notice ==
+
+= 0.9.4 =
+Fix for taxonomy names that may contain characters other than lowercase and underscores (e.g. uppercase).
 
 = 0.9.3 =
 Fix post permissions error when using media modal.
