@@ -459,7 +459,7 @@ function taxonomy_image_plugin_get_term_info( $tt_id ) {
 	}
 
 	if ( isset( $data[0]->taxonomy ) ) {
-		$cache[ $tt_id ]['taxonomy'] = sanitize_title_with_dashes( $data[0]->taxonomy );
+		$cache[ $tt_id ]['taxonomy'] = $data[0]->taxonomy;
 	}
 
 	if ( isset( $cache[ $tt_id ] ) ) {
