@@ -907,7 +907,8 @@ function taxonomy_image_plugin_css_admin() {
 		'screen'
 	);
 }
-add_action( 'admin_print_styles-edit-tags.php', 'taxonomy_image_plugin_css_admin' );
+add_action( 'admin_print_styles-edit-tags.php', 'taxonomy_image_plugin_css_admin' );  // Pre WordPress 4.5
+add_action( 'admin_print_styles-term.php', 'taxonomy_image_plugin_css_admin' );       // WordPress 4.5+
 add_action( 'admin_print_styles-media-upload-popup', 'taxonomy_image_plugin_css_admin' );
 
 
