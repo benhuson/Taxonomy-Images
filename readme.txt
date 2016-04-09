@@ -3,8 +3,8 @@ Contributors:         mfields, husobj, jamiemchale
 Donate link:          https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=QSYTTQZBRKQVE
 Tags:                 taxonomy, tag, category, term, image, upload, media
 Requires at least:    3.4
-Tested up to:         4.4.1
-Stable tag:           0.9.4
+Tested up to:         4.5
+Stable tag:           0.9.5
 License:              GPLv2 or later
 License URI:          http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -209,6 +209,9 @@ The original author of this plugin, Michael Fields, released a handful of plugin
 
 == Upgrade Notice ==
 
+= 0.9.5 =
+Fix loading of admin stylesheet when editing terms in WordPress 4.5
+
 = 0.9.4 =
 Fix for taxonomy names that may contain characters other than lowercase and underscores (e.g. uppercase).
 
@@ -231,6 +234,12 @@ Major and minor bug fixes tested with WordPress 3.6.
 Complete rewrite. Better everything. Many bug fixes.
 
 == Changelog ==
+
+= 0.9.5 =
+* __BUGFIX:__ Fix loading of admin stylesheet when editing terms in WordPress 4.5
+
+= 0.9.4 =
+* __BUGFIX:__ Fix for taxonomy names that may contain characters other than lowercase and underscores (e.g. uppercase).
 
 = 0.9.3 =
 * __BUGFIX:__ Fix post permissions error when using media modal.

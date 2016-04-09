@@ -221,6 +221,9 @@ Installation
 Upgrade Notice
 --------------
 
+### 0.9.5
+Fix loading of admin stylesheet when editing terms in WordPress 4.5
+
 ### 0.9.4
 Fix for taxonomy names that may contain characters other than lowercase and underscores (e.g. uppercase).
 
