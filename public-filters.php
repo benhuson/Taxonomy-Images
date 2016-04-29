@@ -90,7 +90,7 @@ function taxonomy_images_plugin_get_terms( $default, $args = array() ) {
 	}
 
 	$assoc = taxonomy_image_plugin_get_associations();
-	if ( empty( $assoc ) ) {
+	if ( ! empty( $args['having_images'] ) && empty( $assoc ) ) {
 		return array();
 	}
 
