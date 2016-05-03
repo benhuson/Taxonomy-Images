@@ -221,6 +221,9 @@ Installation
 Upgrade Notice
 --------------
 
+### 0.9.6
+Fixed issue where if no terms have images but 'having_images' is false, nothing would be returned (props Matt).
+
 ### 0.9.5
 Fix loading of admin stylesheet when editing terms in WordPress 4.5
 
