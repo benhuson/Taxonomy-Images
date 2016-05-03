@@ -4,7 +4,7 @@ Donate link:          https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted
 Tags:                 taxonomy, tag, category, term, image, upload, media
 Requires at least:    3.4
 Tested up to:         4.5
-Stable tag:           0.9.5
+Stable tag:           0.9.6
 License:              GPLv2 or later
 License URI:          http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -209,6 +209,9 @@ The original author of this plugin, Michael Fields, released a handful of plugin
 
 == Upgrade Notice ==
 
+= 0.9.6 =
+Fixed issue where if no terms have images but 'having_images' is false, nothing would be returned (props Matt).
+
 = 0.9.5 =
 Fix loading of admin stylesheet when editing terms in WordPress 4.5
 
@@ -234,6 +237,9 @@ Major and minor bug fixes tested with WordPress 3.6.
 Complete rewrite. Better everything. Many bug fixes.
 
 == Changelog ==
+
+= 0.9.6 =
+* __BUGFIX:__ Fix issue where if no terms have images but 'having_images' is false, nothing would be returned (props Matt).
 
 = 0.9.5 =
 * __BUGFIX:__ Fix loading of admin stylesheet when editing terms in WordPress 4.5
