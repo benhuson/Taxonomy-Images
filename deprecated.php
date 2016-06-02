@@ -95,9 +95,11 @@ class taxonomy_images_plugin {
 				return false;
 			}
 		}
-		$term_tax_id = (int) $term_tax_id;
-		if ( isset( $this->settings[ $term_tax_id ] ) ) {
-			$attachment_id = (int) $this->settings[ $term_tax_id ];
+
+		$t = new Taxonomy_Images_Term_Legacy( $term_tax_id );
+
+		if ( $t->get_image_id() > 0 ) {
+			$attachment_id = $t->get_image_id();
 			$alt           = get_post_meta( $attachment_id, '_wp_attachment_image_alt', true );
 			$attachment    = get_post( $attachment_id );
 			/* Just in case an attachment was deleted, but there is still a record for it in this plugins settings. */
