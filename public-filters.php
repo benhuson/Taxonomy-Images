@@ -102,17 +102,18 @@ function taxonomy_images_plugin_get_terms( $default, $args = array() ) {
 	$image_ids = array();
 	$terms_with_images = array();
 	foreach ( (array) $terms as $key => $term ) {
-		$terms[ $key ]->image_id = 0;
 
 		$t = new Taxonomy_Images_Term_Legacy( $term->term_taxonomy_id );
 
+		$terms[ $key ]->image_id = $t->get_image_id();
+
 		if ( $t->get_image_id() > 0 ) {
-			$terms[ $key ]->image_id = $t->get_image_id();
 			$image_ids[] = $t->get_image_id();
 			if ( ! empty( $args['having_images'] ) ) {
 				$terms_with_images[] = $terms[ $key ];
 			}
 		}
+
 	}
 	$image_ids = array_unique( $image_ids );
 
@@ -194,16 +195,17 @@ function taxonomy_images_plugin_get_the_terms( $default, $args = array() ) {
 
 	$terms_with_images = array();
 	foreach ( (array) $terms as $key => $term ) {
-		$terms[ $key ]->image_id = 0;
 
 		$t = new Taxonomy_Images_Term_Legacy( $term->term_taxonomy_id );
 
+		$terms[ $key ]->image_id = $t->get_image_id();
+
 		if ( $t->get_image_id() > 0 ) {
-			$terms[ $key ]->image_id = $t->get_image_id();
 			if ( ! empty( $args['having_images'] ) ) {
 				$terms_with_images[] = $terms[ $key ];
 			}
 		}
+
 	}
 	if ( ! empty( $terms_with_images ) ) {
 		return $terms_with_images;

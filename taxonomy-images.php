@@ -558,9 +558,8 @@ function taxonomy_image_plugin_create_association() {
 	}
 
 	$term = new Taxonomy_Images_Term_Legacy( $tt_id );
-	$success = $term->update_image_id( $image_id );
 
-	if ( $success ) {
+	if ( $term->update_image_id( $image_id ) ) {
 		taxonomy_image_plugin_json_response( array(
 			'status' => 'good',
 			'why'    => esc_html__( 'Image successfully associated', 'taxonomy-images' ),
@@ -626,7 +625,6 @@ function taxonomy_image_plugin_remove_association() {
 
 	$term = new Taxonomy_Images_Term_Legacy( $tt_id );
 
-	$assoc = taxonomy_image_plugin_get_associations();
 	if ( 0 == $term->get_image_id() ) {
 		taxonomy_image_plugin_json_response( array(
 			'status' => 'good',
@@ -634,9 +632,7 @@ function taxonomy_image_plugin_remove_association() {
 		) );
 	}
 
-	$success = $term->delete_image_id();
-
-	if ( $success ) {
+	if ( $term->delete_image_id() ) {
 		taxonomy_image_plugin_json_response( array(
 			'status' => 'good',
 			'why'    => esc_html__( 'Association successfully removed', 'taxonomy-images' )
@@ -801,6 +797,7 @@ function taxonomy_image_plugin_control_image( $term_id, $taxonomy ) {
 
 	$t = new Taxonomy_Images_Term_Legacy( $tt_id );
 	$attachment_id = $t->get_image_id();
+
 	$hide = $attachment_id > 0 ? '' : ' hide';
 
 	$img = taxonomy_image_plugin_get_image_src( $attachment_id );
@@ -1064,15 +1061,19 @@ function taxonomy_image_plugin_cache_images( $posts ) {
 
 	$image_ids = array();
 	foreach ( $tt_ids as $tt_id ) {
-		if ( ! isset( $assoc[ $tt_id ] ) ) {
+
+		$t = new Taxonomy_Images_Term_Legacy( $tt_id );
+
+		if ( 0 == $t->get_image_id() ) {
 			continue;
 		}
 
-		if ( in_array( $assoc[ $tt_id ], $image_ids ) ) {
+		if ( in_array( $t->get_image_id(), $image_ids ) ) {
 			continue;
 		}
 
-		$image_ids[] = $assoc[ $tt_id ];
+		$image_ids[] = $t->get_image_id();
+
 	}
 
 	if ( empty( $image_ids ) ) {
