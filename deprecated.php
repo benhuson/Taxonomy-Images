@@ -25,7 +25,6 @@ function taxonomy_images_plugin_shortcode_deprecated( $atts = array() ) {
 	}
 
 	$terms = get_terms( $taxonomy );
-	$associations = taxonomy_image_plugin_get_associations( $refresh = false );
 
 	if ( ! is_wp_error( $terms ) ) {
 		foreach( (array) $terms as $term ) {
@@ -35,8 +34,11 @@ function taxonomy_images_plugin_shortcode_deprecated( $atts = array() ) {
 			$description = apply_filters( 'the_content', $term->description );
 
 			$img = '';
-			if ( array_key_exists( $term->term_taxonomy_id, $associations ) ) {
-				$img = wp_get_attachment_image( $associations[ $term->term_taxonomy_id ], 'detail', false );
+
+			$t = new Taxonomy_Images_Term_Legacy( $term->term_taxonomy_id );
+
+			if ( $t->get_image_id() > 0 ) {
+				$img = wp_get_attachment_image( $t->get_image_id(), 'detail', false );
 			}
 
 			if ( 'grid' == $template ) {

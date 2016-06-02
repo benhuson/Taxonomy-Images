@@ -103,9 +103,12 @@ function taxonomy_images_plugin_get_terms( $default, $args = array() ) {
 	$terms_with_images = array();
 	foreach ( (array) $terms as $key => $term ) {
 		$terms[ $key ]->image_id = 0;
-		if ( array_key_exists( $term->term_taxonomy_id, $assoc ) ) {
-			$terms[ $key ]->image_id = $assoc[ $term->term_taxonomy_id ];
-			$image_ids[] = $assoc[ $term->term_taxonomy_id ];
+
+		$t = new Taxonomy_Images_Term_Legacy( $term->term_taxonomy_id );
+
+		if ( $t->get_image_id() > 0 ) {
+			$terms[ $key ]->image_id = $t->get_image_id();
+			$image_ids[] = $t->get_image_id();
 			if ( ! empty( $args['having_images'] ) ) {
 				$terms_with_images[] = $terms[ $key ];
 			}
@@ -175,8 +178,6 @@ function taxonomy_images_plugin_get_the_terms( $default, $args = array() ) {
 		return array();
 	}
 
-	$assoc = taxonomy_image_plugin_get_associations();
-
 	if ( empty( $args['post_id'] ) ) {
 		$args['post_id'] = get_the_ID();
 	}
@@ -194,8 +195,11 @@ function taxonomy_images_plugin_get_the_terms( $default, $args = array() ) {
 	$terms_with_images = array();
 	foreach ( (array) $terms as $key => $term ) {
 		$terms[ $key ]->image_id = 0;
-		if ( array_key_exists( $term->term_taxonomy_id, $assoc ) ) {
-			$terms[ $key ]->image_id = $assoc[ $term->term_taxonomy_id ];
+
+		$t = new Taxonomy_Images_Term_Legacy( $term->term_taxonomy_id );
+
+		if ( $t->get_image_id() > 0 ) {
+			$terms[ $key ]->image_id = $t->get_image_id();
 			if ( ! empty( $args['having_images'] ) ) {
 				$terms_with_images[] = $terms[ $key ];
 			}
@@ -395,15 +399,10 @@ function taxonomy_images_plugin_get_queried_term_image_id( $default ) {
 		return 0;
 	}
 
-	$associations = taxonomy_image_plugin_get_associations();
-	$tt_id = absint( $obj->term_taxonomy_id );
+	$t = new Taxonomy_Images_Term_Legacy( $obj->term_taxonomy_id );
 
-	$ID = 0;
-	if ( array_key_exists( $tt_id, $associations ) ) {
-		$ID = absint( $associations[$tt_id] );
-	}
+	return $t->get_image_id();
 
-	return $ID;
 }
 
 

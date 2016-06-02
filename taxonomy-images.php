@@ -209,9 +209,10 @@ function taxonomy_image_plugin_get_image_src( $id ) {
 	 */
 	if ( is_admin() ) {
 		$assoc = taxonomy_image_plugin_get_associations();
-		foreach ( $assoc as $term => $img ) {
-			if ( $img === $id ) {
-				unset( $assoc[ $term ] );
+		foreach ( $assoc as $ttid => $img ) {
+			$term = new Taxonomy_Images_Term_Legacy( $ttid );
+			if ( $term->get_image_id() === $id ) {
+				$term->delete_image_id();
 			}
 		}
 		update_option( 'taxonomy_image_plugin', $assoc );
@@ -556,9 +557,10 @@ function taxonomy_image_plugin_create_association() {
 		) );
 	}
 
-	$assoc = taxonomy_image_plugin_get_associations();
-	$assoc[ $tt_id ] = $image_id;
-	if ( update_option( 'taxonomy_image_plugin', taxonomy_image_plugin_sanitize_associations( $assoc ) ) ) {
+	$term = new Taxonomy_Images_Term_Legacy( $tt_id );
+	$success = $term->update_image_id( $image_id );
+
+	if ( $success ) {
 		taxonomy_image_plugin_json_response( array(
 			'status' => 'good',
 			'why'    => esc_html__( 'Image successfully associated', 'taxonomy-images' ),
@@ -622,17 +624,19 @@ function taxonomy_image_plugin_remove_association() {
 		) );
 	}
 
+	$term = new Taxonomy_Images_Term_Legacy( $tt_id );
+
 	$assoc = taxonomy_image_plugin_get_associations();
-	if ( ! isset( $assoc[ $tt_id ] ) ) {
+	if ( 0 == $term->get_image_id() ) {
 		taxonomy_image_plugin_json_response( array(
 			'status' => 'good',
 			'why'    => esc_html__( 'Nothing to remove', 'taxonomy-images' )
 		) );
 	}
 
-	unset( $assoc[ $tt_id ] );
+	$success = $term->delete_image_id();
 
-	if ( update_option( 'taxonomy_image_plugin', $assoc ) ) {
+	if ( $success ) {
 		taxonomy_image_plugin_json_response( array(
 			'status' => 'good',
 			'why'    => esc_html__( 'Association successfully removed', 'taxonomy-images' )
@@ -795,13 +799,9 @@ function taxonomy_image_plugin_control_image( $term_id, $taxonomy ) {
 		$name = strtolower( $taxonomy->labels->singular_name );
 	}
 
-	$hide = ' hide';
-	$attachment_id = 0;
-	$associations = taxonomy_image_plugin_get_associations();
-	if ( isset( $associations[ $tt_id ] ) ) {
-		$attachment_id = (int) $associations[ $tt_id ];
-		$hide = '';
-	}
+	$t = new Taxonomy_Images_Term_Legacy( $tt_id );
+	$attachment_id = $t->get_image_id();
+	$hide = $attachment_id > 0 ? '' : ' hide';
 
 	$img = taxonomy_image_plugin_get_image_src( $attachment_id );
 
