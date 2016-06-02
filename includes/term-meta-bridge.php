@@ -70,9 +70,7 @@ class Taxonomy_Images_Term_Meta_Bridge {
 
 		if ( $this->term_meta_supported() && $this->get_meta_key() == $meta_key ) {
 
-			$term = get_term( $object_id );
-
-			$term_legacy = new Taxonomy_Images_Term_Legacy( $term->term_taxonomy_id );
+			$term_legacy = new Taxonomy_Images_Term_Legacy( $this->get_term_taxonomy_id( $object_id ) );
 			$value = $term_legacy->get_image_id();
 
 			if ( ! $single ) {
@@ -96,6 +94,24 @@ class Taxonomy_Images_Term_Meta_Bridge {
 	 * @param   string  $_meta_value  Meta value.
 	 */
 	public function updated_legacy_term_metadata( $meta_id, $object_id, $meta_key, $_meta_value ) {
+	}
+
+	/**
+	 * Get Term Taxonomy ID
+	 *
+	 * @param   int  $term_id  Term ID.
+	 * @return  int            Term Taxonomy ID.
+	 */
+	private function get_term_taxonomy_id( $term_id ) {
+
+		$term = get_term( $term_id );
+
+		if ( $term && ! is_wp_error( $term ) ) {
+			return absint( $term->term_taxonomy_id );
+		}
+
+		return 0;
+
 	}
 
 	/**
