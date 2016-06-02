@@ -215,8 +215,9 @@ function taxonomy_image_plugin_get_image_src( $id ) {
 				$term->delete_image_id();
 			}
 		}
-		update_option( 'taxonomy_image_plugin', $assoc );
+
 		return taxonomy_image_plugin_url( 'default.png' );
+
 	}
 
 	/*
