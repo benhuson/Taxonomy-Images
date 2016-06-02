@@ -20,9 +20,38 @@ class Taxonomy_Images_Term_Meta_Bridge {
 	 */
 	public function __construct() {
 
-		// Hook into term meta function to reference legacy data
+		// Hook into term meta functions to reference legacy data
+		add_action( 'added_term_meta', array( $this, 'added_legacy_term_metadata' ), 10, 4 );
+		add_action( 'deleted_term_meta', array( $this, 'deleted_legacy_term_metadata' ), 10, 4 );
 		add_filter( 'get_term_metadata', array( $this, 'get_legacy_term_metadata' ), 10, 4 );
+		add_action( 'updated_term_meta', array( $this, 'updated_legacy_term_metadata' ), 10, 4 );
 
+	}
+
+	/**
+	 * Added Legacy Term Metadata
+	 *
+	 * @internal  This method is called via the `added_term_meta` filter and should not be called directly.
+	 *
+	 * @param  int     $mid          Meta ID.
+	 * @param  int     $object_id    Object ID.
+	 * @param  string  $meta_key     Meta key.
+	 * @param  string  $_meta_value  Meta value.
+	 */
+	public function added_legacy_term_metadata( $mid, $object_id, $meta_key, $_meta_value ) {
+	}
+
+	/**
+	 * Deleted Legacy Term Metadata
+	 *
+	 * @internal  This method is called via the `deleted_term_meta` filter and should not be called directly.
+	 *
+	 * @param  array   $meta_ids     Meta IDs.
+	 * @param  int     $object_id    Object ID.
+	 * @param  string  $meta_key     Meta key.
+	 * @param  string  $_meta_value  Meta value.
+	 */
+	public function deleted_legacy_term_metadata( $meta_ids, $object_id, $meta_key, $_meta_value ) {
 	}
 
 	/**
@@ -54,6 +83,19 @@ class Taxonomy_Images_Term_Meta_Bridge {
 
 		return $value;
 
+	}
+
+	/**
+	 * Updated Legacy Term Metadata
+	 *
+	 * @internal  This method is called via the `updated_term_meta` filter and should not be called directly.
+	 *
+	 * @param   int     $meta_id      Meta ID.
+	 * @param   int     $object_id    Object ID.
+	 * @param   string  $meta_key     Meta key.
+	 * @param   string  $_meta_value  Meta value.
+	 */
+	public function updated_legacy_term_metadata( $meta_id, $object_id, $meta_key, $_meta_value ) {
 	}
 
 	/**
