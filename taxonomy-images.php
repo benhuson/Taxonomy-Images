@@ -784,17 +784,14 @@ function taxonomy_image_plugin_control_image( $term_id, $taxonomy ) {
 
 	$term = get_term( $term_id, $taxonomy );
 
-	$tt_id = 0;
-	if ( isset( $term->term_taxonomy_id ) ) {
-		$tt_id = (int) $term->term_taxonomy_id;
-	}
-
 	$taxonomy = get_taxonomy( $taxonomy );
 
 	$name = esc_html__( 'term', 'taxonomy-images' );
 	if ( isset( $taxonomy->labels->singular_name ) ) {
 		$name = strtolower( $taxonomy->labels->singular_name );
 	}
+
+	$tt_id = isset( $term->term_taxonomy_id ) ? absint( $term->term_taxonomy_id ) : 0;
 
 	$t = new Taxonomy_Images_Term_Legacy( $tt_id );
 	$attachment_id = $t->get_image_id();
