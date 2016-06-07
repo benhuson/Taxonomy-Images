@@ -30,7 +30,9 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 require_once( trailingslashit( dirname( __FILE__ ) ) . 'deprecated.php' );
 require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/term.php' );
 require_once( trailingslashit( dirname( __FILE__ ) ) . 'public-filters.php' );
+require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/term-meta-bridge.php' );
 
+new Taxonomy_Images_Term_Meta_Bridge();
 
 /**
  * Version Number.
