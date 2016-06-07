@@ -165,13 +165,19 @@ class Taxonomy_Images_Term_Meta_Bridge {
 	 *
 	 * Check that the version of WordPress supports term meta.
 	 *
+	 * The `taxonomy-images-term-meta-supported` filter can be used
+	 * to activate support if term meta functions and filters are defined
+	 * via a plugin or custom functionality prior to WordPress 4.4.
+	 *
 	 * @see  WordPress get_term_meta() function.
 	 *
 	 * @return  bool
 	 */
 	private function term_meta_supported() {
 
-		return get_option( 'db_version' ) > 34370 && function_exists( 'get_term_meta' );
+		$supported_version = get_option( 'db_version' ) > 34370;
+
+		return function_exists( 'get_term_meta' ) && apply_filters( 'taxonomy-images-term-meta-supported', $supported_version );
 
 	}
 
