@@ -40,7 +40,7 @@ class Taxonomy_Images_Term_Meta_Bridge {
 	 */
 	public function added_legacy_term_metadata( $mid, $object_id, $meta_key, $meta_value ) {
 
-		if ( $this->term_meta_supported() && $this->get_meta_key() == $meta_key ) {
+		if ( $this->term_meta_supported() && $this->is_meta_key( $meta_key ) ) {
 
 			$term_legacy = new Taxonomy_Images_Term_Legacy( $this->get_term_taxonomy_id( $object_id ) );
 			$term_legacy->add_image_id( $meta_value );
@@ -61,7 +61,7 @@ class Taxonomy_Images_Term_Meta_Bridge {
 	 */
 	public function deleted_legacy_term_metadata( $meta_ids, $object_id, $meta_key, $meta_value ) {
 
-		if ( $this->term_meta_supported() && $this->get_meta_key() == $meta_key ) {
+		if ( $this->term_meta_supported() && $this->is_meta_key( $meta_key ) ) {
 
 			$term_legacy = new Taxonomy_Images_Term_Legacy( $this->get_term_taxonomy_id( $object_id ) );
 			$term_legacy->delete_image_id();
@@ -84,7 +84,7 @@ class Taxonomy_Images_Term_Meta_Bridge {
 	 */
 	public function get_legacy_term_metadata( $value, $object_id, $meta_key, $single ) {
 
-		if ( $this->term_meta_supported() && $this->get_meta_key() == $meta_key ) {
+		if ( $this->term_meta_supported() && $this->is_meta_key( $meta_key ) ) {
 
 			$term_legacy = new Taxonomy_Images_Term_Legacy( $this->get_term_taxonomy_id( $object_id ) );
 			$value = $term_legacy->get_image_id();
@@ -111,7 +111,7 @@ class Taxonomy_Images_Term_Meta_Bridge {
 	 */
 	public function updated_legacy_term_metadata( $meta_id, $object_id, $meta_key, $meta_value ) {
 
-		if ( $this->term_meta_supported() && $this->get_meta_key() == $meta_key ) {
+		if ( $this->term_meta_supported() && $this->is_meta_key( $meta_key ) ) {
 
 			$term_legacy = new Taxonomy_Images_Term_Legacy( $this->get_term_taxonomy_id( $object_id ) );
 			$term_legacy->update_image_id( $meta_value );
@@ -135,6 +135,17 @@ class Taxonomy_Images_Term_Meta_Bridge {
 		}
 
 		return 0;
+
+	}
+
+	/**
+	 * Is Meta Key?
+	 *
+	 * @return  boolean
+	 */
+	private function is_meta_key( $key ) {
+
+		return $this->get_meta_key() == $key;
 
 	}
 
