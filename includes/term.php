@@ -41,6 +41,11 @@ class Taxonomy_Images_Term_Legacy {
 	 */
 	public function get_image_id() {
 
+		// Check if valid term
+		if ( ! $this->has_valid_ttid() ) {
+			return 0;
+		}
+
 		$assoc = $this->get_data();
 
 		if ( isset( $assoc[ $this->get_ttid() ] ) ) {
@@ -58,6 +63,11 @@ class Taxonomy_Images_Term_Legacy {
 	 * @return  boolean
 	 */
 	public function add_image_id( $id ) {
+
+		// Check if valid term
+		if ( ! $this->has_valid_ttid() ) {
+			return false;
+		}
 
 		$id = $this->sanitize_image_id( $id );
 
@@ -87,6 +97,11 @@ class Taxonomy_Images_Term_Legacy {
 	 */
 	public function update_image_id( $id ) {
 
+		// Check if valid term
+		if ( ! $this->has_valid_ttid() ) {
+			return false;
+		}
+
 		$id = $this->sanitize_image_id( $id );
 
 		if ( $id > 0 ) {
@@ -111,6 +126,11 @@ class Taxonomy_Images_Term_Legacy {
 	 */
 	public function delete_image_id() {
 
+		// Check if valid term
+		if ( ! $this->has_valid_ttid() ) {
+			return false;
+		}
+
 		$assoc = $this->get_data();
 
 		if ( isset( $assoc[ $this->get_ttid() ] ) ) {
@@ -130,6 +150,17 @@ class Taxonomy_Images_Term_Legacy {
 	private function get_ttid() {
 
 		return $this->ttid;
+
+	}
+
+	/**
+	 * Has Valid Term Taxonomy ID
+	 *
+	 * @return  boolean
+	 */
+	private function has_valid_ttid() {
+
+		return $this->get_ttid() > 0;
 
 	}
 
