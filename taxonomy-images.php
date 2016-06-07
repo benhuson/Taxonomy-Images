@@ -32,6 +32,8 @@ require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/term.php' );
 require_once( trailingslashit( dirname( __FILE__ ) ) . 'public-filters.php' );
 require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/term-meta-bridge.php' );
 
+new Taxonomy_Images_Term_Meta_Bridge();
+
 /**
  * Version Number.
  *

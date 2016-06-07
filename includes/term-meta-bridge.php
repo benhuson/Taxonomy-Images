@@ -141,5 +141,3 @@ class Taxonomy_Images_Term_Meta_Bridge {
 	}
 
 }
-
-new Taxonomy_Images_Term_Meta_Bridge();
