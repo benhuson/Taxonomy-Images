@@ -156,7 +156,7 @@ class Taxonomy_Images_Term_Meta_Bridge {
 	 */
 	private function get_meta_key() {
 
-		return '_taxonomy_image_id';
+		return 'taxonomy_image_id';
 
 	}
 
