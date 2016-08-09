@@ -100,7 +100,7 @@ class Taxonomy_Images_Term {
 		}
 
 		// Legacy term object
-		if ( is_object( $term ) && isset( $term->term_id ) && isset( $term->taxonomy ) ) {
+		if ( is_object( $term ) && isset( $term->term_id ) && isset( $term->taxonomy ) && isset( $term->term_taxonomy_id ) ) {
 			return true;
 		}
 
