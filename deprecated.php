@@ -25,7 +25,6 @@ function taxonomy_images_plugin_shortcode_deprecated( $atts = array() ) {
 	}
 
 	$terms = get_terms( $taxonomy );
-	$associations = taxonomy_image_plugin_get_associations( $refresh = false );
 
 	if ( ! is_wp_error( $terms ) ) {
 		foreach( (array) $terms as $term ) {
@@ -34,10 +33,10 @@ function taxonomy_images_plugin_shortcode_deprecated( $atts = array() ) {
 			$title_attr  = esc_attr( $term->name . ' (' . $term->count . ')' );
 			$description = apply_filters( 'the_content', $term->description );
 
-			$img = '';
-			if ( array_key_exists( $term->term_taxonomy_id, $associations ) ) {
-				$img = wp_get_attachment_image( $associations[ $term->term_taxonomy_id ], 'detail', false );
-			}
+			$t = new Taxonomy_Images_Term( $term );
+			$img_id = $t->get_image_id();
+
+			$img = $img_id ? wp_get_attachment_image( $img_id, 'detail', false ) : '';
 
 			if ( 'grid' == $template ) {
 				$o .= "\n\t" . '<div class="taxonomy_image_plugin-' . $template . '">';
@@ -88,14 +87,19 @@ class taxonomy_images_plugin {
 			global $wp_query;
 			$obj = $wp_query->get_queried_object();
 			if ( isset( $obj->term_taxonomy_id ) ) {
-				$term_tax_id = $obj->term_taxonomy_id;
+				$t = new Taxonomy_Images_Term( $obj );
 			} else {
 				return false;
 			}
+		} else {
+
+			$t = new Taxonomy_Images_Term( $term_tax_id, true );
+
 		}
-		$term_tax_id = (int) $term_tax_id;
-		if ( isset( $this->settings[ $term_tax_id ] ) ) {
-			$attachment_id = (int) $this->settings[ $term_tax_id ];
+
+		$attachment_id = $t->get_image_id();
+
+		if ( $attachment_id ) {
 			$alt           = get_post_meta( $attachment_id, '_wp_attachment_image_alt', true );
 			$attachment    = get_post( $attachment_id );
 			/* Just in case an attachment was deleted, but there is still a record for it in this plugins settings. */
