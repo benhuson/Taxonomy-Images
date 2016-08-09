@@ -78,10 +78,7 @@ class Taxonomy_Images_Term {
 			} else {
 
 				$this->term_id = $term;
-
-				if ( $taxonomy ) {
-					$this->taxonomy = $taxonomy;
-				}
+				$this->taxonomy = ! empty( $taxonomy ) ? $taxonomy : '';
 
 			}
 
