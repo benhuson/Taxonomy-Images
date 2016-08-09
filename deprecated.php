@@ -87,14 +87,16 @@ class taxonomy_images_plugin {
 			global $wp_query;
 			$obj = $wp_query->get_queried_object();
 			if ( isset( $obj->term_taxonomy_id ) ) {
-				$term_tax_id = $obj->term_taxonomy_id;
+				$t = new Taxonomy_Images_Term( $obj );
 			} else {
 				return false;
 			}
-		}
-		$term_tax_id = (int) $term_tax_id;
+		} else {
 
-		$t = new Taxonomy_Images_Term( $term_tax_id, true );
+			$t = new Taxonomy_Images_Term( $term_tax_id, true );
+
+		}
+
 		$attachment_id = $t->get_image_id();
 
 		if ( $attachment_id ) {
