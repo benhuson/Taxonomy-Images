@@ -53,7 +53,9 @@ class Taxonomy_Images_Term {
 	/**
 	 * Construct Term Instance
 	 *
-	 * Store term identifiers.
+	 * Store term identifiers. If only limited identifiers are set
+	 * i.e. only term taxonomy ID - then gaps will be filled as requested
+	 * by class methods to help with caching.
 	 *
 	 * @param  int|WP_Term     $term      Term object, term ID, or term taxonomy ID if $taxonomy is true.
 	 * @param  boolean|string  $taxonomy  Optional. Taxonomy of true if first $term parameter is a tt_id.
@@ -62,6 +64,7 @@ class Taxonomy_Images_Term {
 
 		if ( $this->is_term_object( $term ) ) {
 
+			// Set term object vars
 			$this->term = $term;
 			$this->term_id = $term->term_id;
 			$this->taxonomy = $term->taxonomy;
@@ -73,10 +76,12 @@ class Taxonomy_Images_Term {
 
 			if ( true === $taxonomy ) {
 
+				// Set term taxonomy ID
 				$this->tt_id = $term;
 
 			} else {
 
+				// Set term ID and taxonomy
 				$this->term_id = $term;
 				$this->taxonomy = ! empty( $taxonomy ) ? $taxonomy : '';
 
@@ -111,6 +116,9 @@ class Taxonomy_Images_Term {
 	/**
 	 * Get Taxonomy
 	 *
+	 * If taxonomy is not stored it will be fetched
+	 * via the get_terms() method.
+	 *
 	 * @return  string  Taxonomy
 	 */
 	public function get_taxonomy() {
@@ -128,6 +136,9 @@ class Taxonomy_Images_Term {
 	/**
 	 * Get Term Taxonomy ID
 	 *
+	 * If term taxonomy ID is not stored it will
+	 * be fetched via the get_terms() method.
+	 *
 	 * @return  int  Term Taxonomy ID.
 	 */
 	public function get_tt_id() {
@@ -143,22 +154,29 @@ class Taxonomy_Images_Term {
 	/**
 	 * Get Term
 	 *
+	 * If term object is not stored it will be fetched via
+	 * the term ID if available, otherwise falling back to fetching
+	 * manually from the database via the term taxonomy ID.
+	 *
 	 * @return  WP_Term  Term object.
 	 */
 	public function get_term() {
 
 		global $wpdb;
 
+		// Get term
 		if ( ! is_null( $this->term ) ) {
 			return $this->term;
 		}
 
+		// Get term via term ID
 		if ( ! is_null( $this->term_id ) ) {
 			$this->term = get_term( $this->term_id, $this->taxonomy );
 			$this->tt_id = $this->term->term_taxonomy_id;
 			return $this->term;
 		}
 
+		// Get term via term taxonomy ID
 		if ( ! is_null( $this->tt_id ) ) {
 
 			if ( isset( self::$cache[ $data->term_id ] ) ) {
