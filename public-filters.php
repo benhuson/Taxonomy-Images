@@ -103,13 +103,18 @@ function taxonomy_images_plugin_get_terms( $default, $args = array() ) {
 	$terms_with_images = array();
 	foreach ( (array) $terms as $key => $term ) {
 		$terms[ $key ]->image_id = 0;
-		if ( array_key_exists( $term->term_taxonomy_id, $assoc ) ) {
-			$terms[ $key ]->image_id = $assoc[ $term->term_taxonomy_id ];
-			$image_ids[] = $assoc[ $term->term_taxonomy_id ];
+
+		$t = new Taxonomy_Images_Term( $term );
+		$img = $t->get_image_id();
+
+		if ( $img ) {
+			$terms[ $key ]->image_id = $img;
+			$image_ids[] = $img;
 			if ( ! empty( $args['having_images'] ) ) {
 				$terms_with_images[] = $terms[ $key ];
 			}
 		}
+
 	}
 	$image_ids = array_unique( $image_ids );
 
@@ -194,8 +199,12 @@ function taxonomy_images_plugin_get_the_terms( $default, $args = array() ) {
 	$terms_with_images = array();
 	foreach ( (array) $terms as $key => $term ) {
 		$terms[ $key ]->image_id = 0;
-		if ( array_key_exists( $term->term_taxonomy_id, $assoc ) ) {
-			$terms[ $key ]->image_id = $assoc[ $term->term_taxonomy_id ];
+
+		$t = new Taxonomy_Images_Term( $term );
+		$img = $t->get_image_id();
+
+		if ( $img ) {
+			$terms[ $key ]->image_id = $img;
 			if ( ! empty( $args['having_images'] ) ) {
 				$terms_with_images[] = $terms[ $key ];
 			}
@@ -395,15 +404,10 @@ function taxonomy_images_plugin_get_queried_term_image_id( $default ) {
 		return 0;
 	}
 
-	$associations = taxonomy_image_plugin_get_associations();
-	$tt_id = absint( $obj->term_taxonomy_id );
+	$t = new Taxonomy_Images_Term( $obj );
 
-	$ID = 0;
-	if ( array_key_exists( $tt_id, $associations ) ) {
-		$ID = absint( $associations[$tt_id] );
-	}
+	return $img = $t->get_image_id();
 
-	return $ID;
 }
 
 

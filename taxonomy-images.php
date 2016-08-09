@@ -445,27 +445,19 @@ function taxonomy_image_plugin_json_response( $args ) {
  * @access    private
  */
 function taxonomy_image_plugin_get_term_info( $tt_id ) {
-	static $cache = array();
-	if ( isset( $cache[ $tt_id ] ) ) {
-		return $cache[ $tt_id ];
-	}
 
-	global $wpdb;
+	$t = new Taxonomy_Images_Term( $tt_id, true );
+	$term = $t->get_term();
 
-	$data = $wpdb->get_results( $wpdb->prepare( "SELECT term_id, taxonomy FROM $wpdb->term_taxonomy WHERE term_taxonomy_id = %d LIMIT 1", $tt_id ) );
-	if ( isset( $data[0]->term_id ) ) {
-		$cache[ $tt_id ]['term_id'] = absint( $data[0]->term_id );
-	}
-
-	if ( isset( $data[0]->taxonomy ) ) {
-		$cache[ $tt_id ]['taxonomy'] = $data[0]->taxonomy;
-	}
-
-	if ( isset( $cache[ $tt_id ] ) ) {
-		return $cache[ $tt_id ];
+	if ( $term ) {
+		return array(
+			'term_id'  => $term->term_id,
+			'taxonomy' => $term->taxonomy
+		);
 	}
 
 	return array();
+
 }
 
 
@@ -481,12 +473,15 @@ function taxonomy_image_plugin_get_term_info( $tt_id ) {
  * @access    private
  */
 function taxonomy_image_plugin_check_permissions( $tt_id ) {
-	$data = taxonomy_image_plugin_get_term_info( $tt_id );
-	if ( ! isset( $data['taxonomy'] ) ) {
+
+	$t = new Taxonomy_Images_Term( $tt_id, true );
+	$tax = $t->get_taxonomy();
+
+	if ( empty( $tax ) ) {
 		return false;
 	}
 
-	$taxonomy = get_taxonomy( $data['taxonomy'] );
+	$taxonomy = get_taxonomy( $tax );
 	if ( ! isset( $taxonomy->cap->edit_terms ) ) {
 		return false;
 	}
@@ -554,9 +549,9 @@ function taxonomy_image_plugin_create_association() {
 		) );
 	}
 
-	$assoc = taxonomy_image_plugin_get_associations();
-	$assoc[ $tt_id ] = $image_id;
-	if ( update_option( 'taxonomy_image_plugin', taxonomy_image_plugin_sanitize_associations( $assoc ) ) ) {
+	$t = new Taxonomy_Images_Term( $tt_id, true );
+
+	if ( $t->update_image_id( $image_id ) ) {
 		taxonomy_image_plugin_json_response( array(
 			'status' => 'good',
 			'why'    => esc_html__( 'Image successfully associated', 'taxonomy-images' ),
@@ -620,17 +615,17 @@ function taxonomy_image_plugin_remove_association() {
 		) );
 	}
 
-	$assoc = taxonomy_image_plugin_get_associations();
-	if ( ! isset( $assoc[ $tt_id ] ) ) {
+	$t = new Taxonomy_Images_Term( $tt_id, true );
+	$img = $t->get_image_id();
+
+	if ( ! $img ) {
 		taxonomy_image_plugin_json_response( array(
 			'status' => 'good',
 			'why'    => esc_html__( 'Nothing to remove', 'taxonomy-images' )
 		) );
 	}
 
-	unset( $assoc[ $tt_id ] );
-
-	if ( update_option( 'taxonomy_image_plugin', $assoc ) ) {
+	if ( $t->delete_image_id() ) {
 		taxonomy_image_plugin_json_response( array(
 			'status' => 'good',
 			'why'    => esc_html__( 'Association successfully removed', 'taxonomy-images' )
@@ -779,31 +774,22 @@ function taxonomy_image_plugin_edit_tag_form( $term, $taxonomy ) {
  */
 function taxonomy_image_plugin_control_image( $term_id, $taxonomy ) {
 
-	$term = get_term( $term_id, $taxonomy );
+	$t = new Taxonomy_Images_Term( $term_id, $taxonomy );
 
-	$tt_id = 0;
-	if ( isset( $term->term_taxonomy_id ) ) {
-		$tt_id = (int) $term->term_taxonomy_id;
-	}
+	$term = $t->get_term();
+	$tt_id = $t->get_tt_id();
 
-	$taxonomy = get_taxonomy( $taxonomy );
+	$taxonomy = get_taxonomy( $t->get_taxonomy() );
 
 	$name = esc_html__( 'term', 'taxonomy-images' );
 	if ( isset( $taxonomy->labels->singular_name ) ) {
 		$name = strtolower( $taxonomy->labels->singular_name );
 	}
 
-	$hide = ' hide';
-	$attachment_id = 0;
-	$associations = taxonomy_image_plugin_get_associations();
-	if ( isset( $associations[ $tt_id ] ) ) {
-		$attachment_id = (int) $associations[ $tt_id ];
-		$hide = '';
-	}
+	$attachment_id = $t->get_image_id();
+	$hide = $attachment_id ? '' : ' hide';
 
 	$img = taxonomy_image_plugin_get_image_src( $attachment_id );
-
-	$term = get_term( $term_id, $taxonomy->name );
 
 	$nonce = wp_create_nonce( 'taxonomy-image-plugin-create-association' );
 	$nonce_remove = wp_create_nonce( 'taxonomy-image-plugin-remove-association' );
@@ -1051,10 +1037,14 @@ function taxonomy_image_plugin_cache_images( $posts ) {
 		foreach ( $taxonomies as $taxonomy ) {
 			$the_terms = get_the_terms( $post->ID, $taxonomy );
 			foreach ( (array) $the_terms as $term ) {
-				if ( ! isset( $term->term_taxonomy_id ) ) {
-					continue;
+
+				$t = new Taxonomy_Images_Term( $term );
+				$tt_id = $t->get_tt_id();
+
+				if ( $tt_id ) {
+					$tt_ids[] = $tt_id;
 				}
-				$tt_ids[] = $term->term_taxonomy_id;
+
 			}
 		}
 	}
@@ -1062,15 +1052,14 @@ function taxonomy_image_plugin_cache_images( $posts ) {
 
 	$image_ids = array();
 	foreach ( $tt_ids as $tt_id ) {
-		if ( ! isset( $assoc[ $tt_id ] ) ) {
-			continue;
+
+		$t = new Taxonomy_Images_Term( $tt_id, true );
+		$img = $t->get_image_id();
+
+		if ( $img ) {
+			$image_ids[] = $img;
 		}
 
-		if ( in_array( $assoc[ $tt_id ], $image_ids ) ) {
-			continue;
-		}
-
-		$image_ids[] = $assoc[ $tt_id ];
 	}
 
 	if ( empty( $image_ids ) ) {
