@@ -58,11 +58,9 @@ function taxonomy_image_plugin_version() {
  * @since     0.7
  */
 function taxonomy_image_plugin_url( $file = '' ) {
-	static $path = '';
-	if ( empty( $path ) ) {
-		$path = plugin_dir_url( __FILE__ );
-	}
-	return $path . $file;
+
+	return Taxonomy_Images_Config::url( $file );
+
 }
 
 
@@ -106,7 +104,7 @@ add_action( 'init', 'taxonomy_image_plugin_add_image_size' );
  * @since     0.7.3
  */
 function taxonomy_image_plugin_text_domain() {
-	load_plugin_textdomain( 'taxonomy-images', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
+	load_plugin_textdomain( 'taxonomy-images', false, Taxonomy_Images_Config::dirname( 'languages' ) );
 }
 add_action( 'init', 'taxonomy_image_plugin_text_domain' );
 
@@ -1176,11 +1174,8 @@ function taxonomy_image_plugin_please_use_filter( $function, $filter ) {
  * @since     0.7
  */
 function taxonomy_images_plugin_row_meta( $links, $file ) {
-	static $plugin_name = '';
 
-	if ( empty( $plugin_name ) ) {
-		$plugin_name = plugin_basename( __FILE__ );
-	}
+	$plugin_name = Taxonomy_Images_Config::basename();
 
 	if ( $plugin_name != $file ) {
 		return $links;
