@@ -33,7 +33,15 @@ class Taxonomy_Images_Config {
 
 		switch ( $feature ) {
 
-			// Media Modal
+			/**
+			 * Media Modal Supported?
+			 *
+			 * @see  WordPress 3.5 Blog Post
+			 *       https://wordpress.org/news/2012/12/elvin/
+			 *
+			 * @see  WordPress JavaScript wp.media
+			 *       https://codex.wordpress.org/Javascript_Reference/wp.media
+			 */
 			case 'media_modal':
 				return version_compare( get_bloginfo( 'version' ), 3.5 ) >= 0;
 
