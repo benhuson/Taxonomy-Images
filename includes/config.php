@@ -23,4 +23,24 @@ class Taxonomy_Images_Config {
 
 	}
 
+	/**
+	 * Check if a WordPress feature is supported
+	 *
+	 * @param   string   $feature  Feature.
+	 * @return  boolean
+	 */
+	public static function supports( $feature ) {
+
+		switch ( $feature ) {
+
+			// Media Modal
+			case 'media_modal':
+				return version_compare( get_bloginfo( 'version' ), 3.5 ) >= 0;
+
+		}
+
+		return false;
+
+	}
+
 }
