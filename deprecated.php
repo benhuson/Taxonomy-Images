@@ -1,6 +1,37 @@
 <?php
 
 /**
+ * Version Number.
+ *
+ * @deprecated
+ *
+ * @return    string    The plugin's version number.
+ * @access    private
+ * @since     0.7
+ * @alter     0.7.4
+ */
+function taxonomy_image_plugin_version() {
+
+	return Taxonomy_Images_Config::get_version();
+
+}
+
+/**
+ * Get a url to a file in this plugin.
+ *
+ * @deprecated
+ *
+ * @return    string
+ * @access    private
+ * @since     0.7
+ */
+function taxonomy_image_plugin_url( $file = '' ) {
+
+	return Taxonomy_Images_Config::url( $file );
+
+}
+
+/**
  * Deprecated Shortcode.
  *
  * @deprecated  Deprecated since version 0.7
