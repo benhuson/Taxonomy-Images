@@ -6,11 +6,29 @@
 class Taxonomy_Images_Config {
 
 	/**
+	 * Plugin File
+	 *
+	 * @var  string
+	 */
+	private static $plugin_file = __FILE__;
+
+	/**
 	 * Version
 	 *
 	 * @var  string
 	 */
 	private static $version = '0.9.6';
+
+	/**
+	 * Set Plugin File
+	 *
+	 * @param  string  $plugin_file  The full path and filename of the main plugin file.
+	 */
+	public static function set_plugin_file( $plugin_file ) {
+
+		self::$plugin_file = $plugin_file;
+
+	}
 
 	/**
 	 * Get Version
@@ -48,6 +66,53 @@ class Taxonomy_Images_Config {
 		}
 
 		return false;
+
+	}
+
+	/**
+	 * Plugin Basename
+	 *
+	 * @return  string  Plugin basename.
+	 */
+	public static function basename() {
+
+		return plugin_basename( self::$plugin_file );
+
+	}
+
+	/**
+	 * Plugin Sub Directory
+	 *
+	 * @param   string  $file  Optional. File path to append.
+	 * @return  string         Plugin folder name and filepath.
+	 */
+	public static function dirname( $file = '' ) {
+
+		$dirname = dirname( self::basename() );
+
+		if ( ! empty( $file ) ) {
+			$dirname = trailingslashit( $dirname ) . $file;
+		}
+
+		return $dirname;
+
+	}
+
+	/**
+	 * Plugin URL
+	 *
+	 * @param   string  $file  Optional. File path to append.
+	 * @return  string         Plugin directory URL and filepath.
+	 */
+	public static function url( $file = '' ) {
+
+		$path = plugin_dir_url( self::$plugin_file );
+
+		if ( ! empty( $file ) ) {
+			$path = trailingslashit( $path ) . $file;
+		}
+
+		return $path;
 
 	}
 
