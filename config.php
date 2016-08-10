@@ -17,7 +17,7 @@ class Taxonomy_Images_Config {
 	 *
 	 * @var  string
 	 */
-	private static $version = '0.9.6';
+	private static $version = '';
 
 	/**
 	 * Set Plugin File
@@ -27,6 +27,17 @@ class Taxonomy_Images_Config {
 	public static function set_plugin_file( $plugin_file ) {
 
 		self::$plugin_file = $plugin_file;
+
+	}
+
+	/**
+	 * Set Version
+	 *
+	 * @return  string  Version string.
+	 */
+	public static function set_version( $version ) {
+
+		self::$version = $version;
 
 	}
 
