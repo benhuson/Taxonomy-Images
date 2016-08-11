@@ -412,34 +412,6 @@ function taxonomy_image_plugin_json_response( $args ) {
 	exit;
 }
 
-
-/**
- * Get Term Info.
- *
- * Returns term info by term_taxonomy_id.
- *
- * @param     int       term_taxonomy_id
- * @return    array     Keys: term_id (int) and taxonomy (string).
- *
- * @access    private
- */
-function taxonomy_image_plugin_get_term_info( $tt_id ) {
-
-	$t = new Taxonomy_Images_Term( $tt_id, true );
-	$term = $t->get_term();
-
-	if ( $term ) {
-		return array(
-			'term_id'  => $term->term_id,
-			'taxonomy' => $term->taxonomy
-		);
-	}
-
-	return array();
-
-}
-
-
 /**
  * Check Taxonomy Permissions.
  *
