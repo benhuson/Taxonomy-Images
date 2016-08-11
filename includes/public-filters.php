@@ -558,3 +558,30 @@ function taxonomy_images_plugin_get_queried_term_image_data( $default, $args = a
 
 	return array();
 }
+
+/**
+ * Public Filters Class
+ */
+class Taxonomy_Images_Public_Filters {
+
+	/**
+	 * Please Use Filter
+	 *
+	 * Report to user that they are directly calling a function instead
+	 * of using supported filters. A E_USER_NOTICE will be generated.
+	 *
+	 * @internal  Private. Use of this method is unsupported. Do not call this method directly.
+	 *
+	 * @param  string  Name of function called.
+	 * @param  string  Name of filter to use instead.
+	 */
+	public static function please_use_filter( $function, $filter ) {
+
+		trigger_error( sprintf( esc_html__( 'The %1$s has been called directly. Please use the %2$s filter instead.', 'taxonomy-images' ),
+			'<code>' . esc_html( $function . '()' ) . '</code>',
+			'<code>' . esc_html( $filter ) . '</code>'
+		) );
+
+	}
+
+}

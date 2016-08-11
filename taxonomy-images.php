@@ -1099,10 +1099,9 @@ function taxonomy_image_plugin_check_taxonomy( $taxonomy, $filter ) {
  * @since     0.7
  */
 function taxonomy_image_plugin_please_use_filter( $function, $filter ) {
-	trigger_error( sprintf( esc_html__( 'The %1$s has been called directly. Please use the %2$s filter instead.', 'taxonomy-images' ),
-		'<code>' . esc_html( $function . '()' ) . '</code>',
-		'<code>' . esc_html( $filter ) . '</code>'
-	) );
+
+	Taxonomy_Images_Public_Filters::please_use_filter( $function, $filter );
+
 }
 
 
