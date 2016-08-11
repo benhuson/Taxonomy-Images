@@ -20,6 +20,27 @@ class Taxonomy_Images_Config {
 	private static $version = '';
 
 	/**
+	 * Basename
+	 *
+	 * @var  string
+	 */
+	private static $basename = null;
+
+	/**
+	 * Dirname
+	 *
+	 * @var  string
+	 */
+	private static $dirname = null;
+
+	/**
+	 * URL
+	 *
+	 * @var  string
+	 */
+	private static $url = null;
+
+	/**
 	 * Set Plugin File
 	 *
 	 * @param  string  $plugin_file  The full path and filename of the main plugin file.
@@ -87,7 +108,12 @@ class Taxonomy_Images_Config {
 	 */
 	public static function basename() {
 
-		return plugin_basename( self::$plugin_file );
+		// Get and cache basename
+		if ( is_null( self::$basename ) ) {
+			self::$basename = plugin_basename( self::$plugin_file );
+		}
+
+		return self::$basename;
 
 	}
 
@@ -99,13 +125,17 @@ class Taxonomy_Images_Config {
 	 */
 	public static function dirname( $file = '' ) {
 
-		$dirname = dirname( self::basename() );
-
-		if ( ! empty( $file ) ) {
-			$dirname = trailingslashit( $dirname ) . $file;
+		// Get and cache dirname
+		if ( is_null( self::$dirname ) ) {
+			self::$dirname = dirname( self::basename() );
 		}
 
-		return $dirname;
+		// Add file path
+		if ( ! empty( $file ) ) {
+			return trailingslashit( self::$dirname ) . $file;
+		}
+
+		return self::$dirname;
 
 	}
 
@@ -117,13 +147,17 @@ class Taxonomy_Images_Config {
 	 */
 	public static function url( $file = '' ) {
 
-		$path = plugin_dir_url( self::$plugin_file );
-
-		if ( ! empty( $file ) ) {
-			$path = trailingslashit( $path ) . $file;
+		// Get and cache URL
+		if ( is_null( self::$url ) ) {
+			self::$url = plugin_dir_url( self::$plugin_file );
 		}
 
-		return $path;
+		// Add file path
+		if ( ! empty( $file ) ) {
+			return trailingslashit( self::$url ) . $file;
+		}
+
+		return self::$url;
 
 	}
 
