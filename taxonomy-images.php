@@ -954,7 +954,6 @@ function taxonomy_image_plugin_is_screen_active() {
 	return false;
 }
 
-
 /**
  * Cache Images
  *
@@ -969,12 +968,14 @@ function taxonomy_image_plugin_is_screen_active() {
  * @since     1.1
  */
 function taxonomy_image_plugin_cache_images( $posts ) {
+
 	$assoc = taxonomy_image_plugin_get_associations();
 	if ( empty( $assoc ) ) {
 		return;
 	}
 
-	$tt_ids = array();
+	$image_ids = array();
+
 	foreach ( (array) $posts as $post ) {
 		if ( ! isset( $post->ID ) || ! isset( $post->post_type ) ) {
 			continue;
@@ -990,28 +991,17 @@ function taxonomy_image_plugin_cache_images( $posts ) {
 			foreach ( (array) $the_terms as $term ) {
 
 				$t = new Taxonomy_Images_Term( $term );
-				$tt_id = $t->get_tt_id();
+				$img = $t->get_image_id();
 
-				if ( $tt_id ) {
-					$tt_ids[] = $tt_id;
+				if ( $img ) {
+					$image_ids[] = $img;
 				}
 
 			}
 		}
 	}
-	$tt_ids = array_filter( array_unique( $tt_ids ) );
 
-	$image_ids = array();
-	foreach ( $tt_ids as $tt_id ) {
-
-		$t = new Taxonomy_Images_Term( $tt_id, true );
-		$img = $t->get_image_id();
-
-		if ( $img ) {
-			$image_ids[] = $img;
-		}
-
-	}
+	$image_ids = array_filter( array_unique( $image_ids ) );
 
 	if ( empty( $image_ids ) ) {
 		return;
@@ -1021,8 +1011,8 @@ function taxonomy_image_plugin_cache_images( $posts ) {
 		'include'   => $image_ids,
 		'post_type' => 'attachment'
 	) );
-}
 
+}
 
 /**
  * Cache Images
