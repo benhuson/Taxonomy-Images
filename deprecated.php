@@ -1,6 +1,25 @@
 <?php
 
 /**
+ * Please Use Filter.
+ *
+ * Report to user that they are directly calling a function
+ * instead of using supported filters. A E_USER_NOTICE will
+ * be generated.
+ *
+ * @param     string         Name of function called.
+ * @param     string         Name of filter to use instead.
+ *
+ * @access    private
+ * @since     0.7
+ */
+function taxonomy_image_plugin_please_use_filter( $function, $filter ) {
+
+	Taxonomy_Images_Public_Filters::please_use_filter( $function, $filter );
+
+}
+
+/**
  * Get Term Info.
  *
  * Returns term info by term_taxonomy_id.
