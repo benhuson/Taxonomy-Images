@@ -160,31 +160,47 @@ function taxonomy_image_plugin_get_image_src( $id ) {
 		return $img['url'];
 	}
 
-	/* Detail image does not exist, attempt to create it. */
+	// Detail image does not exist, attempt to create it.
 	$wp_upload_dir = wp_upload_dir();
+
 	if ( isset( $wp_upload_dir['basedir'] ) ) {
 
 		/* Create path to original uploaded image. */
 		$path = trailingslashit( $wp_upload_dir['basedir'] ) . get_post_meta( $id, '_wp_attached_file', true );
 		if ( is_file( $path ) ) {
 
-			/* Attempt to create a new downsized version of the original image. */
-			$new = image_resize( $path,
-				$detail['size'][0],
-				$detail['size'][1],
-				$detail['size'][2]
-			);
+			// Attempt to create a new downsized version of the original image
+			$new = wp_get_image_editor( $path );
 
-			/* Image creation successful. Generate and cache image metadata. Return url. */
+			// Image editor instance OK
 			if ( ! is_wp_error( $new ) ) {
-				$meta = wp_generate_attachment_metadata( $id, $path );
-				wp_update_attachment_metadata( $id, $meta );
-				$img = image_get_intermediate_size( $id, $detail['name'] );
-				if ( isset( $img['url'] ) ) {
-					return $img['url'];
+
+				$resized = $new->resize(
+					$detail['size'][0],
+					$detail['size'][1],
+					absint( $detail['size'][2] )
+				);
+
+				// Image resize successful. Generate and cache image metadata. Return url.
+				if ( ! is_wp_error( $resized ) ) {
+
+					$path = $new->generate_filename();
+					$new->save( $path );
+
+					$meta = wp_generate_attachment_metadata( $id, $path );
+					wp_update_attachment_metadata( $id, $meta );
+					$img = image_get_intermediate_size( $id, $detail['name'] );
+
+					if ( isset( $img['url'] ) ) {
+						return $img['url'];
+					}
+
 				}
+
 			}
+
 		}
+
 	}
 
 	/* Custom intermediate size cannot be created, try for thumbnail. */
