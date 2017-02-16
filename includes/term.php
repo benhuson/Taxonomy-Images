@@ -179,8 +179,8 @@ class Taxonomy_Images_Term {
 		// Get term via term taxonomy ID
 		if ( ! is_null( $this->tt_id ) ) {
 
-			if ( isset( self::$cache[ $data->term_id ] ) ) {
-				return self::$cache[ $data->term_id ];
+			if ( isset( self::$cache[ $this->tt_id ] ) ) {
+				return self::$cache[ $this->tt_id ];
 			}
 
 			$data = current( $wpdb->get_results( $wpdb->prepare( "SELECT term_id, taxonomy FROM $wpdb->term_taxonomy WHERE term_taxonomy_id = %d LIMIT 1", $this->tt_id ) ) );
@@ -190,7 +190,7 @@ class Taxonomy_Images_Term {
 				$this->taxonomy = $data->taxonomy;
 				$this->term = get_term( $this->term_id, $this->taxonomy );
 
-				self::$cache[ $data->term_id ] = $this->term;
+				self::$cache[ $this->tt_id ] = $this->term;
 
 			}
 
