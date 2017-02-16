@@ -221,6 +221,9 @@ Installation
 Upgrade Notice
 --------------
 
+### 0.9.7
+Remove use of deprecated `image_resize` function. Bump minimum WordPress version to 3.5.
+
 ### 0.9.6
 Fixed issue where if no terms have images but 'having_images' is false, nothing would be returned (props Matt).
 
