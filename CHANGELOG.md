@@ -4,6 +4,12 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [0.9.7] - 2017-02-16
+
+### Changed
+- Remove use of deprecated `image_resize` function.
+- Bump minimum WordPress version to 3.5.
+
 ## [0.9.6] - 2016-05-03
 
 ### Fixed
@@ -208,7 +214,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - Original Release - Works with WordPress 2.9.1.
 
-[Unreleased]: https://github.com/benhuson/Taxonomy-Images/compare/0.9.6...HEAD
+[Unreleased]: https://github.com/benhuson/Taxonomy-Images/compare/0.9.7...HEAD
+[0.9.7]: https://github.com/benhuson/Taxonomy-Images/compare/0.9.6...0.9.7
 [0.9.6]: https://github.com/benhuson/Taxonomy-Images/compare/0.9.5...0.9.6
 [0.9.5]: https://github.com/benhuson/Taxonomy-Images/compare/0.9.4...0.9.5
 [0.9.4]: https://github.com/benhuson/Taxonomy-Images/compare/0.9.3...0.9.4
