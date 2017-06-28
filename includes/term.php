@@ -35,6 +35,11 @@ class Term {
 	 */
 	public function get_image_id( $type = '' ) {
 
+		// If not supported...
+		if ( ! $this->term_meta_supported() ) {
+			return 0;
+		}
+
 		$key = $this->get_meta_key( $type );
 
 		return absint( get_term_meta( $this->term_id, $key, true ) );
@@ -49,6 +54,11 @@ class Term {
 	 * @return  int|WP_Error|bool             Meta ID if added. True if updated. WP_Error when term_id is ambiguous between taxonomies. False on failure.
 	 */
 	public function update_image_id( $image_id, $type = '' ) {
+
+		// If not supported...
+		if ( ! $this->term_meta_supported() ) {
+			return false;
+		}
 
 		$image_id = absint( $image_id );
 
@@ -65,6 +75,11 @@ class Term {
 	 * @return  boolean         True on success, false on failure.
 	 */
 	public function delete_image( $type = '' ) {
+
+		// If not supported...
+		if ( ! $this->term_meta_supported() ) {
+			return false;
+		}
 
 		$key = $this->get_meta_key( $type );
 
@@ -83,6 +98,19 @@ class Term {
 		$type = sanitize_key( $type );
 
 		return empty( $type ) ? 'taxonomy_image_id' : 'taxonomy_image_' . $type . '_id';
+
+	}
+
+	/**
+	 * Check if term meta is supported
+	 *
+	 * Support was added in WordPress 4.4
+	 *
+	 * @return  boolean
+	 */
+	private function term_meta_supported() {
+
+		return function_exists( 'get_term_meta' ) && function_exists( 'update_term_meta' ) && function_exists( 'delete_term_meta' );
 
 	}
 
