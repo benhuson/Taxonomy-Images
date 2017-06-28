@@ -31,6 +31,7 @@ require_once( trailingslashit( dirname( __FILE__ ) ) . 'deprecated.php' );
 require_once( trailingslashit( dirname( __FILE__ ) ) . 'public-filters.php' );
 require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/term.php' );
 require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/image-admin-field.php' );
+require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/image-admin-control.php' );
 
 
 /**
@@ -784,6 +785,7 @@ function taxonomy_image_plugin_taxonomy_rows( $row, $column_name, $term_id ) {
 function taxonomy_image_plugin_edit_tag_form( $term, $taxonomy ) {
 
 	$field = new TaxonomyImages\Image_Admin_Field( $term );
+	$control = new TaxonomyImages\Image_Admin_Control( $term );
 
 	$taxonomy = get_taxonomy( $taxonomy );
 
@@ -793,7 +795,7 @@ function taxonomy_image_plugin_edit_tag_form( $term, $taxonomy ) {
 			<label for="description"><?php print esc_html__( 'Featured Image', 'taxonomy-images' ) ?></label>
 		</th>
 		<td>
-			<?php print taxonomy_image_plugin_control_image( $term->term_id, $taxonomy->name ); ?>
+			<?php echo $control->get_rendered(); ?>
 			<div class="clear"></div>
 			<?php $field->the_description( '<span class="description">', '</span>' ); ?>
 		</td>
@@ -815,49 +817,10 @@ function taxonomy_image_plugin_control_image( $term_id, $taxonomy ) {
 
 	$term = get_term( $term_id, $taxonomy );
 
-	$tt_id = 0;
-	if ( isset( $term->term_taxonomy_id ) ) {
-		$tt_id = (int) $term->term_taxonomy_id;
-	}
+	$control = new TaxonomyImages\Image_Admin_Control( $term );
 
-	$taxonomy = get_taxonomy( $taxonomy );
+	return $control->get_rendered();
 
-	$name = esc_html__( 'term', 'taxonomy-images' );
-	if ( isset( $taxonomy->labels->singular_name ) ) {
-		$name = strtolower( $taxonomy->labels->singular_name );
-	}
-
-	$hide = ' hide';
-	$attachment_id = 0;
-	$associations = taxonomy_image_plugin_get_associations();
-	if ( isset( $associations[ $tt_id ] ) ) {
-		$attachment_id = (int) $associations[ $tt_id ];
-		$hide = '';
-	}
-
-	$img = taxonomy_image_plugin_get_image_src( $attachment_id );
-
-	$term = get_term( $term_id, $taxonomy->name );
-
-	$nonce = wp_create_nonce( 'taxonomy-image-plugin-create-association' );
-	$nonce_remove = wp_create_nonce( 'taxonomy-image-plugin-remove-association' );
-
-	$thickbox_class = version_compare( get_bloginfo( 'version' ), 3.5 ) >= 0 ? '' : 'thickbox';
-
-	$o  = "\n" . '<div id="' . esc_attr( 'taxonomy-image-control-' . $tt_id ) . '" class="taxonomy-image-control hide-if-no-js">';
-	$o .= "\n" . '<a class="' . $thickbox_class . ' taxonomy-image-thumbnail" data-tt-id="' . $tt_id . '" data-attachment-id="' . $attachment_id . '" data-nonce="' . $nonce . '" href="' . esc_url( admin_url( 'media-upload.php' ) . '?type=image&tab=library&post_id=0&TB_iframe=true' ) . '" title="' . esc_attr( sprintf( __( 'Associate an image with the %1$s named &#8220;%2$s&#8221;.', 'taxonomy-images' ), $name, $term->name ) ) . '"><img id="' . esc_attr( 'taxonomy_image_plugin_' . $tt_id ) . '" src="' . esc_url( $img ) . '" alt="" /></a>';
-	$o .= "\n" . '<a class="control upload ' . $thickbox_class . '" data-tt-id="' . $tt_id . '" data-attachment-id="' . $attachment_id . '" data-nonce="' . $nonce . '" href="' . esc_url( admin_url( 'media-upload.php' ) . '?type=image&tab=type&post_id=0&TB_iframe=true' ) . '" title="' . esc_attr( sprintf( __( 'Upload a new image for this %s.', 'taxonomy-images' ), $name ) ) . '">' . esc_html__( 'Upload.', 'taxonomy-images' ) . '</a>';
-	$o .= "\n" . '<a class="control remove' . $hide . '" data-tt-id="' . $tt_id . '" data-nonce="' . $nonce_remove . '" href="#" id="' . esc_attr( 'remove-' . $tt_id ) . '" rel="' . esc_attr( $tt_id ) . '" title="' . esc_attr( sprintf( __( 'Remove image from this %s.', 'taxonomy-images' ), $name ) ) . '">' . esc_html__( 'Delete', 'taxonomy-images' ) . '</a>';
-	$o .= "\n" . '<input type="hidden" class="tt_id" name="' . esc_attr( 'tt_id-' . $tt_id ) . '" value="' . esc_attr( $tt_id ) . '" />';
-	$o .= "\n" . '<input type="hidden" class="image_id" name="' . esc_attr( 'image_id-' . $tt_id ) . '" value="' . esc_attr( $attachment_id ) . '" />';
-
-	if ( isset( $term->name ) && isset( $term->slug ) ) {
-		$o .= "\n" . '<input type="hidden" class="term_name" name="' . esc_attr( 'term_name-' . $term->slug ) . '" value="' . esc_attr( $term->name ) . '" />';
-	}
-
-	$o .= "\n" . '</div>';
-
-	return $o;
 }
 
 
