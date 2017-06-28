@@ -577,7 +577,7 @@ function taxonomy_image_plugin_create_association() {
 
 	// Save as term meta
 	$tid = taxonomy_image_plugin_get_term_info( $tt_id );
-	$t = new TaxonomyImages\Term( $tid );
+	$t = new TaxonomyImages\Term( $tid['term_id'] );
 	$t->update_image_id( $image_id );
 
 	if ( update_option( 'taxonomy_image_plugin', taxonomy_image_plugin_sanitize_associations( $assoc ) ) ) {
@@ -656,7 +656,7 @@ function taxonomy_image_plugin_remove_association() {
 
 	// Delete term meta
 	$tid = taxonomy_image_plugin_get_term_info( $tt_id );
-	$t = new TaxonomyImages\Term( $tid );
+	$t = new TaxonomyImages\Term( $tid['term_id'] );
 	$t->delete_image();
 
 	if ( update_option( 'taxonomy_image_plugin', $assoc ) ) {
@@ -851,6 +851,11 @@ function taxonomy_image_plugin_control_image( $term_id, $taxonomy ) {
 	}
 
 	$o .= "\n" . '</div>';
+
+
+	$t = new TaxonomyImages\Term( $term->term_id );
+	$o .= $t->get_image_id();
+
 	return $o;
 }
 
