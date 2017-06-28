@@ -51,8 +51,6 @@ class Image_Admin_Control {
 
 		$img = taxonomy_image_plugin_get_image_src( $attachment_id );
 
-		$thickbox_class = version_compare( get_bloginfo( 'version' ), 3.5 ) >= 0 ? '' : 'thickbox';
-
 		// Nonces
 		$nonce = wp_create_nonce( 'taxonomy-image-plugin-create-association' );
 		$nonce_remove = wp_create_nonce( 'taxonomy-image-plugin-remove-association' );
@@ -68,16 +66,9 @@ class Image_Admin_Control {
 
 		// Control
 		$o  = '<div id="' . esc_attr( 'taxonomy-image-control-' . $tt_id ) . '" class="taxonomy-image-control hide-if-no-js">';
-		$o .= '<a class="' . $thickbox_class . ' taxonomy-image-thumbnail" data-tt-id="' . $tt_id . '" data-attachment-id="' . $attachment_id . '" data-nonce="' . $nonce . '" href="' . esc_url( $media_library_url ) . '" title="' . esc_attr( $str_associate ) . '"><img id="' . esc_attr( 'taxonomy_image_plugin_' . $tt_id ) . '" src="' . esc_url( $img ) . '" alt="" /></a>';
-		$o .= '<a class="control upload ' . $thickbox_class . '" data-tt-id="' . $tt_id . '" data-attachment-id="' . $attachment_id . '" data-nonce="' . $nonce . '" href="' . esc_url( $media_type_url ) . '" title="' . esc_attr( $str_upload_new ) . '">' . esc_html__( 'Upload.', 'taxonomy-images' ) . '</a>';
+		$o .= '<a class="taxonomy-image-thumbnail" data-tt-id="' . $tt_id . '" data-attachment-id="' . $attachment_id . '" data-nonce="' . $nonce . '" href="' . esc_url( $media_library_url ) . '" title="' . esc_attr( $str_associate ) . '"><img id="' . esc_attr( 'taxonomy_image_plugin_' . $tt_id ) . '" src="' . esc_url( $img ) . '" alt="" /></a>';
+		$o .= '<a class="control upload" data-tt-id="' . $tt_id . '" data-attachment-id="' . $attachment_id . '" data-nonce="' . $nonce . '" href="' . esc_url( $media_type_url ) . '" title="' . esc_attr( $str_upload_new ) . '">' . esc_html__( 'Upload.', 'taxonomy-images' ) . '</a>';
 		$o .= '<a class="control remove' . $hide . '" data-tt-id="' . $tt_id . '" data-nonce="' . $nonce_remove . '" href="#" id="' . esc_attr( 'remove-' . $tt_id ) . '" rel="' . esc_attr( $tt_id ) . '" title="' . esc_attr( $str_remove ) . '">' . esc_html__( 'Delete', 'taxonomy-images' ) . '</a>';
-		$o .= '<input type="hidden" class="tt_id" name="' . esc_attr( 'tt_id-' . $tt_id ) . '" value="' . esc_attr( $tt_id ) . '" />';
-		$o .= '<input type="hidden" class="image_id" name="' . esc_attr( 'image_id-' . $tt_id ) . '" value="' . esc_attr( $attachment_id ) . '" />';
-
-		if ( isset( $this->term->name ) && isset( $this->term->slug ) ) {
-			$o .= '<input type="hidden" class="term_name" name="' . esc_attr( 'term_name-' . $this->term->slug ) . '" value="' . esc_attr( $this->term->name ) . '" />';
-		}
-
 		$o .= '</div>';
 
 		return $o;
