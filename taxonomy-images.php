@@ -852,10 +852,6 @@ function taxonomy_image_plugin_control_image( $term_id, $taxonomy ) {
 
 	$o .= "\n" . '</div>';
 
-
-	$t = new TaxonomyImages\Term( $term->term_id );
-	$o .= $t->get_image_id();
-
 	return $o;
 }
 
