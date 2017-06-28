@@ -69,13 +69,6 @@ class Image_Admin_Control {
 		$o .= '<a class="taxonomy-image-thumbnail" data-tt-id="' . $tt_id . '" data-attachment-id="' . $attachment_id . '" data-nonce="' . $nonce . '" href="' . esc_url( $media_library_url ) . '" title="' . esc_attr( $str_associate ) . '"><img id="' . esc_attr( 'taxonomy_image_plugin_' . $tt_id ) . '" src="' . esc_url( $img ) . '" alt="" /></a>';
 		$o .= '<a class="control upload" data-tt-id="' . $tt_id . '" data-attachment-id="' . $attachment_id . '" data-nonce="' . $nonce . '" href="' . esc_url( $media_type_url ) . '" title="' . esc_attr( $str_upload_new ) . '">' . esc_html__( 'Upload.', 'taxonomy-images' ) . '</a>';
 		$o .= '<a class="control remove' . $hide . '" data-tt-id="' . $tt_id . '" data-nonce="' . $nonce_remove . '" href="#" id="' . esc_attr( 'remove-' . $tt_id ) . '" rel="' . esc_attr( $tt_id ) . '" title="' . esc_attr( $str_remove ) . '">' . esc_html__( 'Delete', 'taxonomy-images' ) . '</a>';
-		$o .= '<input type="hidden" class="tt_id" name="' . esc_attr( 'tt_id-' . $tt_id ) . '" value="' . esc_attr( $tt_id ) . '" />';
-		$o .= '<input type="hidden" class="image_id" name="' . esc_attr( 'image_id-' . $tt_id ) . '" value="' . esc_attr( $attachment_id ) . '" />';
-
-		if ( isset( $this->term->name ) && isset( $this->term->slug ) ) {
-			$o .= '<input type="hidden" class="term_name" name="' . esc_attr( 'term_name-' . $this->term->slug ) . '" value="' . esc_attr( $this->term->name ) . '" />';
-		}
-
 		$o .= '</div>';
 
 		return $o;
