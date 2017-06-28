@@ -30,6 +30,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 require_once( trailingslashit( dirname( __FILE__ ) ) . 'deprecated.php' );
 require_once( trailingslashit( dirname( __FILE__ ) ) . 'public-filters.php' );
 require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/term.php' );
+require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/image-admin-field.php' );
 
 
 /**
@@ -781,20 +782,24 @@ function taxonomy_image_plugin_taxonomy_rows( $row, $column_name, $term_id ) {
  * @since     2010-11-08
  */
 function taxonomy_image_plugin_edit_tag_form( $term, $taxonomy ) {
+
+	$field = new TaxonomyImages\Image_Admin_Field( $term );
+
 	$taxonomy = get_taxonomy( $taxonomy );
-	$name = __( 'term', 'taxonomy-images' );
-	if ( isset( $taxonomy->labels->singular_name ) )
-		$name = strtolower( $taxonomy->labels->singular_name );
+
 	?>
 	<tr class="form-field hide-if-no-js">
-		<th scope="row" valign="top"><label for="description"><?php print esc_html__( 'Featured Image', 'taxonomy-images' ) ?></label></th>
+		<th scope="row" valign="top">
+			<label for="description"><?php print esc_html__( 'Featured Image', 'taxonomy-images' ) ?></label>
+		</th>
 		<td>
 			<?php print taxonomy_image_plugin_control_image( $term->term_id, $taxonomy->name ); ?>
 			<div class="clear"></div>
-			<span class="description"><?php printf( esc_html__( 'Associate an image from your media library to this %1$s.', 'taxonomy-images' ), esc_html( $name ) ); ?></span>
+			<?php $field->the_description( '<span class="description">', '</span>' ); ?>
 		</td>
 	</tr>
 	<?php
+
 }
 
 /**
