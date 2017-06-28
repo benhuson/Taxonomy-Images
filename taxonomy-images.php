@@ -787,7 +787,7 @@ function taxonomy_image_plugin_edit_tag_form( $term, $taxonomy ) {
 		$name = strtolower( $taxonomy->labels->singular_name );
 	?>
 	<tr class="form-field hide-if-no-js">
-		<th scope="row" valign="top"><label for="description"><?php print esc_html__( 'Image', 'taxonomy-images' ) ?></label></th>
+		<th scope="row" valign="top"><label for="description"><?php print esc_html__( 'Featured Image', 'taxonomy-images' ) ?></label></th>
 		<td>
 			<?php print taxonomy_image_plugin_control_image( $term->term_id, $taxonomy->name ); ?>
 			<div class="clear"></div>
@@ -1280,7 +1280,7 @@ function taxonomy_images_admin_enqueue_scripts() {
 	wp_localize_script( 'taxonomy-images-media-modal', 'TaxonomyImagesMediaModal', array(
 		'wp_media_post_id'     => 0,
 		'attachment_id'        => 0,
-		'uploader_title'       => __( 'Set featured image', 'taxonomy-images' ),
+		'uploader_title'       => __( 'Featured Image', 'taxonomy-images' ),
 		'uploader_button_text' => __( 'Set featured image', 'taxonomy-images' ),
 		'default_img_src'      => taxonomy_image_plugin_url( 'default.png' )
 	) );
