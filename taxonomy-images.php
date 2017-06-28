@@ -29,6 +29,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 require_once( trailingslashit( dirname( __FILE__ ) ) . 'deprecated.php' );
 require_once( trailingslashit( dirname( __FILE__ ) ) . 'public-filters.php' );
+require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/term.php' );
 
 
 /**
@@ -573,6 +574,12 @@ function taxonomy_image_plugin_create_association() {
 
 	$assoc = taxonomy_image_plugin_get_associations();
 	$assoc[ $tt_id ] = $image_id;
+
+	// Save as term meta
+	$tid = taxonomy_image_plugin_get_term_info( $tt_id );
+	$t = new TaxonomyImages\Term( $tid );
+	$t->update_image_id( $image_id );
+
 	if ( update_option( 'taxonomy_image_plugin', taxonomy_image_plugin_sanitize_associations( $assoc ) ) ) {
 		taxonomy_image_plugin_json_response( array(
 			'status' => 'good',
@@ -646,6 +653,11 @@ function taxonomy_image_plugin_remove_association() {
 	}
 
 	unset( $assoc[ $tt_id ] );
+
+	// Delete term meta
+	$tid = taxonomy_image_plugin_get_term_info( $tt_id );
+	$t = new TaxonomyImages\Term( $tid );
+	$t->delete_image();
 
 	if ( update_option( 'taxonomy_image_plugin', $assoc ) ) {
 		taxonomy_image_plugin_json_response( array(
