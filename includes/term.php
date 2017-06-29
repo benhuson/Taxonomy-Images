@@ -14,7 +14,7 @@ class Term {
 	 *
 	 * @var  integer
 	 */
-	private $term_id = 0;
+	protected $term_id = 0;
 
 	/**
 	 * Constructor
@@ -24,6 +24,34 @@ class Term {
 	public function __construct( $term_id ) {
 
 		$this->term_id = absint( $term_id );
+
+	}
+
+	/**
+	 * Get Term ID
+	 *
+	 * @return  integer
+	 */
+	public function get_term_id() {
+
+		return $this->term_id;
+
+	}
+
+	/**
+	 * Get Taxonomy
+	 *
+	 * @return  string
+	 */
+	public function get_taxonomy() {
+
+		$term = get_term( $this->get_term_id() );
+
+		if ( is_a( $term, 'WP_Term' ) ) {
+			return $term->taxonomy;
+		}
+
+		return '';
 
 	}
 

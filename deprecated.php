@@ -16,7 +16,10 @@ function taxonomy_image_plugin_get_term_info( $tt_id ) {
 
 	$term_legacy = new TaxonomyImages\Term_Legacy( $tt_id );
 
-	return $term_legacy->get_fields();
+	return array(
+		'term_id'  => $term_legacy->get_term_id(),
+		'taxonomy' => $term_legacy->get_taxonomy()
+	);
 
 }
 
