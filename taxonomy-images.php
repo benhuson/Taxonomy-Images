@@ -454,25 +454,6 @@ function taxonomy_image_plugin_json_response( $args ) {
 	exit;
 }
 
-
-/**
- * Get Term Info.
- *
- * Returns term info by term_taxonomy_id.
- *
- * @param     int       term_taxonomy_id
- * @return    array     Keys: term_id (int) and taxonomy (string).
- *
- * @access    private
- */
-function taxonomy_image_plugin_get_term_info( $tt_id ) {
-
-	$term_legacy = new TaxonomyImages\Term_Legacy( $tt_id );
-
-	return $term_legacy->get_fields();
-
-}
-
 /**
  * Check Taxonomy Permissions.
  *
