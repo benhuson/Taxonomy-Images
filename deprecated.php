@@ -1,6 +1,29 @@
 <?php
 
 /**
+ * Get Term Info.
+ *
+ * Returns term info by term_taxonomy_id.
+ *
+ * @deprecated  Deprecated since version 1.0
+ *
+ * @internal  Private.
+ *
+ * @param   integer  $tt_id  term_taxonomy_id.
+ * @return  array            Keys: term_id (int) and taxonomy (string).
+ */
+function taxonomy_image_plugin_get_term_info( $tt_id ) {
+
+	$term_legacy = new TaxonomyImages\Term_Legacy( $tt_id );
+
+	return array(
+		'term_id'  => $term_legacy->get_term_id(),
+		'taxonomy' => $term_legacy->get_taxonomy()
+	);
+
+}
+
+/**
  * Deprecated Shortcode.
  *
  * @deprecated  Deprecated since version 0.7

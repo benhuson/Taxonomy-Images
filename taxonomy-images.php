@@ -30,6 +30,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 require_once( trailingslashit( dirname( __FILE__ ) ) . 'deprecated.php' );
 require_once( trailingslashit( dirname( __FILE__ ) ) . 'public-filters.php' );
 require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/term.php' );
+require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/term-legacy.php' );
 require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/image-admin-field.php' );
 require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/image-admin-control.php' );
 
@@ -453,42 +454,6 @@ function taxonomy_image_plugin_json_response( $args ) {
 	exit;
 }
 
-
-/**
- * Get Term Info.
- *
- * Returns term info by term_taxonomy_id.
- *
- * @param     int       term_taxonomy_id
- * @return    array     Keys: term_id (int) and taxonomy (string).
- *
- * @access    private
- */
-function taxonomy_image_plugin_get_term_info( $tt_id ) {
-	static $cache = array();
-	if ( isset( $cache[ $tt_id ] ) ) {
-		return $cache[ $tt_id ];
-	}
-
-	global $wpdb;
-
-	$data = $wpdb->get_results( $wpdb->prepare( "SELECT term_id, taxonomy FROM $wpdb->term_taxonomy WHERE term_taxonomy_id = %d LIMIT 1", $tt_id ) );
-	if ( isset( $data[0]->term_id ) ) {
-		$cache[ $tt_id ]['term_id'] = absint( $data[0]->term_id );
-	}
-
-	if ( isset( $data[0]->taxonomy ) ) {
-		$cache[ $tt_id ]['taxonomy'] = $data[0]->taxonomy;
-	}
-
-	if ( isset( $cache[ $tt_id ] ) ) {
-		return $cache[ $tt_id ];
-	}
-
-	return array();
-}
-
-
 /**
  * Check Taxonomy Permissions.
  *
@@ -501,17 +466,22 @@ function taxonomy_image_plugin_get_term_info( $tt_id ) {
  * @access    private
  */
 function taxonomy_image_plugin_check_permissions( $tt_id ) {
-	$data = taxonomy_image_plugin_get_term_info( $tt_id );
-	if ( ! isset( $data['taxonomy'] ) ) {
+
+	$term_legacy = new TaxonomyImages\Term_Legacy( $tt_id );
+
+	$tax = $term_legacy->get_taxonomy();
+	if ( empty( $tax ) ) {
 		return false;
 	}
 
-	$taxonomy = get_taxonomy( $data['taxonomy'] );
-	if ( ! isset( $taxonomy->cap->edit_terms ) ) {
-		return false;
+	$taxonomy = get_taxonomy( $tax );
+
+	if ( isset( $taxonomy->cap->edit_terms ) ) {
+		return current_user_can( $taxonomy->cap->edit_terms );
 	}
 
-	return current_user_can( $taxonomy->cap->edit_terms );
+	return false;
+
 }
 
 
@@ -578,8 +548,7 @@ function taxonomy_image_plugin_create_association() {
 	$assoc[ $tt_id ] = $image_id;
 
 	// Save as term meta
-	$tid = taxonomy_image_plugin_get_term_info( $tt_id );
-	$t = new TaxonomyImages\Term( $tid['term_id'] );
+	$t = new TaxonomyImages\Term_Legacy( $tt_id );
 	$t->update_image_id( $image_id );
 
 	if ( update_option( 'taxonomy_image_plugin', taxonomy_image_plugin_sanitize_associations( $assoc ) ) ) {
@@ -657,8 +626,7 @@ function taxonomy_image_plugin_remove_association() {
 	unset( $assoc[ $tt_id ] );
 
 	// Delete term meta
-	$tid = taxonomy_image_plugin_get_term_info( $tt_id );
-	$t = new TaxonomyImages\Term( $tid['term_id'] );
+	$t = new TaxonomyImages\Term_Legacy( $tt_id );
 	$t->delete_image();
 
 	if ( update_option( 'taxonomy_image_plugin', $assoc ) ) {
