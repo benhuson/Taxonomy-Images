@@ -50,7 +50,18 @@ class Term_Legacy extends Term {
 	 */
 	public function get_term_id() {
 
-		return absint( get_field( 'term_id' ) );
+		return absint( $this->get_field( 'term_id' ) );
+
+	}
+
+	/**
+	 * Get Taxonomy
+	 *
+	 * @return  string
+	 */
+	public function get_taxonomy() {
+
+		return $this->get_field( 'taxonomy' );
 
 	}
 
@@ -79,12 +90,14 @@ class Term_Legacy extends Term {
 	/**
 	 * Get Term Taxonomy Fields
 	 *
+	 * @internal  Private. For legacy compatibility only.
+	 *
 	 * @return  array  Term ID and Taxonomy values.
 	 */
-	private function get_fields() {
+	public function get_fields() {
 
-		if ( isset( $this->cache[ $this->ttid ] ) ) {
-			return $this->cache[ $this->ttid ];
+		if ( isset( self::$cache[ $this->ttid ] ) ) {
+			return self::$cache[ $this->ttid ];
 		}
 
 		return $this->query_ttid();
@@ -109,15 +122,15 @@ class Term_Legacy extends Term {
 			$data = $wpdb->get_results( $wpdb->prepare( "SELECT term_id, taxonomy FROM $wpdb->term_taxonomy WHERE term_taxonomy_id = %d LIMIT 1", $this->ttid ) );
 
 			if ( isset( $data[0]->term_id ) ) {
-				$this->cache[ $this->ttid ]['term_id'] = absint( $data[0]->term_id );
+				self::$cache[ $this->ttid ]['term_id'] = absint( $data[0]->term_id );
 			}
 
 			if ( isset( $data[0]->taxonomy ) ) {
-				$this->cache[ $this->ttid ]['taxonomy'] = $data[0]->taxonomy;
+				self::$cache[ $this->ttid ]['taxonomy'] = $data[0]->taxonomy;
 			}
 
-			if ( isset( $this->cache[ $this->ttid ] ) ) {
-				return $this->cache[ $this->ttid ];
+			if ( isset( self::$cache[ $this->ttid ] ) ) {
+				return self::$cache[ $this->ttid ];
 			}
 
 		}
