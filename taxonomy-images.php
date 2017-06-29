@@ -548,8 +548,7 @@ function taxonomy_image_plugin_create_association() {
 	$assoc[ $tt_id ] = $image_id;
 
 	// Save as term meta
-	$t_legacy = new TaxonomyImages\Term_Legacy( $tt_id );
-	$t = new TaxonomyImages\Term( $t_legacy->get_term_id() );
+	$t = new TaxonomyImages\Term_Legacy( $tt_id );
 	$t->update_image_id( $image_id );
 
 	if ( update_option( 'taxonomy_image_plugin', taxonomy_image_plugin_sanitize_associations( $assoc ) ) ) {
@@ -627,8 +626,7 @@ function taxonomy_image_plugin_remove_association() {
 	unset( $assoc[ $tt_id ] );
 
 	// Delete term meta
-	$t_legacy = new TaxonomyImages\Term_Legacy( $tt_id );
-	$t = new TaxonomyImages\Term( $t_legacy->get_term_id() );
+	$t = new TaxonomyImages\Term_Legacy( $tt_id );
 	$t->delete_image();
 
 	if ( update_option( 'taxonomy_image_plugin', $assoc ) ) {
