@@ -31,6 +31,7 @@ require_once( trailingslashit( dirname( __FILE__ ) ) . 'deprecated.php' );
 require_once( trailingslashit( dirname( __FILE__ ) ) . 'public-filters.php' );
 require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/term.php' );
 require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/term-legacy.php' );
+require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/image.php' );
 require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/image-admin-field.php' );
 require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/image-admin-control.php' );
 require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/image-admin-ajax.php' );
@@ -63,39 +64,8 @@ function taxonomy_image_plugin_url( $file = '' ) {
 	return $path . $file;
 }
 
-
-/**
- * Detail Image Size.
- *
- * @return    array     Configuration for the "detail" image size.
- * @access    private
- * @since     0.7
- */
-function taxonomy_image_plugin_detail_image_size() {
-	return array(
-		'name' => 'detail',
-		'size' => array( 150, 150, true )
-	);
-}
-
-
-/**
- * Register custom image size with WordPress.
- *
- * @access    private
- * @since     2010-10-28
- */
-function taxonomy_image_plugin_add_image_size() {
-	$detail = taxonomy_image_plugin_detail_image_size();
-	add_image_size(
-		$detail['name'],
-		$detail['size'][0],
-		$detail['size'][1],
-		$detail['size'][2]
-	);
-}
-add_action( 'init', 'taxonomy_image_plugin_add_image_size' );
-
+// Register custom image size with WordPress.
+add_action( 'init', array( 'TaxonomyImages\Image', 'add_image_size' ) );
 
 /**
  * Load Plugin Text Domain.
@@ -107,110 +77,6 @@ function taxonomy_image_plugin_text_domain() {
 	load_plugin_textdomain( 'taxonomy-images', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
 }
 add_action( 'init', 'taxonomy_image_plugin_text_domain' );
-
-/**
- * Get Image Source.
- *
- * Return a uri to a custom image size.
- *
- * If size doesn't exist, attempt to create a resized version.
- * The output of this function should be escaped before printing to the browser.
- *
- * @param     int       Image ID.
- * @return    string    URI of custom image on success; emtpy string otherwise.
- *
- * @access    private.
- * @since     2010-10-28
- */
-function taxonomy_image_plugin_get_image_src( $id ) {
-	$detail = taxonomy_image_plugin_detail_image_size();
-
-	/* Return url to custom intermediate size if it exists. */
-	$img = image_get_intermediate_size( $id, $detail['name'] );
-	if ( isset( $img['url'] ) ) {
-		return $img['url'];
-	}
-
-	// Detail image does not exist, attempt to create it.
-	$wp_upload_dir = wp_upload_dir();
-
-	if ( isset( $wp_upload_dir['basedir'] ) ) {
-
-		/* Create path to original uploaded image. */
-		$path = trailingslashit( $wp_upload_dir['basedir'] ) . get_post_meta( $id, '_wp_attached_file', true );
-		if ( is_file( $path ) ) {
-
-			// Attempt to create a new downsized version of the original image
-			$new = wp_get_image_editor( $path );
-
-			// Image editor instance OK
-			if ( ! is_wp_error( $new ) ) {
-
-				$resized = $new->resize(
-					$detail['size'][0],
-					$detail['size'][1],
-					absint( $detail['size'][2] )
-				);
-
-				// Image resize successful. Generate and cache image metadata. Return url.
-				if ( ! is_wp_error( $resized ) ) {
-
-					$path = $new->generate_filename();
-					$new->save( $path );
-
-					$meta = wp_generate_attachment_metadata( $id, $path );
-					wp_update_attachment_metadata( $id, $meta );
-					$img = image_get_intermediate_size( $id, $detail['name'] );
-
-					if ( isset( $img['url'] ) ) {
-						return $img['url'];
-					}
-
-				}
-
-			}
-
-		}
-
-	}
-
-	/* Custom intermediate size cannot be created, try for thumbnail. */
-	$img = image_get_intermediate_size( $id, 'thumbnail' );
-	if ( isset( $img['url'] ) ) {
-		return $img['url'];
-	}
-
-	/* Thumbnail cannot be found, try fullsize. */
-	$url = wp_get_attachment_url( $id );
-	if ( ! empty( $url ) ) {
-		return $url;
-	}
-
-	/**
-	 * No image can be found.
-	 * This is most likely caused by a user deleting an attachment before deleting it's association with a taxonomy.
-	 * If we are in the administration panels:
-	 * - Delete the association.
-	 * - Return uri to default.png.
-	 */
-	if ( is_admin() ) {
-		$assoc = taxonomy_image_plugin_get_associations();
-		foreach ( $assoc as $term => $img ) {
-			if ( $img === $id ) {
-				unset( $assoc[ $term ] );
-			}
-		}
-		update_option( 'taxonomy_image_plugin', $assoc );
-		return taxonomy_image_plugin_url( 'default.png' );
-	}
-
-	/*
-	 * No image can be found.
-	 * Return path to blank-image.png.
-	 */
-	return taxonomy_image_plugin_url( 'blank.png' );
-}
-
 
 /**
  * Sanitize Associations.

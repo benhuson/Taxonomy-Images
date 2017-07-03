@@ -98,7 +98,10 @@ class taxonomy_images_plugin {
 	}
 
 	public function get_thumb( $id ) {
-		return taxonomy_image_plugin_get_image_src( $id );
+
+		$i = new TaxonomyImages\Image( $id );
+		return $i->get_url();
+
 	}
 
 	public function print_image_html( $size = 'medium', $term_tax_id = false, $title = true, $align = 'none' ) {
