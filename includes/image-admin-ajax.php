@@ -71,6 +71,7 @@ class Image_Admin_AJAX {
 			) );
 		}
 
+		// @todo  Deprecate. Here for backwards-compatibility.
 		$assoc = taxonomy_image_plugin_get_associations();
 		$assoc[ $tt_id ] = $image_id;
 
@@ -78,6 +79,7 @@ class Image_Admin_AJAX {
 		$t = new Term_Legacy( $tt_id );
 		$t->update_image_id( $image_id );
 
+		// @todo  Make this work primarily for term meta.
 		if ( update_option( 'taxonomy_image_plugin', taxonomy_image_plugin_sanitize_associations( $assoc ) ) ) {
 
 			self::json_response( array(
@@ -146,6 +148,7 @@ class Image_Admin_AJAX {
 			) );
 		}
 
+		// @todo  Deprecate. Here for backwards-compatibility.
 		$assoc = taxonomy_image_plugin_get_associations();
 
 		if ( ! isset( $assoc[ $tt_id ] ) ) {
@@ -161,6 +164,7 @@ class Image_Admin_AJAX {
 		$t = new Term_Legacy( $tt_id );
 		$t->delete_image();
 
+		// @todo  Make this work primarily for term meta.
 		if ( update_option( 'taxonomy_image_plugin', $assoc ) ) {
 
 			self::json_response( array(
