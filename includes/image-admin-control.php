@@ -49,7 +49,8 @@ class Image_Admin_Control {
 
 		$hide = $attachment_id ? '' : ' hide';
 
-		$img = taxonomy_image_plugin_get_image_src( $attachment_id );
+		$img = new Image( $attachment_id );
+		$img_url = $img->get_url();
 
 		// Nonces
 		$nonce = wp_create_nonce( 'taxonomy-image-plugin-create-association' );
@@ -85,7 +86,7 @@ class Image_Admin_Control {
 
 		// Control
 		$o  = '<div id="' . esc_attr( 'taxonomy-image-control-' . $tt_id ) . '" class="taxonomy-image-control hide-if-no-js">';
-		$o .= '<a ' . implode( ' ', $edit_attributes ) . '><img id="' . esc_attr( 'taxonomy_image_plugin_' . $tt_id ) . '" src="' . esc_url( $img ) . '" alt="" /></a>';
+		$o .= '<a ' . implode( ' ', $edit_attributes ) . '><img id="' . esc_attr( 'taxonomy_image_plugin_' . $tt_id ) . '" src="' . esc_url( $img_url ) . '" alt="" /></a>';
 		$o .= '<a ' . implode( ' ', $add_attributes ) . '>' . esc_html__( 'Upload.', 'taxonomy-images' ) . '</a>';
 		$o .= '<a ' . implode( ' ', $remove_attributes ) . '>' . esc_html__( 'Delete', 'taxonomy-images' ) . '</a>';
 		$o .= '</div>';

@@ -82,10 +82,12 @@ class Image_Admin_AJAX {
 		// @todo  Make this work primarily for term meta.
 		if ( update_option( 'taxonomy_image_plugin', taxonomy_image_plugin_sanitize_associations( $assoc ) ) ) {
 
+			$image = new Image( $image_id );
+
 			self::json_response( array(
 				'status'               => 'good',
 				'why'                  => esc_html__( 'Image successfully associated', 'taxonomy-images' ),
-				'attachment_thumb_src' => taxonomy_image_plugin_get_image_src( $image_id )
+				'attachment_thumb_src' => $image->get_url()
 			) );
 
 		} else {
