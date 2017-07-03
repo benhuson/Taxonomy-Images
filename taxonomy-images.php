@@ -248,25 +248,8 @@ function taxonomy_image_plugin_control_taxonomies() {
 add_action( 'wp_ajax_taxonomy_images_update_term_image', array( 'TaxonomyImages\Image_Admin_AJAX', 'update_term_image' ) );
 add_action( 'wp_ajax_taxonomy_images_delete_term_image', array( 'TaxonomyImages\Image_Admin_AJAX', 'delete_term_image' ) );
 
-/**
- * Get a list of user-defined associations.
- * Associations are stored in the WordPress options table.
- *
- * @param     bool      Should WordPress query the database for the results
- * @return    array     List of associations. Key => taxonomy_term_id; Value => image_id
- *
- * @access    private
- */
-function taxonomy_image_plugin_get_associations( $refresh = false ) {
-	static $associations = array();
-	if ( empty( $associations ) || $refresh ) {
-		$associations = TaxonomyImages\Associations_Legacy::sanitize( get_option( 'taxonomy_image_plugin' ) );
-	}
-
-	return $associations;
-}
-add_action( 'init', 'taxonomy_image_plugin_get_associations' );
-
+// Load a list of user-defined associations.
+add_action( 'init', array( 'TaxonomyImages\Associations_Legacy', 'get' ) );
 
 /**
  * Dynamically create hooks for each taxonomy.
@@ -438,11 +421,6 @@ add_action( 'wp_enqueue_scripts', 'taxonomy_image_plugin_css_public' );
  * Two entries in the options table will created when this
  * plugin is activated in the event that they do not exist.
  *
- * 'taxonomy_image_plugin' (array) A flat list of all assocaitions
- * made by this plugin. Keys are integers representing the
- * term_taxonomy_id of terms. Values are integers representing the
- * ID property of an image attachment.
- *
  * 'taxonomy_image_plugin_settings' (array) A multi-dimensional array
  * of user-defined settings. As of version 0.7, only one key is used:
  * 'taxonomies' which is a whitelist of registered taxonomies having ui
@@ -452,10 +430,8 @@ add_action( 'wp_enqueue_scripts', 'taxonomy_image_plugin_css_public' );
  * @alter     0.7
  */
 function taxonomy_image_plugin_activate() {
-	$associations = get_option( 'taxonomy_image_plugin' );
-	if ( false === $associations ) {
-		add_option( 'taxonomy_image_plugin', array() );
-	}
+
+	TaxonomyImages\Associations_Legacy::create_option();
 
 	$settings = get_option( 'taxonomy_image_plugin_settings' );
 	if ( false === $settings ) {
@@ -508,7 +484,7 @@ function taxonomy_image_plugin_is_screen_active() {
  * @since     1.1
  */
 function taxonomy_image_plugin_cache_images( $posts ) {
-	$assoc = taxonomy_image_plugin_get_associations();
+	$assoc = TaxonomyImages\Associations_Legacy::get();
 	if ( empty( $assoc ) ) {
 		return;
 	}

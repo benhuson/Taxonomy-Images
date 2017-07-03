@@ -113,7 +113,7 @@ class Image {
 		 * - Return uri to default.png.
 		 */
 		if ( is_admin() ) {
-			$assoc = taxonomy_image_plugin_get_associations();
+			$assoc = Associations_Legacy::get();
 			foreach ( $assoc as $term => $img ) {
 				if ( $img === $this->image_id ) {
 					unset( $assoc[ $term ] );

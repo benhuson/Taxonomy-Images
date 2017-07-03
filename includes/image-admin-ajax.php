@@ -72,7 +72,7 @@ class Image_Admin_AJAX {
 		}
 
 		// @todo  Deprecate. Here for backwards-compatibility.
-		$assoc = taxonomy_image_plugin_get_associations();
+		$assoc = Associations_Legacy::get();
 		$assoc[ $tt_id ] = $image_id;
 
 		// Save as term meta
@@ -151,7 +151,7 @@ class Image_Admin_AJAX {
 		}
 
 		// @todo  Deprecate. Here for backwards-compatibility.
-		$assoc = taxonomy_image_plugin_get_associations();
+		$assoc = Associations_Legacy::get();
 
 		if ( ! isset( $assoc[ $tt_id ] ) ) {
 			self::json_response( array(

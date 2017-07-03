@@ -48,7 +48,7 @@ function taxonomy_images_plugin_shortcode_deprecated( $atts = array() ) {
 	}
 
 	$terms = get_terms( $taxonomy );
-	$associations = taxonomy_image_plugin_get_associations( $refresh = false );
+	$associations = TaxonomyImages\Associations_Legacy::get();
 
 	if ( ! is_wp_error( $terms ) ) {
 		foreach( (array) $terms as $term ) {
@@ -93,7 +93,7 @@ class taxonomy_images_plugin {
 	public $settings = array();
 
 	public function __construct() {
-		$this->settings = taxonomy_image_plugin_get_associations();
+		$this->settings = TaxonomyImages\Associations_Legacy::get();
 		add_action( 'taxonomy_image_plugin_print_image_html', array( &$this, 'print_image_html' ), 1, 3 );
 	}
 
