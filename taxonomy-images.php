@@ -432,8 +432,8 @@ function taxonomy_image_plugin_check_permissions( $tt_id ) {
 }
 
 // Handle AJAX Updates
-add_action( 'wp_ajax_taxonomy_image_create_association', array( 'TaxonomyImages\Image_Admin_AJAX', 'create_association' ) );
-add_action( 'wp_ajax_taxonomy_image_plugin_remove_association', array( 'TaxonomyImages\Image_Admin_AJAX', 'remove_association' ) );
+add_action( 'wp_ajax_taxonomy_images_update_term_image', array( 'TaxonomyImages\Image_Admin_AJAX', 'update_term_image' ) );
+add_action( 'wp_ajax_taxonomy_images_delete_term_image', array( 'TaxonomyImages\Image_Admin_AJAX', 'delete_term_image' ) );
 
 /**
  * Get a list of user-defined associations.

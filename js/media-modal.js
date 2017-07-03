@@ -21,7 +21,7 @@ var taxonomy_images_file_frame;
 				type     : 'POST',
 				dataType : 'json',
 				data     : {
-					'action'   : 'taxonomy_image_plugin_remove_association',
+					'action'   : 'taxonomy_images_delete_term_image',
 					'wp_nonce' : $( this ).data( 'nonce' ),
 					'tt_id'    : $( this ).data( 'tt-id' )
 				},
@@ -108,7 +108,7 @@ var taxonomy_images_file_frame;
 					type     : 'POST',
 					dataType : 'json',
 					data     : {
-						'action'        : 'taxonomy_image_create_association',
+						'action'        : 'taxonomy_images_update_term_image',
 						'wp_nonce'      : TaxonomyImagesMediaModal.nonce,
 						'attachment_id' : attachment.id,
 						'tt_id'         : parseInt( TaxonomyImagesMediaModal.ttID )

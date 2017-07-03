@@ -10,13 +10,13 @@ namespace TaxonomyImages;
 class Image_Admin_AJAX {
 
 	/**
-	 * Create Association
+	 * Update Term Image
 	 *
 	 * Handles the AJAX action to update a term image.
 	 *
 	 * @internal  Private. Called via the `wp_ajax_taxonomy_image_create_association` action.
 	 */
-	public static function create_association() {
+	public static function update_term_image() {
 
 		if ( ! isset( $_POST['tt_id'] ) ) {
 			self::json_response( array(
@@ -101,13 +101,13 @@ class Image_Admin_AJAX {
 	}
 
 	/**
-	 * Remove Association
+	 * Delete Term Image
 	 *
 	 * Handles the AJAX action to remove a term image.
 	 *
 	 * @internal  Private. Called via the `wp_ajax_taxonomy_image_plugin_remove_association` action.
 	 */
-	public static function remove_association() {
+	public static function delete_term_image() {
 
 		if ( ! isset( $_POST['tt_id'] ) ) {
 			self::json_response( array(
