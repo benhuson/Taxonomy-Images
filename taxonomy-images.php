@@ -348,19 +348,27 @@ function taxonomy_image_plugin_taxonomy_columns( $original_columns ) {
  * @param     string    Row.
  * @param     string    Name of the current column.
  * @param     int       Term ID.
- * @return    string    @see taxonomy_image_plugin_control_image()
+ * @return    string    HTML image control.
  *
  * @access    private
  * @since     2010-11-08
  */
 function taxonomy_image_plugin_taxonomy_rows( $row, $column_name, $term_id ) {
-	if ( 'taxonomy_image_plugin' === $column_name ) {
-		global $taxonomy;
-		return $row . taxonomy_image_plugin_control_image( $term_id, $taxonomy );
-	}
-	return $row;
-}
 
+	global $taxonomy;
+
+	if ( 'taxonomy_image_plugin' === $column_name ) {
+
+		$term = get_term( $term_id, $taxonomy );
+
+		$control = new TaxonomyImages\Image_Admin_Control( $term );
+
+		return $row . $control->get_rendered();
+	}
+
+	return $row;
+
+}
 
 /**
  * Edit Term Control.
@@ -393,25 +401,6 @@ function taxonomy_image_plugin_edit_tag_form( $term, $taxonomy ) {
 		</td>
 	</tr>
 	<?php
-
-}
-
-/**
- * Image Control.
- *
- * Creates all image controls on edit-tags.php.
- *
- * @todo      Remove rel tag from link... will need to adjust js to accomodate.
- * @since     0.7
- * @access    private
- */
-function taxonomy_image_plugin_control_image( $term_id, $taxonomy ) {
-
-	$term = get_term( $term_id, $taxonomy );
-
-	$control = new TaxonomyImages\Image_Admin_Control( $term );
-
-	return $control->get_rendered();
 
 }
 
