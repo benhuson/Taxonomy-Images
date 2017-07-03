@@ -61,6 +61,31 @@ class Settings_Admin {
 	}
 
 	/**
+	 * Taxonomies Setting Field
+	 *
+	 * @internal  Private. Called by add_settings_field().
+	 */
+	public static function taxonomies_setting_field() {
+
+		$settings = get_option( 'taxonomy_image_plugin_settings' );
+		$taxonomies = get_taxonomies( array(), 'objects' );
+
+		foreach ( (array) $taxonomies as $taxonomy ) {
+
+			if ( ! isset( $taxonomy->name ) || ! isset( $taxonomy->label ) || ! isset( $taxonomy->show_ui ) || empty( $taxonomy->show_ui ) ) {
+				continue;
+			}
+
+			$id = 'taxonomy-images-' . $taxonomy->name;
+			$checked = checked( isset( $settings['taxonomies'] ) && in_array( $taxonomy->name, (array) $settings['taxonomies'] ), true, false );
+
+			printf( '<p><label for="%1$s"><input%2$s id="%1$s" type="checkbox" name="taxonomy_image_plugin_settings[taxonomies][]" value="%3$s" /> %4$s</label></p>', esc_attr( $id ), $checked, esc_attr( $taxonomy->name ), esc_html( $taxonomy->label ) );
+
+		}
+
+	}
+
+	/**
 	 * Sanitize Settings
 	 *
 	 * This function is responsible for ensuring that

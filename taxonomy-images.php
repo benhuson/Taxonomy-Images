@@ -119,46 +119,12 @@ function taxonomy_image_plugin_register_settings() {
 	add_settings_field(
 		'taxonomy-images',
 		esc_html__( 'Taxonomies', 'taxonomy-images' ),
-		'taxonomy_image_plugin_control_taxonomies',
+		array( 'TaxonomyImages\Settings_Admin', 'taxonomies_setting_field' ),
 		'taxonomy_image_plugin_settings',
 		'taxonomy_image_plugin_settings'
 	);
 }
 add_action( 'admin_init', 'taxonomy_image_plugin_register_settings' );
-
-/**
- * Taxonomy Checklist.
- *
- * @access    private
- */
-function taxonomy_image_plugin_control_taxonomies() {
-	$settings = get_option( 'taxonomy_image_plugin_settings' );
-	$taxonomies = get_taxonomies( array(), 'objects' );
-	foreach ( (array) $taxonomies as $taxonomy ) {
-		if ( ! isset( $taxonomy->name ) ) {
-			continue;
-		}
-
-		if ( ! isset( $taxonomy->label ) ) {
-			continue;
-		}
-
-		if ( ! isset( $taxonomy->show_ui ) || empty( $taxonomy->show_ui ) ) {
-			continue;
-		}
-
-		$id = 'taxonomy-images-' . $taxonomy->name;
-
-		$checked = '';
-		if ( isset( $settings['taxonomies'] ) && in_array( $taxonomy->name, (array) $settings['taxonomies'] ) ) {
-			$checked = ' checked="checked"';
-		}
-
-		print "\n" . '<p><label for="' . esc_attr( $id ) . '">';
-		print '<input' . $checked . ' id="' . esc_attr( $id ) . '" type="checkbox" name="taxonomy_image_plugin_settings[taxonomies][]" value="' . esc_attr( $taxonomy->name ) . '" />';
-		print ' ' . esc_html( $taxonomy->label ) . '</label></p>';
-	}
-}
 
 // Handle AJAX Updates
 add_action( 'wp_ajax_taxonomy_images_update_term_image', array( 'TaxonomyImages\Image_Admin_AJAX', 'update_term_image' ) );
