@@ -813,22 +813,6 @@ add_action( 'admin_print_styles-edit-tags.php', 'taxonomy_image_plugin_css_admin
 add_action( 'admin_print_styles-term.php', 'taxonomy_image_plugin_css_admin' );       // WordPress 4.5+
 
 /**
- * Thickbox styles.
- *
- * @since     0.7
- * @access    private
- */
-function taxonomy_image_plugin_css_thickbox() {
-	if ( false == taxonomy_image_plugin_is_screen_active() ) {
-		return;
-	}
-
-	wp_enqueue_style( 'thickbox' );
-}
-add_action( 'admin_print_styles-edit-tags.php', 'taxonomy_image_plugin_css_thickbox' );
-
-
-/**
  * Public Styles.
  *
  * Prints custom css to all public pages. If you do not
