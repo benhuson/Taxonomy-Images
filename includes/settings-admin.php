@@ -8,6 +8,7 @@
 namespace TaxonomyImages;
 
 add_action( 'admin_menu', array( 'TaxonomyImages\Settings_Admin', 'settings_menu' ) );
+add_action( 'admin_init', array( 'TaxonomyImages\Settings_Admin', 'register_settings' ) );
 
 class Settings_Admin {
 
@@ -57,6 +58,55 @@ class Settings_Admin {
 		// translators: Button on the custom administration page.
 		echo '<div class="button-holder"><input class="button-primary" name="submit" type="submit" value="' . esc_attr__( 'Save Changes', 'taxonomy-images' ) . '" /></div>';
 		echo '</div></form></div>';
+
+	}
+
+	/**
+	 * Register settings
+	 *
+	 * This plugin will store to sets of settings in the
+	 * options table. The first is named 'taxonomy_image_plugin'
+	 * and stores the associations between terms and images. The
+	 * keys in this array represent the term_taxonomy_id of the
+	 * term while the value represents the ID of the image
+	 * attachment.
+	 *
+	 * The second setting is used to store everything else. As of
+	 * version 0.7 it has one key named 'taxonomies' which is a
+	 * flat array consisting of taxonomy names representing a
+	 * black-list of registered taxonomies. These taxonomies will
+	 * NOT be given an image UI.
+	 *
+	 * @internal  Private. Called via the `admin_init` action.
+	 */
+	public static function register_settings() {
+
+		register_setting(
+			'taxonomy_image_plugin',
+			'taxonomy_image_plugin',
+			array( 'Associations_Legacy', 'sanitize' )
+		);
+
+		register_setting(
+			'taxonomy_image_plugin_settings',
+			'taxonomy_image_plugin_settings',
+			array( get_class(), 'sanitize_settings' )
+		);
+
+		add_settings_section(
+			'taxonomy_image_plugin_settings',
+			esc_html__( 'Settings', 'taxonomy-images' ),
+			'__return_false',
+			'taxonomy_image_plugin_settings'
+		);
+
+		add_settings_field(
+			'taxonomy-images',
+			esc_html__( 'Taxonomies', 'taxonomy-images' ),
+			array( get_class(), 'taxonomies_setting_field' ),
+			'taxonomy_image_plugin_settings',
+			'taxonomy_image_plugin_settings'
+		);
 
 	}
 
