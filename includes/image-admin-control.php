@@ -125,7 +125,7 @@ class Image_Admin_Control {
 
 		if ( $this->term ) {
 
-			$associations = taxonomy_image_plugin_get_associations();
+			$associations = Associations_Legacy::get();
 
 			if ( isset( $associations[ $this->term->term_taxonomy_id ] ) ) {
 				return (int) $associations[ $this->term->term_taxonomy_id ];

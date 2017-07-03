@@ -26,8 +26,6 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-
-require_once( trailingslashit( dirname( __FILE__ ) ) . 'deprecated.php' );
 require_once( trailingslashit( dirname( __FILE__ ) ) . 'public-filters.php' );
 require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/term.php' );
 require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/term-legacy.php' );
@@ -35,6 +33,8 @@ require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/image.php' );
 require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/image-admin-field.php' );
 require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/image-admin-control.php' );
 require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/image-admin-ajax.php' );
+require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/associations-legacy.php' );
+require_once( trailingslashit( dirname( __FILE__ ) ) . 'deprecated.php' );
 
 /**
  * Version Number.
@@ -77,29 +77,6 @@ function taxonomy_image_plugin_text_domain() {
 	load_plugin_textdomain( 'taxonomy-images', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
 }
 add_action( 'init', 'taxonomy_image_plugin_text_domain' );
-
-/**
- * Sanitize Associations.
- *
- * Ensures that all key/value pairs are positive integers.
- * This filter will discard all zero and negative values.
- *
- * @param     array     An array of term_taxonomy_id/attachment_id pairs.
- * @return    array     Sanitized version of parameter.
- *
- * @access    private
- */
-function taxonomy_image_plugin_sanitize_associations( $associations ) {
-	$o = array();
-	foreach ( (array) $associations as $tt_id => $im_id ) {
-		$tt_id = absint( $tt_id );
-		$im_id = absint( $im_id );
-		if ( 0 < $tt_id && 0 < $im_id )
-			$o[ $tt_id ] = $im_id;
-	}
-	return $o;
-}
-
 
 /**
  * Sanitize Settings.
@@ -159,7 +136,7 @@ function taxonomy_image_plugin_register_settings() {
 	register_setting(
 		'taxonomy_image_plugin',
 		'taxonomy_image_plugin',
-		'taxonomy_image_plugin_sanitize_associations'
+		array( 'TaxonomyImages\Associations_Legacy', 'sanitize' )
 	);
 	register_setting(
 		'taxonomy_image_plugin_settings',
@@ -271,25 +248,8 @@ function taxonomy_image_plugin_control_taxonomies() {
 add_action( 'wp_ajax_taxonomy_images_update_term_image', array( 'TaxonomyImages\Image_Admin_AJAX', 'update_term_image' ) );
 add_action( 'wp_ajax_taxonomy_images_delete_term_image', array( 'TaxonomyImages\Image_Admin_AJAX', 'delete_term_image' ) );
 
-/**
- * Get a list of user-defined associations.
- * Associations are stored in the WordPress options table.
- *
- * @param     bool      Should WordPress query the database for the results
- * @return    array     List of associations. Key => taxonomy_term_id; Value => image_id
- *
- * @access    private
- */
-function taxonomy_image_plugin_get_associations( $refresh = false ) {
-	static $associations = array();
-	if ( empty( $associations ) || $refresh ) {
-		$associations = taxonomy_image_plugin_sanitize_associations( get_option( 'taxonomy_image_plugin' ) );
-	}
-
-	return $associations;
-}
-add_action( 'init', 'taxonomy_image_plugin_get_associations' );
-
+// Load a list of user-defined associations.
+add_action( 'init', array( 'TaxonomyImages\Associations_Legacy', 'get' ) );
 
 /**
  * Dynamically create hooks for each taxonomy.
@@ -461,11 +421,6 @@ add_action( 'wp_enqueue_scripts', 'taxonomy_image_plugin_css_public' );
  * Two entries in the options table will created when this
  * plugin is activated in the event that they do not exist.
  *
- * 'taxonomy_image_plugin' (array) A flat list of all assocaitions
- * made by this plugin. Keys are integers representing the
- * term_taxonomy_id of terms. Values are integers representing the
- * ID property of an image attachment.
- *
  * 'taxonomy_image_plugin_settings' (array) A multi-dimensional array
  * of user-defined settings. As of version 0.7, only one key is used:
  * 'taxonomies' which is a whitelist of registered taxonomies having ui
@@ -475,10 +430,8 @@ add_action( 'wp_enqueue_scripts', 'taxonomy_image_plugin_css_public' );
  * @alter     0.7
  */
 function taxonomy_image_plugin_activate() {
-	$associations = get_option( 'taxonomy_image_plugin' );
-	if ( false === $associations ) {
-		add_option( 'taxonomy_image_plugin', array() );
-	}
+
+	TaxonomyImages\Associations_Legacy::create_option();
 
 	$settings = get_option( 'taxonomy_image_plugin_settings' );
 	if ( false === $settings ) {
@@ -531,7 +484,7 @@ function taxonomy_image_plugin_is_screen_active() {
  * @since     1.1
  */
 function taxonomy_image_plugin_cache_images( $posts ) {
-	$assoc = taxonomy_image_plugin_get_associations();
+	$assoc = TaxonomyImages\Associations_Legacy::get();
 	if ( empty( $assoc ) ) {
 		return;
 	}

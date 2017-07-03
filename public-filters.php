@@ -89,7 +89,7 @@ function taxonomy_images_plugin_get_terms( $default, $args = array() ) {
 		}
 	}
 
-	$assoc = taxonomy_image_plugin_get_associations();
+	$assoc = TaxonomyImages\Associations_Legacy::get();
 	if ( ! empty( $args['having_images'] ) && empty( $assoc ) ) {
 		return array();
 	}
@@ -175,7 +175,7 @@ function taxonomy_images_plugin_get_the_terms( $default, $args = array() ) {
 		return array();
 	}
 
-	$assoc = taxonomy_image_plugin_get_associations();
+	$assoc = TaxonomyImages\Associations_Legacy::get();
 
 	if ( empty( $args['post_id'] ) ) {
 		$args['post_id'] = get_the_ID();
@@ -395,7 +395,7 @@ function taxonomy_images_plugin_get_queried_term_image_id( $default ) {
 		return 0;
 	}
 
-	$associations = taxonomy_image_plugin_get_associations();
+	$associations = TaxonomyImages\Associations_Legacy::get();
 	$tt_id = absint( $obj->term_taxonomy_id );
 
 	$ID = 0;
