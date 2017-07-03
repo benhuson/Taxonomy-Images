@@ -107,39 +107,6 @@ function taxonomy_image_plugin_text_domain() {
 }
 add_action( 'init', 'taxonomy_image_plugin_text_domain' );
 
-
-/**
- * Modal Button.
- *
- * Create a button in the modal media window to associate the current image to the term.
- *
- * @param     array     Multidimensional array representing the images form.
- * @param     stdClass  WordPress post object.
- * @return    array     The image's form array with added button if modal window was accessed by this script.
- *
- * @access    private
- * @since     2010-10-28
- * @alter     0.7
- */
-function taxonomy_image_plugin_modal_button( $fields, $post ) {
-	if ( isset( $fields['image-size'] ) && isset( $post->ID ) ) {
-		$image_id = (int) $post->ID;
-
-		$o  = '<div class="taxonomy-image-modal-control" id="' . esc_attr( 'taxonomy-image-modal-control-' . $image_id ) . '">';
-		$o .= '<span class="button create-association">' . sprintf( esc_html__( 'Associate with %1$s', 'taxonomy-images' ), '<span class="term-name">' . esc_html__( 'this term', 'taxonomy-images' ) . '</span>' ) . '</span>';
-		$o .= '<span class="remove-association">' . sprintf( esc_html__( 'Remove association with %1$s', 'taxonomy-images' ), '<span class="term-name">' . esc_html__( 'this term', 'taxonomy-images' ) . '</span>' ) . '</span>';
-		$o .= '<input class="taxonomy-image-button-image-id" name="' . esc_attr( 'taxonomy-image-button-image-id-' . $image_id ) . '" type="hidden" value="' . esc_attr( $image_id ) . '" />';
-		$o .= '<input class="taxonomy-image-button-nonce-create" name="' . esc_attr( 'taxonomy-image-button-nonce-create-' . $image_id ) . '" type="hidden" value="' . esc_attr( wp_create_nonce( 'taxonomy-image-plugin-create-association' ) ) . '" />';
-		$o .= '<input class="taxonomy-image-button-nonce-remove" name="' . esc_attr( 'taxonomy-image-button-nonce-remove-' . $image_id ) . '" type="hidden" value="' . esc_attr( wp_create_nonce( 'taxonomy-image-plugin-remove-association' ) ) . '" />';
-		$o .= '</div>';
-
-		$fields['image-size']['extra_rows']['taxonomy-image-plugin-button']['html'] = $o;
-	}
-	return $fields;
-}
-add_filter( 'attachment_fields_to_edit', 'taxonomy_image_plugin_modal_button', 20, 2 );
-
-
 /**
  * Get Image Source.
  *
