@@ -2,7 +2,7 @@
 Contributors:         mfields, husobj, jamiemchale
 Donate link:          https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=QSYTTQZBRKQVE
 Tags:                 taxonomy, tag, category, term, image, upload, media
-Requires at least:    3.5
+Requires at least:    4.4
 Tested up to:         4.7.2
 Stable tag:           1.0.dev
 License:              GPLv2 or later
