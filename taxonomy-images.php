@@ -26,8 +26,6 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-
-require_once( trailingslashit( dirname( __FILE__ ) ) . 'deprecated.php' );
 require_once( trailingslashit( dirname( __FILE__ ) ) . 'public-filters.php' );
 require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/term.php' );
 require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/term-legacy.php' );
@@ -35,6 +33,8 @@ require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/image.php' );
 require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/image-admin-field.php' );
 require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/image-admin-control.php' );
 require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/image-admin-ajax.php' );
+require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/associations-legacy.php' );
+require_once( trailingslashit( dirname( __FILE__ ) ) . 'deprecated.php' );
 
 /**
  * Version Number.
@@ -77,29 +77,6 @@ function taxonomy_image_plugin_text_domain() {
 	load_plugin_textdomain( 'taxonomy-images', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
 }
 add_action( 'init', 'taxonomy_image_plugin_text_domain' );
-
-/**
- * Sanitize Associations.
- *
- * Ensures that all key/value pairs are positive integers.
- * This filter will discard all zero and negative values.
- *
- * @param     array     An array of term_taxonomy_id/attachment_id pairs.
- * @return    array     Sanitized version of parameter.
- *
- * @access    private
- */
-function taxonomy_image_plugin_sanitize_associations( $associations ) {
-	$o = array();
-	foreach ( (array) $associations as $tt_id => $im_id ) {
-		$tt_id = absint( $tt_id );
-		$im_id = absint( $im_id );
-		if ( 0 < $tt_id && 0 < $im_id )
-			$o[ $tt_id ] = $im_id;
-	}
-	return $o;
-}
-
 
 /**
  * Sanitize Settings.
@@ -159,7 +136,7 @@ function taxonomy_image_plugin_register_settings() {
 	register_setting(
 		'taxonomy_image_plugin',
 		'taxonomy_image_plugin',
-		'taxonomy_image_plugin_sanitize_associations'
+		array( 'TaxonomyImages\Associations_Legacy', 'sanitize' )
 	);
 	register_setting(
 		'taxonomy_image_plugin_settings',
@@ -283,7 +260,7 @@ add_action( 'wp_ajax_taxonomy_images_delete_term_image', array( 'TaxonomyImages\
 function taxonomy_image_plugin_get_associations( $refresh = false ) {
 	static $associations = array();
 	if ( empty( $associations ) || $refresh ) {
-		$associations = taxonomy_image_plugin_sanitize_associations( get_option( 'taxonomy_image_plugin' ) );
+		$associations = TaxonomyImages\Associations_Legacy::sanitize( get_option( 'taxonomy_image_plugin' ) );
 	}
 
 	return $associations;

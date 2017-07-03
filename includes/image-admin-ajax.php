@@ -80,7 +80,7 @@ class Image_Admin_AJAX {
 		$t->update_image_id( $image_id );
 
 		// @todo  Make this work primarily for term meta.
-		if ( update_option( 'taxonomy_image_plugin', taxonomy_image_plugin_sanitize_associations( $assoc ) ) ) {
+		if ( update_option( 'taxonomy_image_plugin', Associations_Legacy::sanitize( $assoc ) ) ) {
 
 			$image = new Image( $image_id );
 
