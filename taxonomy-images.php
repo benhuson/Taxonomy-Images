@@ -596,28 +596,6 @@ function taxonomy_image_plugin_check_taxonomy( $taxonomy, $filter ) {
 	return true;
 }
 
-
-/**
- * Please Use Filter.
- *
- * Report to user that they are directly calling a function
- * instead of using supported filters. A E_USER_NOTICE will
- * be generated.
- *
- * @param     string         Name of function called.
- * @param     string         Name of filter to use instead.
- *
- * @access    private
- * @since     0.7
- */
-function taxonomy_image_plugin_please_use_filter( $function, $filter ) {
-	trigger_error( sprintf( esc_html__( 'The %1$s has been called directly. Please use the %2$s filter instead.', 'taxonomy-images' ),
-		'<code>' . esc_html( $function . '()' ) . '</code>',
-		'<code>' . esc_html( $filter ) . '</code>'
-	) );
-}
-
-
 /**
  * Plugin Meta Links.
  *

@@ -78,7 +78,7 @@ class Public_Filters {
 
 		$filter = 'taxonomy-images-get-terms';
 		if ( current_filter() !== $filter ) {
-			taxonomy_image_plugin_please_use_filter( __FUNCTION__, $filter );
+			self::please_use_filter( __FUNCTION__, $filter );
 		}
 
 		$args = wp_parse_args( $args, array(
@@ -173,7 +173,7 @@ class Public_Filters {
 
 		$filter = 'taxonomy-images-get-the-terms';
 		if ( $filter !== current_filter() ) {
-			taxonomy_image_plugin_please_use_filter( __FUNCTION__, $filter );
+			self::please_use_filter( __FUNCTION__, $filter );
 		}
 
 		$args = wp_parse_args( $args, array(
@@ -266,7 +266,7 @@ class Public_Filters {
 
 		$filter = 'taxonomy-images-list-the-terms';
 		if ( current_filter() !== $filter ) {
-			taxonomy_image_plugin_please_use_filter( __FUNCTION__, $filter );
+			self::please_use_filter( __FUNCTION__, $filter );
 		}
 
 		$args = wp_parse_args( $args, array(
@@ -344,7 +344,7 @@ class Public_Filters {
 
 		$filter = 'taxonomy-images-queried-term-image';
 		if ( current_filter() !== $filter ) {
-			taxonomy_image_plugin_please_use_filter( __FUNCTION__, $filter );
+			self::please_use_filter( __FUNCTION__, $filter );
 		}
 
 		$args = wp_parse_args( $args, array(
@@ -394,7 +394,7 @@ class Public_Filters {
 
 		$filter = 'taxonomy-images-queried-term-image-id';
 		if ( current_filter() !== $filter ) {
-			taxonomy_image_plugin_please_use_filter( __FUNCTION__, $filter );
+			self::please_use_filter( __FUNCTION__, $filter );
 		}
 
 		$obj = get_queried_object();
@@ -449,7 +449,7 @@ class Public_Filters {
 
 		$filter = 'taxonomy-images-queried-term-image-object';
 		if ( current_filter() !== $filter ) {
-			taxonomy_image_plugin_please_use_filter( __FUNCTION__, $filter );
+			self::please_use_filter( __FUNCTION__, $filter );
 		}
 
 		$ID = apply_filters( 'taxonomy-images-queried-term-image-id', 0 );
@@ -491,7 +491,7 @@ class Public_Filters {
 
 		$filter = 'taxonomy-images-queried-term-image-url';
 		if ( current_filter() !== $filter ) {
-			taxonomy_image_plugin_please_use_filter( __FUNCTION__, $filter );
+			self::please_use_filter( __FUNCTION__, $filter );
 		}
 
 		$args = wp_parse_args( $args, array(
@@ -537,7 +537,7 @@ class Public_Filters {
 
 		$filter = 'taxonomy-images-queried-term-image-data';
 		if ( current_filter() !== $filter ) {
-			taxonomy_image_plugin_please_use_filter( __FUNCTION__, $filter );
+			self::please_use_filter( __FUNCTION__, $filter );
 		}
 
 		$args = wp_parse_args( $args, array(
@@ -574,6 +574,25 @@ class Public_Filters {
 		}
 
 		return array();
+
+	}
+
+	/**
+	 * Please Use Filter
+	 *
+	 * Report to user that they are directly calling a function
+	 * instead of using supported filters. A E_USER_NOTICE will
+	 * be generated.
+	 *
+	 * @param  string  Name of function called.
+	 * @param  string  Name of filter to use instead.
+	 */
+	private static function please_use_filter( $function, $filter ) {
+
+		trigger_error( sprintf( esc_html__( 'The %1$s has been called directly. Please use the %2$s filter instead.', 'taxonomy-images' ),
+			'<code>' . esc_html( $function . '()' ) . '</code>',
+			'<code>' . esc_html( $filter ) . '</code>'
+		) );
 
 	}
 
