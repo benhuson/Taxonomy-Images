@@ -401,36 +401,6 @@ function taxonomy_image_plugin_control_taxonomies() {
 	}
 }
 
-/**
- * Check Taxonomy Permissions.
- *
- * Allows a permission check to be performed on a term
- * when all you know is the term_taxonomy_id.
- *
- * @param     int       term_taxonomy_id
- * @return    bool      True if user can edit terms, False if not.
- *
- * @access    private
- */
-function taxonomy_image_plugin_check_permissions( $tt_id ) {
-
-	$term_legacy = new TaxonomyImages\Term_Legacy( $tt_id );
-
-	$tax = $term_legacy->get_taxonomy();
-	if ( empty( $tax ) ) {
-		return false;
-	}
-
-	$taxonomy = get_taxonomy( $tax );
-
-	if ( isset( $taxonomy->cap->edit_terms ) ) {
-		return current_user_can( $taxonomy->cap->edit_terms );
-	}
-
-	return false;
-
-}
-
 // Handle AJAX Updates
 add_action( 'wp_ajax_taxonomy_images_update_term_image', array( 'TaxonomyImages\Image_Admin_AJAX', 'update_term_image' ) );
 add_action( 'wp_ajax_taxonomy_images_delete_term_image', array( 'TaxonomyImages\Image_Admin_AJAX', 'delete_term_image' ) );

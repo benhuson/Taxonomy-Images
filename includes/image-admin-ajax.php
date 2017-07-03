@@ -34,7 +34,7 @@ class Image_Admin_AJAX {
 			) );
 		}
 
-		if ( ! taxonomy_image_plugin_check_permissions( $tt_id ) ) {
+		if ( ! self::check_permissions( $tt_id ) ) {
 			self::json_response( array(
 				'status' => 'bad',
 				'why'    => esc_html__( 'You do not have the correct capability to manage this term', 'taxonomy-images' ),
@@ -125,7 +125,7 @@ class Image_Admin_AJAX {
 			) );
 		}
 
-		if ( ! taxonomy_image_plugin_check_permissions( $tt_id ) ) {
+		if ( ! self::check_permissions( $tt_id ) ) {
 			self::json_response( array(
 				'status' => 'bad',
 				'why'    => esc_html__( 'You do not have the correct capability to manage this term', 'taxonomy-images' ),
@@ -201,6 +201,34 @@ class Image_Admin_AJAX {
 		header( 'Content-type: application/jsonrequest' );
 		print json_encode( $response );
 		exit;
+
+	}
+
+	/**
+	 * Check Taxonomy Permissions.
+	 *
+	 * Allows a permission check to be performed on a term
+	 * when all you know is the term_taxonomy_id.
+	 *
+	 * @param   integer  term_taxonomy_id
+	 * @return  bool     True if user can edit terms, False if not.
+	 */
+	private static function check_permissions( $tt_id ) {
+
+		$term_legacy = new Term_Legacy( $tt_id );
+
+		$tax = $term_legacy->get_taxonomy();
+		if ( empty( $tax ) ) {
+			return false;
+		}
+
+		$taxonomy = get_taxonomy( $tax );
+
+		if ( isset( $taxonomy->cap->edit_terms ) ) {
+			return current_user_can( $taxonomy->cap->edit_terms );
+		}
+
+		return false;
 
 	}
 
