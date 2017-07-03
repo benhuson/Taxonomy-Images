@@ -36,6 +36,9 @@ require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/associations-le
 require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/public-filters.php' );
 require_once( trailingslashit( dirname( __FILE__ ) ) . 'deprecated.php' );
 
+// Admin Only
+require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/settings-admin.php' );
+
 /**
  * Version Number.
  *
@@ -79,42 +82,6 @@ function taxonomy_image_plugin_text_domain() {
 add_action( 'init', 'taxonomy_image_plugin_text_domain' );
 
 /**
- * Sanitize Settings.
- *
- * This function is responsible for ensuring that
- * all values within the 'taxonomy_image_plugin_settings'
- * options are of the appropriate type.
- *
- * @param     array     Unknown.
- * @return    array     Multi-dimensional array of sanitized settings.
- *
- * @access    private
- * @since     0.7
- */
-function taxonomy_image_plugin_settings_sanitize( $dirty ) {
-	$clean = array();
-	if ( isset( $dirty['taxonomies'] ) ) {
-		$taxonomies = get_taxonomies();
-		foreach ( (array) $dirty['taxonomies'] as $taxonomy ) {
-			if ( in_array( $taxonomy, $taxonomies ) )
-				$clean['taxonomies'][] = $taxonomy;
-		}
-	}
-
-	/* translators: Notice displayed on the custom administration page. */
-	$message = __( 'Image support for taxonomies successfully updated', 'taxonomy-images' );
-	if ( empty( $clean ) ) {
-		/* translators: Notice displayed on the custom administration page. */
-		$message = __( 'Image support has been disabled for all taxonomies.', 'taxonomy-images' );
-	}
-
-	add_settings_error( 'taxonomy_image_plugin_settings', 'taxonomies_updated', esc_html( $message ), 'updated' );
-
-	return $clean;
-}
-
-
-/**
  * Register settings with WordPress.
  *
  * This plugin will store to sets of settings in the
@@ -141,7 +108,7 @@ function taxonomy_image_plugin_register_settings() {
 	register_setting(
 		'taxonomy_image_plugin_settings',
 		'taxonomy_image_plugin_settings',
-		'taxonomy_image_plugin_settings_sanitize'
+		array( 'TaxonomyImages\Settings_Admin', 'sanitize_settings' )
 	);
 	add_settings_section(
 		'taxonomy_image_plugin_settings',
