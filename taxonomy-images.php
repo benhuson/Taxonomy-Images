@@ -70,9 +70,6 @@ function taxonomy_image_plugin_url( $file = '' ) {
 	return $path . $file;
 }
 
-// Register custom image size with WordPress.
-add_action( 'init', array( 'TaxonomyImages\Image', 'add_image_size' ) );
-
 /**
  * Load Plugin Text Domain.
  *
@@ -83,13 +80,6 @@ function taxonomy_image_plugin_text_domain() {
 	load_plugin_textdomain( 'taxonomy-images', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
 }
 add_action( 'init', 'taxonomy_image_plugin_text_domain' );
-
-// Handle AJAX Updates
-add_action( 'wp_ajax_taxonomy_images_update_term_image', array( 'TaxonomyImages\Image_Admin_AJAX', 'update_term_image' ) );
-add_action( 'wp_ajax_taxonomy_images_delete_term_image', array( 'TaxonomyImages\Image_Admin_AJAX', 'delete_term_image' ) );
-
-// Load a list of user-defined associations.
-add_action( 'init', array( 'TaxonomyImages\Associations_Legacy', 'get' ) );
 
 /**
  * Public Styles.

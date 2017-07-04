@@ -12,6 +12,8 @@
 
 namespace TaxonomyImages;
 
+add_action( 'init', array( 'TaxonomyImages\Associations_Legacy', 'get' ) );
+
 class Associations_Legacy {
 
 	/**

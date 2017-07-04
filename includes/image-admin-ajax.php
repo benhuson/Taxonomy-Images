@@ -7,6 +7,9 @@
 
 namespace TaxonomyImages;
 
+add_action( 'wp_ajax_taxonomy_images_update_term_image', array( 'TaxonomyImages\Image_Admin_AJAX', 'update_term_image' ) );
+add_action( 'wp_ajax_taxonomy_images_delete_term_image', array( 'TaxonomyImages\Image_Admin_AJAX', 'delete_term_image' ) );
+
 class Image_Admin_AJAX {
 
 	/**
