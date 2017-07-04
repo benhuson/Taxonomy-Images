@@ -142,7 +142,7 @@ class Terms_Admin {
 			'attachment_id'        => 0,
 			'uploader_title'       => __( 'Featured Image', 'taxonomy-images' ),
 			'uploader_button_text' => __( 'Set featured image', 'taxonomy-images' ),
-			'default_img_src'      => Plugin::plugin_url( 'default.png' )
+			'default_img_src'      => Plugin::plugin_url( 'images/default.png' )
 		) );
 
 	}

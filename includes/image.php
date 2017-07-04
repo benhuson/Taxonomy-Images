@@ -118,7 +118,7 @@ class Image {
 
 			// @todo  Check terms for image and remove meta.
 
-			return Plugin::plugin_url( 'default.png' );
+			return Plugin::plugin_url( 'images/default.png' );
 
 		}
 
@@ -126,7 +126,7 @@ class Image {
 		 * No image can be found.
 		 * Return path to blank-image.png.
 		 */
-		return Plugin::plugin_url( 'blank.png' );
+		return Plugin::plugin_url( 'images/blank.png' );
 
 	}
 
