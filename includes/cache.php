@@ -7,6 +7,8 @@
 
 namespace TaxonomyImages;
 
+add_action( 'template_redirect', array( 'TaxonomyImages\Cache', 'cache_queried_images' ) );
+
 class Cache {
 
 	/**
