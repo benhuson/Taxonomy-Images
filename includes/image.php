@@ -122,14 +122,14 @@ class Image {
 				}
 			}
 			update_option( 'taxonomy_image_plugin', $assoc );
-			return taxonomy_image_plugin_url( 'default.png' );
+			return Plugin::plugin_url( 'default.png' );
 		}
 
 		/**
 		 * No image can be found.
 		 * Return path to blank-image.png.
 		 */
-		return taxonomy_image_plugin_url( 'blank.png' );
+		return Plugin::plugin_url( 'blank.png' );
 
 	}
 

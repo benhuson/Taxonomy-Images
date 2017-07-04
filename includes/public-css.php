@@ -31,7 +31,7 @@ class Public_CSS {
 
 		wp_enqueue_style(
 			'taxonomy-image-plugin-public',
-			taxonomy_image_plugin_url( 'css/style.css' ),
+			Plugin::plugin_url( 'css/style.css' ),
 			array(),
 			Plugin::version(),
 			'screen'

@@ -132,7 +132,7 @@ class Terms_Admin {
 
 		wp_enqueue_script(
 			'taxonomy-images-media-modal',
-			taxonomy_image_plugin_url( 'js/media-modal.js' ),
+			Plugin::plugin_url( 'js/media-modal.js' ),
 			array( 'jquery' ),
 			Plugin::version()
 		);
@@ -142,7 +142,7 @@ class Terms_Admin {
 			'attachment_id'        => 0,
 			'uploader_title'       => __( 'Featured Image', 'taxonomy-images' ),
 			'uploader_button_text' => __( 'Set featured image', 'taxonomy-images' ),
-			'default_img_src'      => taxonomy_image_plugin_url( 'default.png' )
+			'default_img_src'      => Plugin::plugin_url( 'default.png' )
 		) );
 
 	}
@@ -160,7 +160,7 @@ class Terms_Admin {
 
 		wp_enqueue_style(
 			'taxonomy-image-plugin-edit-tags',
-			taxonomy_image_plugin_url( 'css/admin.css' ),
+			Plugin::plugin_url( 'css/admin.css' ),
 			array(),
 			Plugin::version(),
 			'screen'
