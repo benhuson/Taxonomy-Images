@@ -7,6 +7,8 @@
 
 namespace TaxonomyImages;
 
+add_action( 'init', array( 'TaxonomyImages\Image', 'add_image_size' ) );
+
 class Image {
 
 	/**

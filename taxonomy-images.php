@@ -34,11 +34,19 @@ require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/image-admin-con
 require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/image-admin-ajax.php' );
 require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/associations-legacy.php' );
 require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/public-filters.php' );
-require_once( trailingslashit( dirname( __FILE__ ) ) . 'deprecated.php' );
+require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/cache.php' );
 
-// Admin Only
 if ( is_admin() ) {
+
+	// Admin Only
+	require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/terms-admin.php' );
 	require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/settings-admin.php' );
+
+} else {
+
+	// Front-end Only
+	require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/public-css.php' );
+
 }
 
 /**
@@ -69,9 +77,6 @@ function taxonomy_image_plugin_url( $file = '' ) {
 	return $path . $file;
 }
 
-// Register custom image size with WordPress.
-add_action( 'init', array( 'TaxonomyImages\Image', 'add_image_size' ) );
-
 /**
  * Load Plugin Text Domain.
  *
@@ -82,177 +87,6 @@ function taxonomy_image_plugin_text_domain() {
 	load_plugin_textdomain( 'taxonomy-images', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
 }
 add_action( 'init', 'taxonomy_image_plugin_text_domain' );
-
-// Handle AJAX Updates
-add_action( 'wp_ajax_taxonomy_images_update_term_image', array( 'TaxonomyImages\Image_Admin_AJAX', 'update_term_image' ) );
-add_action( 'wp_ajax_taxonomy_images_delete_term_image', array( 'TaxonomyImages\Image_Admin_AJAX', 'delete_term_image' ) );
-
-// Load a list of user-defined associations.
-add_action( 'init', array( 'TaxonomyImages\Associations_Legacy', 'get' ) );
-
-/**
- * Dynamically create hooks for each taxonomy.
- *
- * Adds hooks for each taxonomy that the user has given
- * an image interface to via settings page. These hooks
- * enable the image interface on wp-admin/edit-tags.php.
- *
- * @access    private
- * @since     0.4.3
- * @alter     0.7
- */
-function taxonomy_image_plugin_add_dynamic_hooks() {
-	$settings = get_option( 'taxonomy_image_plugin_settings' );
-	if ( ! isset( $settings['taxonomies'] ) ) {
-		return;
-	}
-
-	foreach ( $settings['taxonomies'] as $taxonomy ) {
-		add_filter( 'manage_' . $taxonomy . '_custom_column', 'taxonomy_image_plugin_taxonomy_rows', 15, 3 );
-		add_filter( 'manage_edit-' . $taxonomy . '_columns',  'taxonomy_image_plugin_taxonomy_columns' );
-		add_action( $taxonomy . '_edit_form_fields',          'taxonomy_image_plugin_edit_tag_form', 10, 2 );
-	}
-}
-add_action( 'admin_init', 'taxonomy_image_plugin_add_dynamic_hooks' );
-
-
-/**
- * Edit Term Columns.
- *
- * Insert a new column on wp-admin/edit-tags.php.
- *
- * @see taxonomy_image_plugin_add_dynamic_hooks()
- *
- * @param     array     A list of columns.
- * @return    array     List of columns with "Images" inserted after the checkbox.
- *
- * @access    private
- * @since     0.4.3
- */
-function taxonomy_image_plugin_taxonomy_columns( $original_columns ) {
-	$new_columns = $original_columns;
-	array_splice( $new_columns, 1 );
-	$new_columns['taxonomy_image_plugin'] = esc_html__( 'Image', 'taxonomy-images' );
-	return array_merge( $new_columns, $original_columns );
-}
-
-
-/**
- * Edit Term Rows.
- *
- * Create image control for each term row of wp-admin/edit-tags.php.
- *
- * @see taxonomy_image_plugin_add_dynamic_hooks()
- *
- * @param     string    Row.
- * @param     string    Name of the current column.
- * @param     int       Term ID.
- * @return    string    HTML image control.
- *
- * @access    private
- * @since     2010-11-08
- */
-function taxonomy_image_plugin_taxonomy_rows( $row, $column_name, $term_id ) {
-
-	global $taxonomy;
-
-	if ( 'taxonomy_image_plugin' === $column_name ) {
-
-		$term = get_term( $term_id, $taxonomy );
-
-		$control = new TaxonomyImages\Image_Admin_Control( $term );
-
-		return $row . $control->get_rendered();
-	}
-
-	return $row;
-
-}
-
-/**
- * Edit Term Control.
- *
- * Create image control for wp-admin/edit-tag-form.php.
- * Hooked into the '{$taxonomy}_edit_form_fields' action.
- *
- * @param     stdClass  Term object.
- * @param     string    Taxonomy slug.
- *
- * @access    private
- * @since     2010-11-08
- */
-function taxonomy_image_plugin_edit_tag_form( $term, $taxonomy ) {
-
-	$field = new TaxonomyImages\Image_Admin_Field( $term );
-	$control = new TaxonomyImages\Image_Admin_Control( $term );
-
-	$taxonomy = get_taxonomy( $taxonomy );
-
-	?>
-	<tr class="form-field hide-if-no-js">
-		<th scope="row" valign="top">
-			<label for="description"><?php print esc_html__( 'Featured Image', 'taxonomy-images' ) ?></label>
-		</th>
-		<td>
-			<?php echo $control->get_rendered(); ?>
-			<div class="clear"></div>
-			<?php $field->the_description( '<span class="description">', '</span>' ); ?>
-		</td>
-	</tr>
-	<?php
-
-}
-
-/**
- * Custom styles.
- *
- * @since     0.7
- * @access    private
- */
-function taxonomy_image_plugin_css_admin() {
-	if ( false == taxonomy_image_plugin_is_screen_active() && current_filter() != 'admin_print_styles-media-upload-popup' ) {
-		return;
-	}
-
-	wp_enqueue_style(
-		'taxonomy-image-plugin-edit-tags',
-		taxonomy_image_plugin_url( 'css/admin.css' ),
-		array(),
-		taxonomy_image_plugin_version(),
-		'screen'
-	);
-}
-add_action( 'admin_print_styles-edit-tags.php', 'taxonomy_image_plugin_css_admin' );  // Pre WordPress 4.5
-add_action( 'admin_print_styles-term.php', 'taxonomy_image_plugin_css_admin' );       // WordPress 4.5+
-
-/**
- * Public Styles.
- *
- * Prints custom css to all public pages. If you do not
- * wish to have these styles included for you, please
- * insert the following code into your theme's functions.php
- * file:
- *
- * add_filter( 'taxonomy-images-disable-public-css', '__return_true' );
- *
- * @since     0.7
- * @access    private
- */
-function taxonomy_image_plugin_css_public() {
-	if ( apply_filters( 'taxonomy-images-disable-public-css', false ) ) {
-		return;
-	}
-
-	wp_enqueue_style(
-		'taxonomy-image-plugin-public',
-		taxonomy_image_plugin_url( 'css/style.css' ),
-		array(),
-		taxonomy_image_plugin_version(),
-		'screen'
-	);
-}
-add_action( 'wp_enqueue_scripts', 'taxonomy_image_plugin_css_public' );
-
 
 /**
  * Activation.
@@ -280,118 +114,6 @@ function taxonomy_image_plugin_activate() {
 	}
 }
 register_activation_hook( __FILE__, 'taxonomy_image_plugin_activate' );
-
-
-/**
- * Is Screen Active?
- *
- * @return    bool
- *
- * @access    private
- * @since     0.7
- */
-function taxonomy_image_plugin_is_screen_active() {
-	$screen = get_current_screen();
-	if ( ! isset( $screen->taxonomy ) ) {
-		return false;
-	}
-
-	$settings = get_option( 'taxonomy_image_plugin_settings' );
-	if ( ! isset( $settings['taxonomies'] ) ) {
-		return false;
-	}
-
-	if ( in_array( $screen->taxonomy, $settings['taxonomies'] ) ) {
-		return true;
-	}
-
-	return false;
-}
-
-
-/**
- * Cache Images
- *
- * Sets the WordPress object cache for all term images
- * associated to the posts in the provided array. This
- * function has been created to minimize queries when
- * using this plugins get_the_terms() style function.
- *
- * @param     array          Post objects.
- *
- * @access    private
- * @since     1.1
- */
-function taxonomy_image_plugin_cache_images( $posts ) {
-	$assoc = TaxonomyImages\Associations_Legacy::get();
-	if ( empty( $assoc ) ) {
-		return;
-	}
-
-	$tt_ids = array();
-	foreach ( (array) $posts as $post ) {
-		if ( ! isset( $post->ID ) || ! isset( $post->post_type ) ) {
-			continue;
-		}
-
-		$taxonomies = get_object_taxonomies( $post->post_type );
-		if ( empty( $taxonomies ) ) {
-			continue;
-		}
-
-		foreach ( $taxonomies as $taxonomy ) {
-			$the_terms = get_the_terms( $post->ID, $taxonomy );
-			foreach ( (array) $the_terms as $term ) {
-				if ( ! isset( $term->term_taxonomy_id ) ) {
-					continue;
-				}
-				$tt_ids[] = $term->term_taxonomy_id;
-			}
-		}
-	}
-	$tt_ids = array_filter( array_unique( $tt_ids ) );
-
-	$image_ids = array();
-	foreach ( $tt_ids as $tt_id ) {
-		if ( ! isset( $assoc[ $tt_id ] ) ) {
-			continue;
-		}
-
-		if ( in_array( $assoc[ $tt_id ], $image_ids ) ) {
-			continue;
-		}
-
-		$image_ids[] = $assoc[ $tt_id ];
-	}
-
-	if ( empty( $image_ids ) ) {
-		return;
-	}
-
-	$images = get_posts( array(
-		'include'   => $image_ids,
-		'post_type' => 'attachment'
-	) );
-}
-
-
-/**
- * Cache Images
- *
- * Cache all term images associated with posts in
- * the main WordPress query.
- *
- * @param     array          Post objects.
- *
- * @access    private
- * @since     0.7
- */
-function taxonomy_image_plugin_cache_queried_images() {
-	global $posts;
-	taxonomy_image_plugin_cache_images( $posts );
-}
-add_action( 'template_redirect', 'taxonomy_image_plugin_cache_queried_images' );
-
 
 /**
  * Check Taxonomy
@@ -492,34 +214,3 @@ function taxonomy_images_plugin_settings_page_link( $link_text = '' ) {
 
 	return $link;
 }
-
-/**
- * Enqueue Admin Scripts
- *
- * @since  0.9
- */
-function taxonomy_images_admin_enqueue_scripts() {
-
-	if ( false == taxonomy_image_plugin_is_screen_active() ) {
-		return;
-	}
-
-	wp_enqueue_media();
-
-	wp_enqueue_script(
-		'taxonomy-images-media-modal',
-		taxonomy_image_plugin_url( 'js/media-modal.js' ),
-		array( 'jquery' ),
-		taxonomy_image_plugin_version()
-	);
-
-	wp_localize_script( 'taxonomy-images-media-modal', 'TaxonomyImagesMediaModal', array(
-		'wp_media_post_id'     => 0,
-		'attachment_id'        => 0,
-		'uploader_title'       => __( 'Featured Image', 'taxonomy-images' ),
-		'uploader_button_text' => __( 'Set featured image', 'taxonomy-images' ),
-		'default_img_src'      => taxonomy_image_plugin_url( 'default.png' )
-	) );
-
-}
-add_action( 'admin_enqueue_scripts', 'taxonomy_images_admin_enqueue_scripts' );
