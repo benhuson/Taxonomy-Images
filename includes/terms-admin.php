@@ -7,6 +7,8 @@
 
 namespace TaxonomyImages;
 
+add_action( 'admin_init', array( 'TaxonomyImages\Terms_Admin', 'add_admin_fields' ) );
+
 class Terms_Admin {
 
 	/**
