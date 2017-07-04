@@ -53,19 +53,6 @@ if ( is_admin() ) {
 TaxonomyImages\Plugin::set_basename( __FILE__ );
 
 /**
- * Version Number.
- *
- * @return    string    The plugin's version number.
- * @access    private
- * @since     0.7
- * @alter     0.7.4
- */
-function taxonomy_image_plugin_version() {
-	return '1.0.dev';
-}
-
-
-/**
  * Get a url to a file in this plugin.
  *
  * @return    string

@@ -134,7 +134,7 @@ class Terms_Admin {
 			'taxonomy-images-media-modal',
 			taxonomy_image_plugin_url( 'js/media-modal.js' ),
 			array( 'jquery' ),
-			taxonomy_image_plugin_version()
+			Plugin::version()
 		);
 
 		wp_localize_script( 'taxonomy-images-media-modal', 'TaxonomyImagesMediaModal', array(
@@ -162,7 +162,7 @@ class Terms_Admin {
 			'taxonomy-image-plugin-edit-tags',
 			taxonomy_image_plugin_url( 'css/admin.css' ),
 			array(),
-			taxonomy_image_plugin_version(),
+			Plugin::version(),
 			'screen'
 		);
 

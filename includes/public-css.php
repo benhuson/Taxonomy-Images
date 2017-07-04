@@ -33,7 +33,7 @@ class Public_CSS {
 			'taxonomy-image-plugin-public',
 			taxonomy_image_plugin_url( 'css/style.css' ),
 			array(),
-			taxonomy_image_plugin_version(),
+			Plugin::version(),
 			'screen'
 		);
 

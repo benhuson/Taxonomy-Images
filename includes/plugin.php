@@ -28,13 +28,24 @@ class Plugin {
 	/**
 	 * Set Plugin Basename
 	 *
-	 * @internal  Private. Only used for initially defined plugin base file.
+	 * @internal  Private. Only used for initially defining the plugin base file.
 	 *
 	 * @param  string  $file  Base `__FILE__` of the plugin.
 	 */
 	public static function set_basename( $file ) {
 
 		self::$file = $file;
+
+	}
+
+	/**
+	 * Version Number
+	 *
+	 * @return  string  The plugin's version number.
+	 */
+	public static function version() {
+
+		return '1.0.dev';
 
 	}
 
