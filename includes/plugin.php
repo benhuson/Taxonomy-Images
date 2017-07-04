@@ -15,6 +15,28 @@ class Plugin {
 	private static $file = '';
 
 	/**
+	 * Version Number
+	 *
+	 * @return  string  The plugin's version number.
+	 */
+	public static function version() {
+
+		return '1.0.dev';
+
+	}
+
+	/**
+	 * Plugin File
+	 *
+	 * @return  string
+	 */
+	public static function file() {
+
+		return self::$file;
+
+	}
+
+	/**
 	 * Plugin Basename (relative to plugin root)
 	 *
 	 * @return  string
@@ -39,13 +61,31 @@ class Plugin {
 	}
 
 	/**
-	 * Version Number
+	 * Activate
 	 *
-	 * @return  string  The plugin's version number.
+	 * Called by the plugin activation hook.
+	 *
+	 * Two entries in the options table will created when this
+	 * plugin is activated in the event that they do not exist.
+	 *
+	 * 'taxonomy_image_plugin_settings' (array) A multi-dimensional array
+	 * of user-defined settings. As of version 0.7, only one key is used:
+	 * 'taxonomies' which is a whitelist of registered taxonomies having ui
+	 * that support the custom image ui provided by this plugin.
+	 *
+	 * @internal  Private. Only used when activating the plugin.
 	 */
-	public static function version() {
+	public static function activate() {
 
-		return '1.0.dev';
+		Associations_Legacy::create_option();
+
+		$settings = get_option( 'taxonomy_image_plugin_settings' );
+
+		if ( false === $settings ) {
+			add_option( 'taxonomy_image_plugin_settings', array(
+				'taxonomies' => array()
+			) );
+		}
 
 	}
 
