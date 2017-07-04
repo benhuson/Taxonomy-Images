@@ -36,10 +36,17 @@ require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/associations-le
 require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/public-filters.php' );
 require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/cache.php' );
 
-// Admin Only
 if ( is_admin() ) {
+
+	// Admin Only
 	require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/terms-admin.php' );
 	require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/settings-admin.php' );
+
+} else {
+
+	// Front-end Only
+	require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/public-css.php' );
+
 }
 
 /**
@@ -80,35 +87,6 @@ function taxonomy_image_plugin_text_domain() {
 	load_plugin_textdomain( 'taxonomy-images', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
 }
 add_action( 'init', 'taxonomy_image_plugin_text_domain' );
-
-/**
- * Public Styles.
- *
- * Prints custom css to all public pages. If you do not
- * wish to have these styles included for you, please
- * insert the following code into your theme's functions.php
- * file:
- *
- * add_filter( 'taxonomy-images-disable-public-css', '__return_true' );
- *
- * @since     0.7
- * @access    private
- */
-function taxonomy_image_plugin_css_public() {
-	if ( apply_filters( 'taxonomy-images-disable-public-css', false ) ) {
-		return;
-	}
-
-	wp_enqueue_style(
-		'taxonomy-image-plugin-public',
-		taxonomy_image_plugin_url( 'css/style.css' ),
-		array(),
-		taxonomy_image_plugin_version(),
-		'screen'
-	);
-}
-add_action( 'wp_enqueue_scripts', 'taxonomy_image_plugin_css_public' );
-
 
 /**
  * Activation.
