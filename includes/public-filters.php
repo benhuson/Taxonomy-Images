@@ -92,7 +92,7 @@ class Public_Filters {
 		$args['taxonomy'] = array_map( 'trim', $args['taxonomy'] );
 
 		foreach ( $args['taxonomy'] as $taxonomy ) {
-			if ( ! taxonomy_image_plugin_check_taxonomy( $taxonomy, $filter ) ) {
+			if ( ! self::check_taxonomy( $taxonomy, $filter ) ) {
 				return array();
 			}
 		}
@@ -182,7 +182,7 @@ class Public_Filters {
 			'taxonomy'      => 'category',
 		) );
 
-		if ( ! taxonomy_image_plugin_check_taxonomy( $args['taxonomy'], $filter ) ) {
+		if ( ! self::check_taxonomy( $args['taxonomy'], $filter ) ) {
 			return array();
 		}
 
@@ -281,7 +281,7 @@ class Public_Filters {
 
 		$args['having_images'] = true;
 
-		if ( ! taxonomy_image_plugin_check_taxonomy( $args['taxonomy'], $filter ) ) {
+		if ( ! self::check_taxonomy( $args['taxonomy'], $filter ) ) {
 			return '';
 		}
 
@@ -409,7 +409,7 @@ class Public_Filters {
 			return 0;
 		}
 
-		if ( ! taxonomy_image_plugin_check_taxonomy( $obj->taxonomy, $filter ) ) {
+		if ( ! self::check_taxonomy( $obj->taxonomy, $filter ) ) {
 			return 0;
 		}
 
@@ -593,6 +593,58 @@ class Public_Filters {
 			'<code>' . esc_html( $function . '()' ) . '</code>',
 			'<code>' . esc_html( $filter ) . '</code>'
 		) );
+
+	}
+
+	/**
+	 * Check Taxonomy
+	 *
+	 * Wrapper for WordPress core functions taxonomy_exists().
+	 * In the event that an unregistered taxonomy is passed a
+	 * E_USER_NOTICE will be generated.
+	 *
+	 * @param   string   Taxonomy name as registered with WordPress.
+	 * @param   string   Name of the current function or filter.
+	 * @return  boolean  True if taxonomy exists, False if not.
+	 */
+	private static function check_taxonomy( $function, $filter ) {
+
+		// Taxonomy doesn't exist
+		if ( ! taxonomy_exists( $taxonomy ) ) {
+
+			trigger_error( sprintf( esc_html__( 'The %1$s argument for %2$s is set to %3$s which is not a registered taxonomy. Please check the spelling and update the argument.', 'taxonomy-images' ),
+				'<var>' . esc_html__( 'taxonomy', 'taxonomy-images' ) . '</var>',
+				'<code>' . esc_html( $filter ) . '</code>',
+				'<strong>' . esc_html( $taxonomy ) . '</strong>'
+			) );
+
+			return false;
+
+		}
+
+		$settings = get_option( 'taxonomy_image_plugin_settings' );
+
+		// No taxonomies have image support
+		if ( ! isset( $settings['taxonomies'] ) ) {
+
+			trigger_error( esc_html__( 'No taxonomies have image support.', 'taxonomy-images' ) );
+
+			return false;
+
+		}
+
+		// Taxonomy does not have image support
+		if ( ! in_array( $taxonomy, (array) $settings['taxonomies'] ) ) {
+
+			trigger_error( sprintf( esc_html__( 'The %1$s taxonomy does not have image support.', 'taxonomy-images' ),
+				'<strong>' . esc_html( $taxonomy ) . '</strong>'
+			) );
+
+			return false;
+
+		}
+
+		return true;
 
 	}
 
