@@ -41,13 +41,7 @@ class Cache {
 	 */
 	private static function cache_images( $posts ) {
 
-		$assoc = Associations_Legacy::get();
-
-		if ( empty( $assoc ) ) {
-			return;
-		}
-
-		$tt_ids = array();
+		$term_ids = array();
 
 		foreach ( (array) $posts as $post ) {
 
@@ -66,26 +60,29 @@ class Cache {
 				$the_terms = get_the_terms( $post->ID, $taxonomy );
 
 				foreach ( (array) $the_terms as $term ) {
-					if ( ! isset( $term->term_taxonomy_id ) ) {
+					if ( ! isset( $term->term_id ) ) {
 						continue;
 					}
-					$tt_ids[] = $term->term_taxonomy_id;
+					$term_ids[] = $term->term_id;
 				}
 
 			}
 
 		}
 
-		$tt_ids = array_filter( array_unique( $tt_ids ) );
+		$term_ids = array_filter( array_unique( $term_ids ) );
 		$image_ids = array();
 
-		foreach ( $tt_ids as $tt_id ) {
+		foreach ( $term_ids as $term_id ) {
 
-			if ( ! isset( $assoc[ $tt_id ] ) || in_array( $assoc[ $tt_id ], $image_ids ) ) {
+			$t = new Term( $term_id );
+			$image_id = $t->get_image_id();
+
+			if ( empty( $image_id ) ) {
 				continue;
 			}
 
-			$image_ids[] = $assoc[ $tt_id ];
+			$image_ids[] = $image_id;
 
 		}
 

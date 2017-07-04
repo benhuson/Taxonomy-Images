@@ -28,12 +28,10 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/plugin.php' );
 require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/term.php' );
-require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/term-legacy.php' );
 require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/image.php' );
 require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/image-admin-field.php' );
 require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/image-admin-control.php' );
 require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/image-admin-ajax.php' );
-require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/associations-legacy.php' );
 require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/public-filters.php' );
 require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/cache.php' );
 

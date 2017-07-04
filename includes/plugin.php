@@ -100,27 +100,11 @@ class Plugin {
 	 *
 	 * Called by the plugin activation hook.
 	 *
-	 * Two entries in the options table will created when this
-	 * plugin is activated in the event that they do not exist.
-	 *
-	 * 'taxonomy_image_plugin_settings' (array) A multi-dimensional array
-	 * of user-defined settings. As of version 0.7, only one key is used:
-	 * 'taxonomies' which is a whitelist of registered taxonomies having ui
-	 * that support the custom image ui provided by this plugin.
-	 *
 	 * @internal  Private. Only used when activating the plugin.
 	 */
 	public static function activate() {
 
-		Associations_Legacy::create_option();
-
-		$settings = get_option( 'taxonomy_image_plugin_settings' );
-
-		if ( false === $settings ) {
-			add_option( 'taxonomy_image_plugin_settings', array(
-				'taxonomies' => array()
-			) );
-		}
+		// @todo  Any upgrade migrations here?
 
 	}
 

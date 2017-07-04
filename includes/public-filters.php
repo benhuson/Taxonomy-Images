@@ -97,11 +97,6 @@ class Public_Filters {
 			}
 		}
 
-		$assoc = Associations_Legacy::get();
-		if ( ! empty( $args['having_images'] ) && empty( $assoc ) ) {
-			return array();
-		}
-
 		$terms = get_terms( $args['taxonomy'], $args['term_args'] );
 		if ( is_wp_error( $terms ) ) {
 			return array();
@@ -112,9 +107,11 @@ class Public_Filters {
 
 		foreach ( (array) $terms as $key => $term ) {
 			$terms[ $key ]->image_id = 0;
-			if ( array_key_exists( $term->term_taxonomy_id, $assoc ) ) {
-				$terms[ $key ]->image_id = $assoc[ $term->term_taxonomy_id ];
-				$image_ids[] = $assoc[ $term->term_taxonomy_id ];
+			$t = new Term( $term->term_id );
+			$i = $t->get_image_id();
+			if ( ! empty( $i ) ) {
+				$terms[ $key ]->image_id = $i;
+				$image_ids[] = $i;
 				if ( ! empty( $args['having_images'] ) ) {
 					$terms_with_images[] = $terms[ $key ];
 				}
@@ -186,8 +183,6 @@ class Public_Filters {
 			return array();
 		}
 
-		$assoc = Associations_Legacy::get();
-
 		if ( empty( $args['post_id'] ) ) {
 			$args['post_id'] = get_the_ID();
 		}
@@ -206,8 +201,10 @@ class Public_Filters {
 
 		foreach ( (array) $terms as $key => $term ) {
 			$terms[ $key ]->image_id = 0;
-			if ( array_key_exists( $term->term_taxonomy_id, $assoc ) ) {
-				$terms[ $key ]->image_id = $assoc[ $term->term_taxonomy_id ];
+			$t = new Term( $term->term_id );
+			$i = $t->get_image_id();
+			if ( ! empty( $i ) ) {
+				$terms[ $key ]->image_id = $i;
 				if ( ! empty( $args['having_images'] ) ) {
 					$terms_with_images[] = $terms[ $key ];
 				}
@@ -400,9 +397,9 @@ class Public_Filters {
 		$obj = get_queried_object();
 
 		// Return early if we are not in a term archive.
-		if ( ! isset( $obj->term_taxonomy_id ) ) {
+		if ( ! isset( $obj->term_id ) ) {
 			trigger_error( sprintf( esc_html__( '%1$s is not a property of the current queried object. This usually happens when the %2$s filter is used in an unsupported template file. This filter has been designed to work in taxonomy archives which are traditionally served by one of the following template files: category.php, tag.php or taxonomy.php. Learn more about %3$s.', 'taxonomy-images' ),
-				'<code>' . esc_html__( 'term_taxonomy_id', 'taxonomy-images' ) . '</code>',
+				'<code>' . esc_html__( 'term_id', 'taxonomy-images' ) . '</code>',
 				'<code>' . esc_html( $filter ) . '</code>',
 				'<a href="http://codex.wordpress.org/Template_Hierarchy">' . esc_html( 'template hierarchy', 'taxonomy-images' ) . '</a>'
 			) );
@@ -413,15 +410,9 @@ class Public_Filters {
 			return 0;
 		}
 
-		$associations = Associations_Legacy::get();
-		$tt_id = absint( $obj->term_taxonomy_id );
+		$t = new Term( $obj->term_id );
 
-		$ID = 0;
-		if ( array_key_exists( $tt_id, $associations ) ) {
-			$ID = absint( $associations[$tt_id] );
-		}
-
-		return $ID;
+		return $t->get_image_id();
 
 	}
 

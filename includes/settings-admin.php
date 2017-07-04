@@ -83,12 +83,6 @@ class Settings_Admin {
 	public static function register_settings() {
 
 		register_setting(
-			'taxonomy_image_plugin',
-			'taxonomy_image_plugin',
-			array( 'Associations_Legacy', 'sanitize' )
-		);
-
-		register_setting(
 			'taxonomy_image_plugin_settings',
 			'taxonomy_image_plugin_settings',
 			array( get_class(), 'sanitize_settings' )

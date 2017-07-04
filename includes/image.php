@@ -115,14 +115,11 @@ class Image {
 		 * - Return uri to default.png.
 		 */
 		if ( is_admin() ) {
-			$assoc = Associations_Legacy::get();
-			foreach ( $assoc as $term => $img ) {
-				if ( $img === $this->image_id ) {
-					unset( $assoc[ $term ] );
-				}
-			}
-			update_option( 'taxonomy_image_plugin', $assoc );
+
+			// @todo  Check terms for image and remove meta.
+
 			return Plugin::plugin_url( 'default.png' );
+
 		}
 
 		/**
