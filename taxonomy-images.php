@@ -37,7 +37,9 @@ require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/associations-le
 require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/public-filters.php' );
 
 // Admin Only
-require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/settings-admin.php' );
+if ( is_admin() ) {
+	require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/settings-admin.php' );
+}
 
 /**
  * Version Number.
