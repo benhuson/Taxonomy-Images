@@ -61,6 +61,28 @@ class Plugin {
 	}
 
 	/**
+	 * Get the base URL to this plugin folder
+	 *
+	 * @return  string
+	 */
+	private static function plugin_dir_url() {
+
+		return trailingslashit( plugin_dir_url( self::$file ) );
+
+	}
+
+	/**
+	 * Get a URL to a file within this plugin folder
+	 *
+	 * @return  string
+	 */
+	public static function plugin_url( $file = '' ) {
+
+		return self::plugin_dir_url() . $file;
+
+	}
+
+	/**
 	 * Activate
 	 *
 	 * Called by the plugin activation hook.

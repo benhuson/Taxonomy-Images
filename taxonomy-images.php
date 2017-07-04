@@ -60,11 +60,9 @@ TaxonomyImages\Plugin::set_basename( __FILE__ );
  * @since     0.7
  */
 function taxonomy_image_plugin_url( $file = '' ) {
-	static $path = '';
-	if ( empty( $path ) ) {
-		$path = plugin_dir_url( __FILE__ );
-	}
-	return $path . $file;
+
+	return TaxonomyImages\Plugin::plugin_url( $file );
+
 }
 
 /**
