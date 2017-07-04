@@ -48,6 +48,6 @@ if ( is_admin() ) {
 
 }
 
-TaxonomyImages\Plugin::set_basename( __FILE__ );
+TaxonomyImages\Plugin::set_base_file( __FILE__ );
 
 register_activation_hook( TaxonomyImages\Plugin::file(), array( 'TaxonomyImages\Plugin', 'activate' ) );

@@ -17,6 +17,16 @@ class Plugin {
 	private static $file = '';
 
 	/**
+	 * Plugin Basename
+	 */
+	private static $basename = '';
+
+	/**
+	 * Plugin Directory URL
+	 */
+	private static $plugin_dir_url = '';
+
+	/**
 	 * Version Number
 	 *
 	 * @return  string  The plugin's version number.
@@ -24,6 +34,19 @@ class Plugin {
 	public static function version() {
 
 		return '1.0.dev';
+
+	}
+
+	/**
+	 * Set Plugin Base File
+	 *
+	 * @internal  Private. Only used for initially defining the plugin base file.
+	 *
+	 * @param  string  $file  Base `__FILE__` of the plugin.
+	 */
+	public static function set_base_file( $file ) {
+
+		self::$file = $file;
 
 	}
 
@@ -45,20 +68,11 @@ class Plugin {
 	 */
 	public static function basename() {
 
-		return plugin_basename( self::$file );
+		if ( empty( self::$basename ) ) {
+			self::$basename = plugin_basename( self::$file );
+		}
 
-	}
-
-	/**
-	 * Set Plugin Basename
-	 *
-	 * @internal  Private. Only used for initially defining the plugin base file.
-	 *
-	 * @param  string  $file  Base `__FILE__` of the plugin.
-	 */
-	public static function set_basename( $file ) {
-
-		self::$file = $file;
+		return self::$basename;
 
 	}
 
@@ -69,7 +83,11 @@ class Plugin {
 	 */
 	private static function plugin_dir_url() {
 
-		return trailingslashit( plugin_dir_url( self::$file ) );
+		if ( empty( self::$plugin_dir_url ) ) {
+			self::$plugin_dir_url = trailingslashit( plugin_dir_url( self::$file ) );
+		}
+
+		return self::$plugin_dir_url;
 
 	}
 
