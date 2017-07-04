@@ -225,8 +225,6 @@ class Settings_Admin {
 			$links[] = $link;
 		}
 
-		$links[] = '<a href="http://wordpress.mfields.org/donate/">' . esc_html__( 'Donate', 'taxonomy-images' ) . '</a>';
-
 		return $links;
 
 	}
