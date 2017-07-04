@@ -16,6 +16,7 @@
 namespace TaxonomyImages;
 
 add_action( 'plugins_loaded', array( 'TaxonomyImages\Public_Filters', 'setup_filters' ) );
+add_action( 'the_content', array( 'TaxonomyImages\Public_Filters', 'debug_content' ) );
 
 class Public_Filters {
 
@@ -636,6 +637,147 @@ class Public_Filters {
 		}
 
 		return true;
+
+	}
+
+	/**
+	 * Debug Content
+	 *
+	 * Adds example public filter output to post content.
+	 *
+	 * @param   string  $content  Content.
+	 * @return  string            Debug content.
+	 */
+	public static function debug_content( $content ) {
+
+		// Debug?
+		if ( ! Plugin::debug() ) {
+			return $content;
+		}
+
+		/**
+		 * Get Terms
+		 *
+		 * Returns terms with `image_id` property.
+		 */	
+		$content .= '<hr />';
+		$content .= '<h2>Filter: taxonomy-images-get-terms</h2>';
+		$content .= '<pre>$terms = apply_filters( \'taxonomy-images-get-terms\', array() );</pre>';
+		$content .= '<pre>' . print_r( apply_filters( 'taxonomy-images-get-terms', array() ), true ) . '</pre>';
+
+		/**
+		 * Get The Terms
+		 *
+		 * Returns terms from the current post with the `image_id` property.
+		 */
+		$content .= '<hr />';
+		$content .= '<h2>Filter: taxonomy-images-get-the-terms</h2>';
+		$content .= '<pre>$terms = apply_filters( \'taxonomy-images-get-the-terms\', array() );</pre>';
+		$content .= '<pre>' . print_r( apply_filters( 'taxonomy-images-get-the-terms', array() ), true ) . '</pre>';
+		
+		/**
+		 * List The Terms
+		 *
+		 * Return html markup representing the images associated with
+		 * terms from the current post.
+		 */
+		$content .= '<hr />';
+		$content .= '<h2>Filter: taxonomy-images-list-the-terms</h2>';
+		$content .= '<pre>echo apply_filters( \'taxonomy-images-list-the-terms\', \'\', array(' . "\n\t" . '\'having_images\' => true,' . "\n\t" . '\'image_size\' => \'thumbnail\'' . "\n" . ') );</pre>';
+		$content .= apply_filters( 'taxonomy-images-list-the-terms', '', array( 'having_images' => false, 'image_size' => 'thumbnail' ) );
+
+		/**
+		 * Queried Term Image
+		 *
+		 * Return html markup representing the image associated with the
+		 * currently queried term. In the event that no associated image
+		 * exists, the filter should return an empty object.
+		 *
+		 * In the event that the Taxonomy Images plugin is not installed
+		 * apply_filters() will return it's second parameter.
+		 *
+		 * This example shows custom attributes added to the <img /> tag
+		 * and content to add before and after the image.
+		 */
+		$content .= '<hr />';
+		$content .= '<h2>Filter: taxonomy-images-queried-term-image</h2>';
+		$content .= '<pre>echo apply_filters( \'taxonomy-images-queried-term-image\', \'\', array(' . "\n\t" . '\'before\' => \'&lt;div style="padding: 20px; background-color: grey;"&gt;\',' . "\n\t" . '\'after\' => \'&lt;/div&gt;\',' . "\n\t" . '\'image_size\' => \'medium\'' . "\n\t'attr' => array(\n\t\t'alt' => 'Custom alternative text',\n\t\t'title' => 'Custom Title',\n\t\t'class' => 'my-class my-other-class'\n\t)\n" . ' ) );</pre>';
+		$content .= apply_filters( 'taxonomy-images-queried-term-image', '', array(
+			'before'     => '<div style="padding: 20px; background-color: grey;">',
+			'after'      => '</div>',
+			'image_size' => 'medium',
+			'attr' => array(
+				'alt'   => 'Custom alternative text',
+				'title' => 'Custom Title',
+				'class' => 'my-class my-other-class'
+			)
+		) );
+
+		/**
+		 * Queried Term Image Data
+		 *
+		 * Return an array of data about the image associated with the current
+		 * queried term. In the event that no associated image exists, the filter
+		 * should return an empty string.
+		 *
+		 * In the event that the Taxonomy Images plugin is not installed
+		 * apply_filters() will return it's second parameter.
+		 */
+		$content .= '<hr />';
+		$content .= '<h2>Filter: taxonomy-images-queried-term-image-data</h2>';
+		$content .= '<pre>$term_image_data = apply_filters( \'taxonomy-images-queried-term-image-data\', array(), array(' . "\n\t" . '\'image_size\' => \'medium\'' . "\n" . ') );</pre>';
+		$content .= '<pre>' . print_r( apply_filters( 'taxonomy-images-queried-term-image-data', array(), array(
+			'image_size' => 'medium'
+		) ), true ) . '</pre>';
+
+		/**
+		 * Queried Term Image ID
+		 *
+		 * Return the id of the image associated with the currently
+		 * queried term. In the event that no associated image exists,
+		 * the filter should return zero.
+		 *
+		 * In the event that the Taxonomy Images plugin is not installed
+		 * apply_filters() will return it's second parameter.
+		 */
+		$content .= '<hr />';
+		$content .= '<h2>Filter: taxonomy-images-queried-term-image-id</h2>';
+		$content .= '<pre>$term_image_id = apply_filters( \'taxonomy-images-queried-term-image-id\', \'0\' );</pre>';
+		$content .= '<pre>' . apply_filters( 'taxonomy-images-queried-term-image-id', '0' ) . '</pre>';
+
+		/**
+		 * Queried Term Image Object
+		 *
+		 * Return an object representing the image associated with the
+		 * currently queried term. In the event that no associated image
+		 * exists, the filter should return an empty object.
+		 *
+		 * In the event that the Taxonomy Images plugin is not installed
+		 * apply_filters() will return it's second parameter.
+		 */
+		$content .= '<hr />';
+		$content .= '<h2>Filter: taxonomy-images-queried-term-image-object</h2>';
+		$content .= '<pre>$term_image_obj = apply_filters( \'taxonomy-images-queried-term-image-object\', null );</pre>';
+		$content .= '<pre>' . print_r( apply_filters( 'taxonomy-images-queried-term-image-object', null ), true ) . '</pre>';
+
+		/**
+		 * Queried Term Image URL
+		 *
+		 * Return a url to the image associated with the current queried
+		 * term. In the event that no associated image exists, the filter
+		 * should return an empty string.
+		 *
+		 * In the event that the Taxonomy Images plugin is not installed
+		 * apply_filters() will return it's second parameter.
+		 */
+		$content .= '<hr />';
+		$content .= '<h2>Filter: taxonomy-images-queried-term-image-url</h2>';
+		$content .= '<pre>$term_image_url = apply_filters( \'taxonomy-images-queried-term-image-url\', \'\', array(' . "\n\t" . '\'image_size\' => \'medium\'' . "\n" . ') );</pre>';
+		$content .= '<pre>' . apply_filters( 'taxonomy-images-queried-term-image-url', '', array(
+			'image_size' => 'medium'
+		) ) . '</pre>';
+
+		return $content;
 
 	}
 

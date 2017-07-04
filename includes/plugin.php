@@ -108,4 +108,15 @@ class Plugin {
 
 	}
 
+	/**
+	 * Debug
+	 *
+	 * Should debug information be displayed?
+	 */
+	public static function debug() {
+
+		return apply_filters( 'taxonomy-images-debug', false );
+
+	}
+
 }
