@@ -607,7 +607,7 @@ class Public_Filters {
 	 * @param   string   Name of the current function or filter.
 	 * @return  boolean  True if taxonomy exists, False if not.
 	 */
-	private static function check_taxonomy( $function, $filter ) {
+	private static function check_taxonomy( $taxonomy, $filter ) {
 
 		// Taxonomy doesn't exist
 		if ( ! taxonomy_exists( $taxonomy ) ) {
