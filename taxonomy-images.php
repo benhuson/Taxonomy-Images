@@ -64,15 +64,24 @@ require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/term.php' );
 require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/image.php' );
 require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/image-admin-field.php' );
 require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/image-admin-control.php' );
-require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/image-admin-ajax.php' );
 require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/public-filters.php' );
 require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/cache.php' );
 
 if ( is_admin() ) {
 
-	// Admin Only
-	require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/terms-admin.php' );
-	require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/settings-admin.php' );
+	// Admin & AJAX
+	if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
+
+		// AJAX only
+		require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/image-admin-ajax.php' );
+
+	} else {
+
+		// Admin only
+		require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/terms-admin.php' );
+		require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/settings-admin.php' );
+
+	}
 
 } else {
 
