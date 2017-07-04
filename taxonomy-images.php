@@ -26,6 +26,7 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
+require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/plugin.php' );
 require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/term.php' );
 require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/term-legacy.php' );
 require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/image.php' );
@@ -48,6 +49,8 @@ if ( is_admin() ) {
 	require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/public-css.php' );
 
 }
+
+TaxonomyImages\Plugin::set_basename( __FILE__ );
 
 /**
  * Version Number.
@@ -155,42 +158,6 @@ function taxonomy_image_plugin_check_taxonomy( $taxonomy, $filter ) {
 
 	return true;
 }
-
-/**
- * Plugin Meta Links.
- *
- * Add a link to this plugin's setting page when it
- * displays in the table on wp-admin/plugins.php.
- *
- * @param     array          List of links.
- * @param     string         Current plugin being displayed in plugins.php.
- * @return    array          Potentially modified list of links.
- *
- * @access    private
- * @since     0.7
- */
-function taxonomy_images_plugin_row_meta( $links, $file ) {
-	static $plugin_name = '';
-
-	if ( empty( $plugin_name ) ) {
-		$plugin_name = plugin_basename( __FILE__ );
-	}
-
-	if ( $plugin_name != $file ) {
-		return $links;
-	}
-
-	$link = taxonomy_images_plugin_settings_page_link( esc_html__( 'Settings', 'taxonomy-images' ) );
-	if ( ! empty( $link ) ) {
-		$links[] = $link;
-	}
-
-	$links[] = '<a href="http://wordpress.mfields.org/donate/">' . esc_html__( 'Donate', 'taxonomy-images' ) . '</a>';
-
-	return $links;
-}
-add_filter( 'plugin_row_meta', 'taxonomy_images_plugin_row_meta', 10, 2 );
-
 
 /**
  * Settings Page Link.

@@ -9,6 +9,7 @@ namespace TaxonomyImages;
 
 add_action( 'admin_menu', array( 'TaxonomyImages\Settings_Admin', 'settings_menu' ) );
 add_action( 'admin_init', array( 'TaxonomyImages\Settings_Admin', 'register_settings' ) );
+add_filter( 'plugin_row_meta', array( 'TaxonomyImages\Settings_Admin', 'plugin_row_meta' ), 10, 2 );
 
 class Settings_Admin {
 
@@ -173,6 +174,41 @@ class Settings_Admin {
 		add_settings_error( 'taxonomy_image_plugin_settings', 'taxonomies_updated', esc_html( $message ), 'updated' );
 
 		return $clean;
+
+	}
+
+	/**
+	 * Plugin Meta Links
+	 *
+	 * Add a link to this plugin's setting page when it
+	 * displays in the table on wp-admin/plugins.php.
+	 *
+	 * @internal  Private. Called via the `plugin_row_meta` filter.
+	 *
+	 * @param   array   List of links.
+	 * @param   string  Current plugin being displayed in plugins.php.
+	 * @return  array   Potentially modified list of links.
+	 */
+	public static function plugin_row_meta( $links, $file ) {
+
+		static $plugin_name = '';
+
+		if ( empty( $plugin_name ) ) {
+			$plugin_name = Plugin::basename();
+		}
+
+		if ( $plugin_name != $file ) {
+			return $links;
+		}
+
+		$link = taxonomy_images_plugin_settings_page_link( esc_html__( 'Settings', 'taxonomy-images' ) );
+		if ( ! empty( $link ) ) {
+			$links[] = $link;
+		}
+
+		$links[] = '<a href="http://wordpress.mfields.org/donate/">' . esc_html__( 'Donate', 'taxonomy-images' ) . '</a>';
+
+		return $links;
 
 	}
 
