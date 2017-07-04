@@ -28,6 +28,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/term.php' );
 require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/term-legacy.php' );
+require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/terms-admin.php' );
 require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/image.php' );
 require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/image-admin-field.php' );
 require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/image-admin-control.php' );
@@ -87,118 +88,8 @@ add_action( 'wp_ajax_taxonomy_images_delete_term_image', array( 'TaxonomyImages\
 // Load a list of user-defined associations.
 add_action( 'init', array( 'TaxonomyImages\Associations_Legacy', 'get' ) );
 
-/**
- * Dynamically create hooks for each taxonomy.
- *
- * Adds hooks for each taxonomy that the user has given
- * an image interface to via settings page. These hooks
- * enable the image interface on wp-admin/edit-tags.php.
- *
- * @access    private
- * @since     0.4.3
- * @alter     0.7
- */
-function taxonomy_image_plugin_add_dynamic_hooks() {
-	$settings = get_option( 'taxonomy_image_plugin_settings' );
-	if ( ! isset( $settings['taxonomies'] ) ) {
-		return;
-	}
-
-	foreach ( $settings['taxonomies'] as $taxonomy ) {
-		add_filter( 'manage_' . $taxonomy . '_custom_column', 'taxonomy_image_plugin_taxonomy_rows', 15, 3 );
-		add_filter( 'manage_edit-' . $taxonomy . '_columns',  'taxonomy_image_plugin_taxonomy_columns' );
-		add_action( $taxonomy . '_edit_form_fields',          'taxonomy_image_plugin_edit_tag_form', 10, 2 );
-	}
-}
-add_action( 'admin_init', 'taxonomy_image_plugin_add_dynamic_hooks' );
-
-
-/**
- * Edit Term Columns.
- *
- * Insert a new column on wp-admin/edit-tags.php.
- *
- * @see taxonomy_image_plugin_add_dynamic_hooks()
- *
- * @param     array     A list of columns.
- * @return    array     List of columns with "Images" inserted after the checkbox.
- *
- * @access    private
- * @since     0.4.3
- */
-function taxonomy_image_plugin_taxonomy_columns( $original_columns ) {
-	$new_columns = $original_columns;
-	array_splice( $new_columns, 1 );
-	$new_columns['taxonomy_image_plugin'] = esc_html__( 'Image', 'taxonomy-images' );
-	return array_merge( $new_columns, $original_columns );
-}
-
-
-/**
- * Edit Term Rows.
- *
- * Create image control for each term row of wp-admin/edit-tags.php.
- *
- * @see taxonomy_image_plugin_add_dynamic_hooks()
- *
- * @param     string    Row.
- * @param     string    Name of the current column.
- * @param     int       Term ID.
- * @return    string    HTML image control.
- *
- * @access    private
- * @since     2010-11-08
- */
-function taxonomy_image_plugin_taxonomy_rows( $row, $column_name, $term_id ) {
-
-	global $taxonomy;
-
-	if ( 'taxonomy_image_plugin' === $column_name ) {
-
-		$term = get_term( $term_id, $taxonomy );
-
-		$control = new TaxonomyImages\Image_Admin_Control( $term );
-
-		return $row . $control->get_rendered();
-	}
-
-	return $row;
-
-}
-
-/**
- * Edit Term Control.
- *
- * Create image control for wp-admin/edit-tag-form.php.
- * Hooked into the '{$taxonomy}_edit_form_fields' action.
- *
- * @param     stdClass  Term object.
- * @param     string    Taxonomy slug.
- *
- * @access    private
- * @since     2010-11-08
- */
-function taxonomy_image_plugin_edit_tag_form( $term, $taxonomy ) {
-
-	$field = new TaxonomyImages\Image_Admin_Field( $term );
-	$control = new TaxonomyImages\Image_Admin_Control( $term );
-
-	$taxonomy = get_taxonomy( $taxonomy );
-
-	?>
-	<tr class="form-field hide-if-no-js">
-		<th scope="row" valign="top">
-			<label for="description"><?php print esc_html__( 'Featured Image', 'taxonomy-images' ) ?></label>
-		</th>
-		<td>
-			<?php echo $control->get_rendered(); ?>
-			<div class="clear"></div>
-			<?php $field->the_description( '<span class="description">', '</span>' ); ?>
-		</td>
-	</tr>
-	<?php
-
-}
+// Dynamically create hooks for each taxonomy.
+add_action( 'admin_init', array( 'TaxonomyImages\Terms_Admin', 'add_admin_fields' ) );
 
 /**
  * Custom styles.
