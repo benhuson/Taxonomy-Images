@@ -92,28 +92,6 @@ add_action( 'wp_ajax_taxonomy_images_delete_term_image', array( 'TaxonomyImages\
 add_action( 'init', array( 'TaxonomyImages\Associations_Legacy', 'get' ) );
 
 /**
- * Custom styles.
- *
- * @since     0.7
- * @access    private
- */
-function taxonomy_image_plugin_css_admin() {
-	if ( false == taxonomy_image_plugin_is_screen_active() && current_filter() != 'admin_print_styles-media-upload-popup' ) {
-		return;
-	}
-
-	wp_enqueue_style(
-		'taxonomy-image-plugin-edit-tags',
-		taxonomy_image_plugin_url( 'css/admin.css' ),
-		array(),
-		taxonomy_image_plugin_version(),
-		'screen'
-	);
-}
-add_action( 'admin_print_styles-edit-tags.php', 'taxonomy_image_plugin_css_admin' );  // Pre WordPress 4.5
-add_action( 'admin_print_styles-term.php', 'taxonomy_image_plugin_css_admin' );       // WordPress 4.5+
-
-/**
  * Public Styles.
  *
  * Prints custom css to all public pages. If you do not
@@ -168,34 +146,6 @@ function taxonomy_image_plugin_activate() {
 	}
 }
 register_activation_hook( __FILE__, 'taxonomy_image_plugin_activate' );
-
-
-/**
- * Is Screen Active?
- *
- * @return    bool
- *
- * @access    private
- * @since     0.7
- */
-function taxonomy_image_plugin_is_screen_active() {
-	$screen = get_current_screen();
-	if ( ! isset( $screen->taxonomy ) ) {
-		return false;
-	}
-
-	$settings = get_option( 'taxonomy_image_plugin_settings' );
-	if ( ! isset( $settings['taxonomies'] ) ) {
-		return false;
-	}
-
-	if ( in_array( $screen->taxonomy, $settings['taxonomies'] ) ) {
-		return true;
-	}
-
-	return false;
-}
-
 
 /**
  * Cache Images
@@ -380,34 +330,3 @@ function taxonomy_images_plugin_settings_page_link( $link_text = '' ) {
 
 	return $link;
 }
-
-/**
- * Enqueue Admin Scripts
- *
- * @since  0.9
- */
-function taxonomy_images_admin_enqueue_scripts() {
-
-	if ( false == taxonomy_image_plugin_is_screen_active() ) {
-		return;
-	}
-
-	wp_enqueue_media();
-
-	wp_enqueue_script(
-		'taxonomy-images-media-modal',
-		taxonomy_image_plugin_url( 'js/media-modal.js' ),
-		array( 'jquery' ),
-		taxonomy_image_plugin_version()
-	);
-
-	wp_localize_script( 'taxonomy-images-media-modal', 'TaxonomyImagesMediaModal', array(
-		'wp_media_post_id'     => 0,
-		'attachment_id'        => 0,
-		'uploader_title'       => __( 'Featured Image', 'taxonomy-images' ),
-		'uploader_button_text' => __( 'Set featured image', 'taxonomy-images' ),
-		'default_img_src'      => taxonomy_image_plugin_url( 'default.png' )
-	) );
-
-}
-add_action( 'admin_enqueue_scripts', 'taxonomy_images_admin_enqueue_scripts' );
