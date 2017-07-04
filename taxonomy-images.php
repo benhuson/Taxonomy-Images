@@ -26,6 +26,39 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
+// Required versions
+$taxonomy_images_has_php_version = version_compare( PHP_VERSION, '5.3.0', '>' );
+$taxonomy_images_has_wp_version = version_compare( $wp_version, '4.4', '>=' );
+
+/**
+ * Plugin Not Supported Notice
+ */
+function taxonomy_images_plugin_not_supported_notice() {
+
+	$upgrade = array();
+	$requires = array();
+	$notice = '<div class="error"><p>' . __( '%1$s requires %2$s to function properly. Please upgrade %3$s or deactivate %1$s.', 'taxonomy-images' ) . '</p></div>';
+
+	if ( ! $taxonomy_images_has_php_version ) {
+		$upgrade[] = __( 'PHP', 'taxonomy-images' );
+		$requires[] = sprintf( _x( 'PHP %s', 'version', 'taxonomy-images' ), '5.3+' );
+	}
+
+	if ( ! $taxonomy_images_has_wp_version ) {
+		$upgrade[] = __( 'WordPress', 'taxonomy-images' );
+		$requires[] = sprintf( _x( 'WordPress %s', 'version', 'taxonomy-images' ), '4.4+' );
+	}
+
+	printf( $notice, __( 'Taxonomy Images', 'taxonomy-images' ), implode( ' and ', $requires ), implode( ' and ', $upgrade ) );
+
+}
+
+// Requires PHP 5.3+ and WordPress 4.4+
+if ( ! $taxonomy_images_has_php_version || ! $taxonomy_images_has_wp_version ) {
+	add_action( 'admin_notices', 'taxonomy_images_plugin_not_supported_notice' );
+	return;
+}
+
 require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/plugin.php' );
 require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/term.php' );
 require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/image.php' );
