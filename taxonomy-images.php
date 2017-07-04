@@ -28,7 +28,6 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/term.php' );
 require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/term-legacy.php' );
-require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/terms-admin.php' );
 require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/image.php' );
 require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/image-admin-field.php' );
 require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/image-admin-control.php' );
@@ -38,6 +37,7 @@ require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/public-filters.
 
 // Admin Only
 if ( is_admin() ) {
+	require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/terms-admin.php' );
 	require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/settings-admin.php' );
 }
 
@@ -89,9 +89,6 @@ add_action( 'wp_ajax_taxonomy_images_delete_term_image', array( 'TaxonomyImages\
 
 // Load a list of user-defined associations.
 add_action( 'init', array( 'TaxonomyImages\Associations_Legacy', 'get' ) );
-
-// Dynamically create hooks for each taxonomy.
-add_action( 'admin_init', array( 'TaxonomyImages\Terms_Admin', 'add_admin_fields' ) );
 
 /**
  * Custom styles.
