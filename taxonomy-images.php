@@ -52,17 +52,6 @@ if ( is_admin() ) {
 
 TaxonomyImages\Plugin::set_basename( __FILE__ );
 
-/**
- * Load Plugin Text Domain.
- *
- * @access    private
- * @since     0.7.3
- */
-function taxonomy_image_plugin_text_domain() {
-	load_plugin_textdomain( 'taxonomy-images', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
-}
-add_action( 'init', 'taxonomy_image_plugin_text_domain' );
-
 register_activation_hook( TaxonomyImages\Plugin::file(), array( 'TaxonomyImages\Plugin', 'activate' ) );
 
 /**

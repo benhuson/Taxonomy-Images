@@ -7,6 +7,8 @@
 
 namespace TaxonomyImages;
 
+add_action( 'init', array( 'TaxonomyImages\Plugin', 'load_textdomain' ) );
+
 class Plugin {
 
 	/**
@@ -79,6 +81,17 @@ class Plugin {
 	public static function plugin_url( $file = '' ) {
 
 		return self::plugin_dir_url() . $file;
+
+	}
+
+	/**
+	 * Load Plugin Text Domain
+	 *
+	 * @internal  Private. Called via the `init` action.
+	 */
+	public static function load_textdomain() {
+
+		load_plugin_textdomain( 'taxonomy-images', false, dirname( self::basename() ) . '/languages/' );
 
 	}
 
