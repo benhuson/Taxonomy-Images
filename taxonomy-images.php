@@ -34,6 +34,7 @@ require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/image-admin-con
 require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/image-admin-ajax.php' );
 require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/associations-legacy.php' );
 require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/public-filters.php' );
+require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/cache.php' );
 
 // Admin Only
 if ( is_admin() ) {
