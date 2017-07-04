@@ -142,14 +142,13 @@ function taxonomy_image_plugin_check_taxonomy( $taxonomy, $filter ) {
 	$settings = get_option( 'taxonomy_image_plugin_settings' );
 
 	if ( ! isset( $settings['taxonomies'] ) ) {
-		trigger_error( sprintf( esc_html__( 'No taxonomies have image support. %1$s', 'taxonomy-images' ), taxonomy_images_plugin_settings_page_link() ) );
+		trigger_error( esc_html__( 'No taxonomies have image support.', 'taxonomy-images' ) );
 		return false;
 	}
 
 	if ( ! in_array( $taxonomy, (array) $settings['taxonomies'] ) ) {
-		trigger_error( sprintf( esc_html__( 'The %1$s taxonomy does not have image support. %2$s', 'taxonomy-images' ),
-			'<strong>' . esc_html( $taxonomy ) . '</strong>',
-			taxonomy_images_plugin_settings_page_link()
+		trigger_error( sprintf( esc_html__( 'The %1$s taxonomy does not have image support.', 'taxonomy-images' ),
+			'<strong>' . esc_html( $taxonomy ) . '</strong>'
 		) );
 		return false;
 	}
