@@ -178,6 +178,25 @@ class Settings_Admin {
 	}
 
 	/**
+	 * Get Settings Page Link
+	 *
+	 * @param   array   Localized link text.
+	 * @return  string  HTML link to settings page.
+	 */
+	private static function get_settings_page_link( $link_text = '' ) {
+
+		if ( empty( $link_text ) ) {
+			$link_text = __( 'Manage Settings', 'taxonomy-images' );
+		}
+
+		if ( current_user_can( 'manage_options' ) ) {
+			return sprintf( '<a href="%s">%s</a>', esc_url( add_query_arg( array( 'page' => 'taxonomy_image_plugin_settings' ), admin_url( 'options-general.php' ) ) ), esc_html( $link_text ) );
+		}
+
+		return '';
+	}
+
+	/**
 	 * Plugin Meta Links
 	 *
 	 * Add a link to this plugin's setting page when it
@@ -201,7 +220,7 @@ class Settings_Admin {
 			return $links;
 		}
 
-		$link = taxonomy_images_plugin_settings_page_link( esc_html__( 'Settings', 'taxonomy-images' ) );
+		$link = self::get_settings_page_link( esc_html__( 'Settings', 'taxonomy-images' ) );
 		if ( ! empty( $link ) ) {
 			$links[] = $link;
 		}

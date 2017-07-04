@@ -158,25 +158,3 @@ function taxonomy_image_plugin_check_taxonomy( $taxonomy, $filter ) {
 
 	return true;
 }
-
-/**
- * Settings Page Link.
- *
- * @param     array     Localized link text.
- * @return    string    HTML link to settings page.
- *
- * @access    private
- * @since     0.7
- */
-function taxonomy_images_plugin_settings_page_link( $link_text = '' ) {
-	if ( empty( $link_text ) ) {
-		$link_text = __( 'Manage Settings', 'taxonomy-images' );
-	}
-
-	$link = '';
-	if ( current_user_can( 'manage_options' ) ) {
-		$link = '<a href="' . esc_url( add_query_arg( array( 'page' => 'taxonomy_image_plugin_settings' ), admin_url( 'options-general.php' ) ) ) . '">' . esc_html( $link_text ) . '</a>';
-	}
-
-	return $link;
-}
