@@ -21,23 +21,23 @@ class Image_Admin_AJAX {
 	 */
 	public static function update_term_image() {
 
-		if ( ! isset( $_POST['tt_id'] ) ) {
+		if ( ! isset( $_POST['term_id'] ) ) {
 			self::json_response( array(
 				'status' => 'bad',
-				'why'    => esc_html__( 'tt_id not sent', 'taxonomy-images' ),
+				'why'    => esc_html__( 'term_id not sent', 'taxonomy-images' ),
 			) );
 		}
 
-		$tt_id = absint( $_POST['tt_id'] );
+		$term_id = absint( $_POST['term_id'] );
 
-		if ( empty( $tt_id ) ) {
+		if ( empty( $term_id ) ) {
 			self::json_response( array(
 				'status' => 'bad',
-				'why'    => esc_html__( 'tt_id is empty', 'taxonomy-images' ),
+				'why'    => esc_html__( 'term_id is empty', 'taxonomy-images' ),
 			) );
 		}
 
-		if ( ! self::check_permissions( $tt_id ) ) {
+		if ( ! self::check_permissions( $term_id ) ) {
 			self::json_response( array(
 				'status' => 'bad',
 				'why'    => esc_html__( 'You do not have the correct capability to manage this term', 'taxonomy-images' ),
@@ -74,16 +74,12 @@ class Image_Admin_AJAX {
 			) );
 		}
 
-		// @todo  Deprecate. Here for backwards-compatibility.
-		$assoc = Associations_Legacy::get();
-		$assoc[ $tt_id ] = $image_id;
-
 		// Save as term meta
-		$t = new Term_Legacy( $tt_id );
+		$t = new Term( $term_id );
 		$t->update_image_id( $image_id );
 
 		// @todo  Make this work primarily for term meta.
-		if ( update_option( 'taxonomy_image_plugin', Associations_Legacy::sanitize( $assoc ) ) ) {
+		if ( true ) {
 
 			$image = new Image( $image_id );
 
@@ -116,23 +112,23 @@ class Image_Admin_AJAX {
 	 */
 	public static function delete_term_image() {
 
-		if ( ! isset( $_POST['tt_id'] ) ) {
+		if ( ! isset( $_POST['term_id'] ) ) {
 			self::json_response( array(
 				'status' => 'bad',
-				'why'    => esc_html__( 'tt_id not sent', 'taxonomy-images' ),
+				'why'    => esc_html__( 'term_id not sent', 'taxonomy-images' ),
 			) );
 		}
 
-		$tt_id = absint( $_POST['tt_id'] );
+		$term_id = absint( $_POST['term_id'] );
 
-		if ( empty( $tt_id ) ) {
+		if ( empty( $term_id ) ) {
 			self::json_response( array(
 				'status' => 'bad',
-				'why'    => esc_html__( 'tt_id is empty', 'taxonomy-images' ),
+				'why'    => esc_html__( 'term_id is empty', 'taxonomy-images' ),
 			) );
 		}
 
-		if ( ! self::check_permissions( $tt_id ) ) {
+		if ( ! self::check_permissions( $term_id ) ) {
 			self::json_response( array(
 				'status' => 'bad',
 				'why'    => esc_html__( 'You do not have the correct capability to manage this term', 'taxonomy-images' ),
@@ -153,24 +149,12 @@ class Image_Admin_AJAX {
 			) );
 		}
 
-		// @todo  Deprecate. Here for backwards-compatibility.
-		$assoc = Associations_Legacy::get();
-
-		if ( ! isset( $assoc[ $tt_id ] ) ) {
-			self::json_response( array(
-				'status' => 'good',
-				'why'    => esc_html__( 'Nothing to remove', 'taxonomy-images' )
-			) );
-		}
-
-		unset( $assoc[ $tt_id ] );
-
 		// Delete term meta
-		$t = new Term_Legacy( $tt_id );
+		$t = new Term( $term_id );
 		$t->delete_image();
 
 		// @todo  Make this work primarily for term meta.
-		if ( update_option( 'taxonomy_image_plugin', $assoc ) ) {
+		if ( true ) {
 
 			self::json_response( array(
 				'status' => 'good',
@@ -222,11 +206,11 @@ class Image_Admin_AJAX {
 	 * @param   integer  term_taxonomy_id
 	 * @return  bool     True if user can edit terms, False if not.
 	 */
-	private static function check_permissions( $tt_id ) {
+	private static function check_permissions( $term_id ) {
 
-		$term_legacy = new Term_Legacy( $tt_id );
+		$term = new Term( $term_id );
 
-		$tax = $term_legacy->get_taxonomy();
+		$tax = $term->get_taxonomy();
 		if ( empty( $tax ) ) {
 			return false;
 		}

@@ -7,14 +7,14 @@ var taxonomy_images_file_frame;
 	$( document ).ready( function() {
 
 		// Store the old id (not sure if this is application when editing a term)
-		TaxonomyImagesMediaModal.ttID = 0;
+		TaxonomyImagesMediaModal.termID = 0;
 
 		// When the remove icon is clicked...
 		$( '.wp-list-table, .form-table' ).on( 'click', '.taxonomy-image-control a.remove', function( event ) {
 
 			event.preventDefault();
 
-			var tt_id = $( this ).data( 'tt-id' );
+			var term_id = $( this ).data( 'term-id' );
 
 			$.ajax( {
 				url      : ajaxurl,
@@ -23,13 +23,13 @@ var taxonomy_images_file_frame;
 				data     : {
 					'action'   : 'taxonomy_images_delete_term_image',
 					'wp_nonce' : $( this ).data( 'nonce' ),
-					'tt_id'    : $( this ).data( 'tt-id' )
+					'term_id'    : $( this ).data( 'term-id' )
 				},
 				cache     : false,
 				success   : function ( response ) {
 					if ( 'good' === response.status ) {
 
-						selector = $( '#taxonomy-image-control-' + tt_id );
+						selector = $( '#taxonomy-image-control-' + term_id );
 
 						/* Update the image on the screen below */
 						selector.find( '.taxonomy-image-thumbnail img' ).attr( 'src', TaxonomyImagesMediaModal.default_img_src );
@@ -56,7 +56,7 @@ var taxonomy_images_file_frame;
 
 			button = $( this );
 
-			TaxonomyImagesMediaModal.ttID = $( this ).data( 'tt-id' );
+			TaxonomyImagesMediaModal.termID = $( this ).data( 'term-id' );
 			TaxonomyImagesMediaModal.attachment_id = $( this ).data( 'attachment-id' );
 			TaxonomyImagesMediaModal.nonce = $( this ).data( 'nonce' );
 
@@ -70,7 +70,7 @@ var taxonomy_images_file_frame;
 			} else {
 
 				// Set the wp.media post id so the uploader grabs the term ID being edited
-				TaxonomyImagesMediaModal.ttID = $( this ).data( 'tt-id' );
+				TaxonomyImagesMediaModal.termID = $( this ).data( 'term-id' );
 
 			}
 
@@ -99,7 +99,7 @@ var taxonomy_images_file_frame;
 				// We set multiple to false so only get one image from the uploader
 				attachment = taxonomy_images_file_frame.state().get( 'selection' ).first().toJSON();
 
-				var tt_id = TaxonomyImagesMediaModal.ttID;
+				var term_id = TaxonomyImagesMediaModal.termID;
 				var attachment_id = attachment.id;
 
 				// Do something with attachment.id and/or attachment.url here
@@ -111,7 +111,7 @@ var taxonomy_images_file_frame;
 						'action'        : 'taxonomy_images_update_term_image',
 						'wp_nonce'      : TaxonomyImagesMediaModal.nonce,
 						'attachment_id' : attachment.id,
-						'tt_id'         : parseInt( TaxonomyImagesMediaModal.ttID )
+						'term_id'         : parseInt( TaxonomyImagesMediaModal.termID )
 					},
 					success  : function ( response ) {
 						if ( 'good' === response.status ) {
@@ -126,7 +126,7 @@ var taxonomy_images_file_frame;
 								$( e ).find( '.remove-association' ).hide();
 							} );
 
-							selector = $( '#taxonomy-image-control-' + tt_id );
+							selector = $( '#taxonomy-image-control-' + term_id );
 
 							/* Update the image on the screen below */
 							selector.find( '.taxonomy-image-thumbnail img' ).attr( 'src', response.attachment_thumb_src );

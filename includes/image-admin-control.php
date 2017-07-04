@@ -41,7 +41,7 @@ class Image_Admin_Control {
 			return '';
 		}
 
-		$tt_id = $this->term->term_taxonomy_id;
+		$term_id = $this->term->term_id;
 
 		$name = strtolower( $this->get_taxonomy_singular_name() );
 
@@ -58,7 +58,7 @@ class Image_Admin_Control {
 
 		// Control Attributes
 		$common_attributes = array(
-			'data-tt-id="' . $tt_id . '"',
+			'data-term-id="' . $term_id . '"',
 			'data-attachment-id="' . $attachment_id . '"'
 		);
 
@@ -81,12 +81,12 @@ class Image_Admin_Control {
 			'class="control remove' . $hide . '"',
 			'href="#"',
 			'title="' . esc_attr( sprintf( __( 'Remove image from this %s.', 'taxonomy-images' ), $name ) ) . '"',
-			'id="' . esc_attr( 'remove-' . $tt_id ) . '"'
+			'id="' . esc_attr( 'remove-' . $term_id ) . '"'
 		) );
 
 		// Control
-		$o  = '<div id="' . esc_attr( 'taxonomy-image-control-' . $tt_id ) . '" class="taxonomy-image-control hide-if-no-js">';
-		$o .= '<a ' . implode( ' ', $edit_attributes ) . '><img id="' . esc_attr( 'taxonomy_image_plugin_' . $tt_id ) . '" src="' . esc_url( $img_url ) . '" alt="" /></a>';
+		$o  = '<div id="' . esc_attr( 'taxonomy-image-control-' . $term_id ) . '" class="taxonomy-image-control hide-if-no-js">';
+		$o .= '<a ' . implode( ' ', $edit_attributes ) . '><img id="' . esc_attr( 'taxonomy_image_plugin_' . $term_id ) . '" src="' . esc_url( $img_url ) . '" alt="" /></a>';
 		$o .= '<a ' . implode( ' ', $add_attributes ) . '>' . esc_html__( 'Upload.', 'taxonomy-images' ) . '</a>';
 		$o .= '<a ' . implode( ' ', $remove_attributes ) . '>' . esc_html__( 'Delete', 'taxonomy-images' ) . '</a>';
 		$o .= '</div>';
@@ -125,11 +125,8 @@ class Image_Admin_Control {
 
 		if ( $this->term ) {
 
-			$associations = Associations_Legacy::get();
-
-			if ( isset( $associations[ $this->term->term_taxonomy_id ] ) ) {
-				return (int) $associations[ $this->term->term_taxonomy_id ];
-			}
+			$t = new Term( $this->term->term_id );
+			return $t->get_image_id();
 
 		}
 
