@@ -11,6 +11,9 @@
  * and is strongly discouraged. This file contains custom filters
  * which enable extension authors to interact with this plugin in
  * a responsible manner.
+ *
+ * To enable debugging content:
+ * add_filter( 'taxonomy-images-debug', '__return_true' );
  */
 
 namespace TaxonomyImages;
