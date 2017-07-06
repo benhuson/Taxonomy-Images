@@ -196,11 +196,11 @@ class Settings_Admin {
 	 * Add a link to this plugin's setting page when it
 	 * displays in the table on wp-admin/plugins.php.
 	 *
-	 * @internal  Private. Called via the `plugin_row_meta` filter.
-	 *
 	 * @param   array   List of links.
 	 * @param   string  Current plugin being displayed in plugins.php.
 	 * @return  array   Potentially modified list of links.
+	 *
+	 * @internal  Private. Called via the `plugin_row_meta` filter.
 	 */
 	public static function plugin_row_meta( $links, $file ) {
 

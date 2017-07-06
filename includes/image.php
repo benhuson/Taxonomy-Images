@@ -37,9 +37,9 @@ class Image {
 	 * If size doesn't exist, attempt to create a resized version.
 	 * The output of this function should be escaped before printing to the browser.
 	 *
-	 * @internal  Private.
-	 *
 	 * @return  string  URI of custom image on success. Otherwise empty string.
+	 *
+	 * @internal  Private.
 	 */
 	public function get_url() {
 
@@ -155,9 +155,9 @@ class Image {
 	 *
 	 * Configuration data for the "detail" image size.
 	 *
-	 * @internal  Private.
-	 *
 	 * @return  array  Image size data.
+	 *
+	 * @internal  Private.
 	 */
 	public static function get_image_size_data() {
 
