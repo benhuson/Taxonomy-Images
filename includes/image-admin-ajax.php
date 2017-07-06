@@ -32,12 +32,12 @@ class Image_Admin_AJAX {
 
 		if ( $updated && ! is_wp_error( $updated ) ) {
 
-			$image = new Image( $image_id );
+			$img_admin = new Term_Image_Admin( $term_id );
 
 			self::json_response( array(
 				'status'               => 'good',
 				'why'                  => esc_html__( 'Image successfully associated', 'taxonomy-images' ),
-				'attachment_thumb_src' => $image->get_url()
+				'attachment_thumb_src' => $img_admin->get_url()
 			) );
 
 		} else {

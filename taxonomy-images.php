@@ -67,6 +67,7 @@ require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/image.php' );
 if ( is_admin() && defined( 'DOING_AJAX' ) && DOING_AJAX ) {
 
 	// AJAX only
+	require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/term-image-admin.php' );
 	require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/image-admin-ajax.php' );
 
 } else {
@@ -78,6 +79,7 @@ if ( is_admin() && defined( 'DOING_AJAX' ) && DOING_AJAX ) {
 	if ( is_admin() ) {
 
 		// Admin only
+		require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/term-image-admin.php' );
 		require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/image-admin-field.php' );
 		require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/image-admin-control.php' );
 		require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/terms-admin.php' );
