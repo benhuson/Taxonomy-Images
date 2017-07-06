@@ -10,6 +10,13 @@ namespace TaxonomyImages;
 class Image_Admin_Control {
 
 	/**
+	 * Term ID
+	 *
+	 * @var  integer
+	 */
+	protected $term_id = 0;
+
+	/**
 	 * Term
 	 *
 	 * @var  WP_Term
@@ -19,12 +26,14 @@ class Image_Admin_Control {
 	/**
 	 * Constructor
 	 *
-	 * @param  WP_Term  $term  Term object.
+	 * @param  integer  $term_id  Term ID.
 	 */
-	public function __construct( $term ) {
+	public function __construct( $term_id ) {
 
-		if ( is_a( $term, 'WP_Term' ) ) {
-			$this->term = $term;
+		$this->term_id = absint( $term_id );
+
+		if ( $this->term_id ) {
+			$this->term = get_term( $this->term_id );
 		}
 
 	}
