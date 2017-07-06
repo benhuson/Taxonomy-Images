@@ -17,6 +17,13 @@ class Term_Image {
 	protected $term_id = 0;
 
 	/**
+	 * Term
+	 *
+	 * @var  WP_Term|false|null  Null if not fetched, false if not avilable, otherwise term object.
+	 */
+	private $term = null;
+
+	/**
 	 * Constructor
 	 *
 	 * @param  integer  $term_id  Term ID.
@@ -39,15 +46,38 @@ class Term_Image {
 	}
 
 	/**
+	 * Get Term
+	 *
+	 * @return  WP_Term  Term object
+	 */
+	public function get_term() {
+
+		if ( is_null( $this->term ) && $this->get_term_id() ) {
+
+			$term = get_term( $this->get_term_id() );
+
+			if ( $term && ! is_wp_error( $term  ) ) {
+				$this->term = $term;
+			} else {
+				$this->term = false;
+			}
+
+		}
+
+		return $this->term;
+
+	}
+
+	/**
 	 * Get Taxonomy
 	 *
 	 * @return  string
 	 */
 	public function get_taxonomy() {
 
-		$term = get_term( $this->get_term_id() );
+		$term = $this->get_term();
 
-		if ( is_a( $term, 'WP_Term' ) ) {
+		if ( $term ) {
 			return $term->taxonomy;
 		}
 
