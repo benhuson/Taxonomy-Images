@@ -99,7 +99,7 @@ class Image_Admin_AJAX {
 	 *
 	 * @return  integer  Term ID.
 	 */
-	private function get_posted_term_id() {
+	private static function get_posted_term_id() {
 
 		// Isset?
 		if ( ! isset( $_POST['term_id'] ) ) {
@@ -142,7 +142,7 @@ class Image_Admin_AJAX {
 	 *
 	 * @return  integer  Attachment ID.
 	 */
-	private function get_posted_attachment_id() {
+	private static function get_posted_attachment_id() {
 
 		if ( ! isset( $_POST['attachment_id'] ) ) {
 
@@ -173,7 +173,7 @@ class Image_Admin_AJAX {
 	 *
 	 * @param  string  $nonce  Nonce name.
 	 */
-	private function verify_nonce( $nonce ) {
+	private static function verify_nonce( $nonce ) {
 
 		// Isset?
 		if ( ! isset( $_POST['wp_nonce'] ) ) {
