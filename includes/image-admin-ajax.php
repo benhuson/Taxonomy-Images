@@ -21,58 +21,10 @@ class Image_Admin_AJAX {
 	 */
 	public static function update_term_image() {
 
-		if ( ! isset( $_POST['term_id'] ) ) {
-			self::json_response( array(
-				'status' => 'bad',
-				'why'    => esc_html__( 'term_id not sent', 'taxonomy-images' ),
-			) );
-		}
+		self::verify_nonce( 'taxonomy-image-plugin-create-association' );
 
-		$term_id = absint( $_POST['term_id'] );
-
-		if ( empty( $term_id ) ) {
-			self::json_response( array(
-				'status' => 'bad',
-				'why'    => esc_html__( 'term_id is empty', 'taxonomy-images' ),
-			) );
-		}
-
-		if ( ! self::check_permissions( $term_id ) ) {
-			self::json_response( array(
-				'status' => 'bad',
-				'why'    => esc_html__( 'You do not have the correct capability to manage this term', 'taxonomy-images' ),
-			) );
-		}
-
-		if ( ! isset( $_POST['wp_nonce'] ) ) {
-			self::json_response( array(
-				'status' => 'bad',
-				'why'    => esc_html__( 'No nonce included.', 'taxonomy-images' ),
-			) );
-		}
-
-		if ( ! wp_verify_nonce( $_POST['wp_nonce'], 'taxonomy-image-plugin-create-association' ) ) {
-			self::json_response( array(
-				'status' => 'bad',
-				'why'    => esc_html__( 'Nonce did not match', 'taxonomy-images' ),
-			) );
-		}
-
-		if ( ! isset( $_POST['attachment_id'] ) ) {
-			self::json_response( array(
-				'status' => 'bad',
-				'why'    => esc_html__( 'Image id not sent', 'taxonomy-images' )
-			) );
-		}
-
-		$image_id = absint( $_POST['attachment_id'] );
-
-		if ( empty( $image_id ) ) {
-			self::json_response( array(
-				'status' => 'bad',
-				'why'    => esc_html__( 'Image id is not a positive integer', 'taxonomy-images' )
-			) );
-		}
+		$term_id = self::get_posted_term_id();
+		$image_id = self::get_posted_attachment_id();
 
 		// Save as term meta
 		$t = new Term( $term_id );
@@ -112,42 +64,9 @@ class Image_Admin_AJAX {
 	 */
 	public static function delete_term_image() {
 
-		if ( ! isset( $_POST['term_id'] ) ) {
-			self::json_response( array(
-				'status' => 'bad',
-				'why'    => esc_html__( 'term_id not sent', 'taxonomy-images' ),
-			) );
-		}
+		self::verify_nonce( 'taxonomy-image-plugin-remove-association' );
 
-		$term_id = absint( $_POST['term_id'] );
-
-		if ( empty( $term_id ) ) {
-			self::json_response( array(
-				'status' => 'bad',
-				'why'    => esc_html__( 'term_id is empty', 'taxonomy-images' ),
-			) );
-		}
-
-		if ( ! self::check_permissions( $term_id ) ) {
-			self::json_response( array(
-				'status' => 'bad',
-				'why'    => esc_html__( 'You do not have the correct capability to manage this term', 'taxonomy-images' ),
-			) );
-		}
-
-		if ( ! isset( $_POST['wp_nonce'] ) ) {
-			self::json_response( array(
-				'status' => 'bad',
-				'why'    => esc_html__( 'No nonce included', 'taxonomy-images' ),
-			) );
-		}
-
-		if ( ! wp_verify_nonce( $_POST['wp_nonce'], 'taxonomy-image-plugin-remove-association') ) {
-			self::json_response( array(
-				'status' => 'bad',
-				'why'    => esc_html__( 'Nonce did not match', 'taxonomy-images' ),
-			) );
-		}
+		$term_id = self::get_posted_term_id();
 
 		// Delete term meta
 		$t = new Term( $term_id );
@@ -172,6 +91,111 @@ class Image_Admin_AJAX {
 
 		// Don't know why, but something didn't work.
 		self::json_response();
+
+	}
+
+	/**
+	 * Get Posted Term ID
+	 *
+	 * Exit if term ID not set or if no permission to edit.
+	 *
+	 * @return  integer  Term ID.
+	 */
+	private function get_posted_term_id() {
+
+		// Isset?
+		if ( ! isset( $_POST['term_id'] ) ) {
+
+			self::json_response( array(
+				'status' => 'bad',
+				'why'    => esc_html__( 'term_id not sent', 'taxonomy-images' ),
+			) );
+
+		}
+
+		$term_id = absint( $_POST['term_id'] );
+
+		// Empty?
+		if ( empty( $term_id ) ) {
+
+			self::json_response( array(
+				'status' => 'bad',
+				'why'    => esc_html__( 'term_id is empty', 'taxonomy-images' ),
+			) );
+
+		}
+
+		// Permission?
+		if ( ! self::check_permissions( $term_id ) ) {
+
+			self::json_response( array(
+				'status' => 'bad',
+				'why'    => esc_html__( 'You do not have the correct capability to manage this term', 'taxonomy-images' ),
+			) );
+
+		}
+
+		return $term_id;
+
+	}
+
+	/**
+	 * Get Posted Attachment ID
+	 *
+	 * @return  integer  Attachment ID.
+	 */
+	private function get_posted_attachment_id() {
+
+		if ( ! isset( $_POST['attachment_id'] ) ) {
+
+			self::json_response( array(
+				'status' => 'bad',
+				'why'    => esc_html__( 'Image id not sent', 'taxonomy-images' )
+			) );
+
+		}
+
+		$attachment_id = absint( $_POST['attachment_id'] );
+
+		if ( empty( $attachment_id ) ) {
+
+			self::json_response( array(
+				'status' => 'bad',
+				'why'    => esc_html__( 'Image id is not a positive integer', 'taxonomy-images' )
+			) );
+
+		}
+
+		return $attachment_id;
+
+	}
+
+	/**
+	 * Verify Nonce
+	 *
+	 * @param  string  $nonce  Nonce name.
+	 */
+	private function verify_nonce( $nonce ) {
+
+		// Isset?
+		if ( ! isset( $_POST['wp_nonce'] ) ) {
+
+			self::json_response( array(
+				'status' => 'bad',
+				'why'    => esc_html__( 'No nonce included.', 'taxonomy-images' ),
+			) );
+
+		}
+
+		// Verified?
+		if ( ! wp_verify_nonce( $_POST['wp_nonce'], $nonce ) ) {
+
+			self::json_response( array(
+				'status' => 'bad',
+				'why'    => esc_html__( 'Nonce did not match', 'taxonomy-images' ),
+			) );
+
+		}
 
 	}
 
