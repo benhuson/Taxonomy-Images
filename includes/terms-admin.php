@@ -104,7 +104,7 @@ class Terms_Admin {
 			<th scope="row" valign="top">
 				<label for="description"><?php print esc_html__( 'Featured Image', 'taxonomy-images' ); ?></label>
 			</th>
-			<td><?php echo $control->get_rendered(); ?></td>
+			<td><?php echo $control->get_rendered( 'large' ); ?></td>
 		</tr>
 		<?php
 

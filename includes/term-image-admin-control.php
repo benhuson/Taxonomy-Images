@@ -12,9 +12,10 @@ class Term_Image_Admin_Control extends Term_Image_Admin {
 	/**
 	 * Get rendered control.
 	 *
-	 * @return  string  HTML output.
+	 * @param   string  $size  Pass `large` for larger image control size.
+	 * @return  string         HTML output.
 	 */
-	public function get_rendered() {
+	public function get_rendered( $size = '' ) {
 
 		$term = $this->get_term();
 
@@ -30,6 +31,8 @@ class Term_Image_Admin_Control extends Term_Image_Admin {
 		$attachment_id = $this->get_image_id();
 
 		$hide = $attachment_id ? '' : ' hide';
+
+		$size_class = 'large' == $size ? ' taxonomy-image-thumbnail-large' : '';
 
 		// Nonces
 		$nonce = wp_create_nonce( 'taxonomy-image-plugin-create-association' );
@@ -49,7 +52,7 @@ class Term_Image_Admin_Control extends Term_Image_Admin {
 
 		// Edit Image Link Attributes
 		$edit_attributes = wp_parse_args( $update_attributes, array(
-			'class="taxonomy-image-thumbnail"',
+			'class="taxonomy-image-thumbnail' . $size_class . '"',
 			'title="' . esc_attr( sprintf( __( 'Associate an image with the %1$s named &#8220;%2$s&#8221;.', 'taxonomy-images' ), $name, $term->name ) ) . '"'
 		) );
 

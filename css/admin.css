@@ -13,6 +13,16 @@
 	height: 75px;
 }
 
+.taxonomy-image-thumbnail-large {
+	width: 120px;
+	height: 120px;
+}
+
+.taxonomy-image-thumbnail-large img {
+	width: 120px;
+	height: 120px;
+}
+
 .taxonomy-image-control .control {
 	background-color: #b3b9bf;
 	border-radius: 50%;
