@@ -26,10 +26,82 @@ class Term_Image_Admin extends Term_Image {
 		$detail = Image::get_image_size_data();
 
 		// Return url to custom intermediate size if it exists.
-		$img = image_get_intermediate_size( $this->get_image_id(), $detail['name'] );
+		$img = $this->get_image_url( $detail['name'] );
+		if ( ! empty( $img ) ) {
+			return $img;
+		}
+
+		// Try to create image and return URL.
+		$img = $this->generate_image_url();
+		if ( ! empty( $img ) ) {
+			return $img;
+		}
+
+		// Custom intermediate size cannot be created, try for thumbnail.
+		$img = $this->get_image_url( 'thumbnail' );
+		if ( ! empty( $img ) ) {
+			return $img;
+		}
+
+		// Thumbnail cannot be found, try fullsize.
+		$img = $this->get_image_url();
+		if ( ! empty( $img ) ) {
+			return $img;
+		}
+
+		/**
+		 * No image can be found.
+		 * This is most likely caused by a user deleting an attachment before deleting it's association with a taxonomy.
+		 * If we are in the administration panels:
+		 * - Delete the association.
+		 * - Return uri to default.png.
+		 *
+		 * @todo  Check terms for image and remove meta.
+		 */
+
+		// No image can be found. Return path to a placeholder image for admin.
+		if ( is_admin() ) {
+			return Plugin::plugin_url( 'images/default.png' );
+		}
+
+		// Otherwise return path to blank image.
+		return Plugin::plugin_url( 'images/blank.png' );
+
+	}
+
+	/**
+	 * Get Image URL
+	 *
+	 * @param   string  $size  Image size. Return fullsize image if empty.
+	 * @return  string         Image URL.
+	 */
+	private function get_image_url( $size = '' ) {
+
+		// Fullsize
+		if ( empty( $size ) ) {
+			return wp_get_attachment_url( $this->get_image_id() );;
+		}
+
+		$img = image_get_intermediate_size( $this->get_image_id(), $size );
+
 		if ( isset( $img['url'] ) ) {
 			return $img['url'];
 		}
+
+		return '';
+
+	}
+
+	/**
+	 * Generate custom image size URL
+	 *
+	 * Only use this method if detail image does not exist and needs creating.
+	 *
+	 * @return  string  URL.
+	 */
+	private function generate_image_url() {
+
+		$detail = Image::get_image_size_data();
 
 		// Detail image does not exist, attempt to create it.
 		$wp_upload_dir = wp_upload_dir();
@@ -75,38 +147,7 @@ class Term_Image_Admin extends Term_Image {
 
 		}
 
-		// Custom intermediate size cannot be created, try for thumbnail.
-		$img = image_get_intermediate_size( $this->get_image_id(), 'thumbnail' );
-		if ( isset( $img['url'] ) ) {
-			return $img['url'];
-		}
-
-		// Thumbnail cannot be found, try fullsize.
-		$url = wp_get_attachment_url( $this->get_image_id() );
-		if ( ! empty( $url ) ) {
-			return $url;
-		}
-
-		/**
-		 * No image can be found.
-		 * This is most likely caused by a user deleting an attachment before deleting it's association with a taxonomy.
-		 * If we are in the administration panels:
-		 * - Delete the association.
-		 * - Return uri to default.png.
-		 */
-		if ( is_admin() ) {
-
-			// @todo  Check terms for image and remove meta.
-
-			return Plugin::plugin_url( 'images/default.png' );
-
-		}
-
-		/**
-		 * No image can be found.
-		 * Return path to blank-image.png.
-		 */
-		return Plugin::plugin_url( 'images/blank.png' );
+		return '';
 
 	}
 
