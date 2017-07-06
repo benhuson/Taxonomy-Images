@@ -106,7 +106,7 @@ class Image_Admin_AJAX {
 
 			self::json_response( array(
 				'status' => 'bad',
-				'why'    => esc_html__( 'term_id not sent', 'taxonomy-images' ),
+				'why'    => esc_html__( 'term_id not set', 'taxonomy-images' ),
 			) );
 
 		}
