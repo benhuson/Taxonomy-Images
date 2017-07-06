@@ -28,10 +28,9 @@ class Image_Admin_AJAX {
 
 		// Save as term meta
 		$t = new Term( $term_id );
-		$t->update_image_id( $image_id );
+		$updated = $t->update_image_id( $image_id );
 
-		// @todo  Make this work primarily for term meta.
-		if ( true ) {
+		if ( $updated && ! is_wp_error( $updated ) ) {
 
 			$image = new Image( $image_id );
 
@@ -70,10 +69,9 @@ class Image_Admin_AJAX {
 
 		// Delete term meta
 		$t = new Term( $term_id );
-		$t->delete_image();
+		$deleted = $t->delete_image();
 
-		// @todo  Make this work primarily for term meta.
-		if ( true ) {
+		if ( $deleted ) {
 
 			self::json_response( array(
 				'status' => 'good',
