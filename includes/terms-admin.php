@@ -97,7 +97,6 @@ class Terms_Admin {
 	 */
 	public static function edit_form( $term, $taxonomy ) {
 
-		$field = new Image_Admin_Field( $term );
 		$control = new Term_Image_Admin_Control( $term->term_id );
 
 		?>
@@ -105,11 +104,7 @@ class Terms_Admin {
 			<th scope="row" valign="top">
 				<label for="description"><?php print esc_html__( 'Featured Image', 'taxonomy-images' ); ?></label>
 			</th>
-			<td>
-				<?php echo $control->get_rendered(); ?>
-				<div class="clear"></div>
-				<?php $field->the_description( '<span class="description">', '</span>' ); ?>
-			</td>
+			<td><?php echo $control->get_rendered(); ?></td>
 		</tr>
 		<?php
 
