@@ -148,7 +148,7 @@ class Image_Admin_AJAX {
 
 			self::json_response( array(
 				'status' => 'bad',
-				'why'    => esc_html__( 'Image id not sent', 'taxonomy-images' )
+				'why'    => esc_html__( 'Image ID not sent', 'taxonomy-images' )
 			) );
 
 		}
@@ -159,7 +159,7 @@ class Image_Admin_AJAX {
 
 			self::json_response( array(
 				'status' => 'bad',
-				'why'    => esc_html__( 'Image id is not a positive integer', 'taxonomy-images' )
+				'why'    => esc_html__( 'Image ID is not a positive integer', 'taxonomy-images' )
 			) );
 
 		}
@@ -180,7 +180,7 @@ class Image_Admin_AJAX {
 
 			self::json_response( array(
 				'status' => 'bad',
-				'why'    => esc_html__( 'No nonce included.', 'taxonomy-images' ),
+				'why'    => esc_html__( 'No nonce included', 'taxonomy-images' ),
 			) );
 
 		}
