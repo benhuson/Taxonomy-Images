@@ -52,15 +52,10 @@ class Term_Image_Admin extends Term_Image {
 		/**
 		 * No image can be found.
 		 * This is most likely caused by a user deleting an attachment before deleting it's association with a taxonomy.
-		 * If we are in the administration panels:
-		 * - Delete the association.
-		 * - Return uri to default.png.
-		 *
-		 * @todo  Check terms for image and remove meta.
+		 * If we are in the admin delete the association and return URL to default image.
 		 */
-
-		// No image can be found. Return path to a placeholder image for admin.
 		if ( is_admin() ) {
+			$this->delete_image();
 			return Plugin::plugin_url( 'images/default.png' );
 		}
 
