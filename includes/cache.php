@@ -25,12 +25,12 @@ class Cache {
 
 		global $posts;
 
-		self::cache_images( $posts );
+		self::cache_post_term_images( $posts );
 
 	}
 
 	/**
-	 * Cache Images
+	 * Cache Post Term Images
 	 *
 	 * Sets the WordPress object cache for all term images
 	 * associated to the posts in the provided array. This
@@ -39,7 +39,32 @@ class Cache {
 	 *
 	 * @param  array  Post objects.
 	 */
-	private static function cache_images( $posts ) {
+	private static function cache_post_term_images( $posts ) {
+
+		$term_ids = self::get_post_term_ids( $posts );
+		$image_ids = self::get_term_image_ids( $term_ids );
+
+		if ( empty( $image_ids ) ) {
+			return;
+		}
+
+		// Get images so they are cached
+		$images = get_posts( array(
+			'include'   => $image_ids,
+			'post_type' => 'attachment'
+		) );
+
+	}
+
+	/**
+	 * Get Post Term IDs
+	 *
+	 * Get all term_ids for posts that may have assocaited images.
+	 *
+	 * @param   array  $posts  Post ojects.
+	 * @return  array          Term IDs.
+	 */
+	private static function get_post_term_ids( $posts ) {
 
 		$term_ids = array();
 
@@ -70,7 +95,20 @@ class Cache {
 
 		}
 
-		$term_ids = array_filter( array_unique( $term_ids ) );
+		return array_filter( array_unique( $term_ids ) );
+
+	}
+
+	/**
+	 * Get Term Image IDs
+	 *
+	 * Get all image IDs for supplied terms.
+	 *
+	 * @param   array  $term_ids  Term IDs.
+	 * @return  array             Image attachment IDs.
+	 */
+	private static function get_term_image_ids( $term_ids ) {
+
 		$image_ids = array();
 
 		foreach ( $term_ids as $term_id ) {
@@ -86,14 +124,7 @@ class Cache {
 
 		}
 
-		if ( empty( $image_ids ) ) {
-			return;
-		}
-
-		$images = get_posts( array(
-			'include'   => $image_ids,
-			'post_type' => 'attachment'
-		) );
+		return $image_ids;
 
 	}
 
