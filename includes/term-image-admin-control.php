@@ -71,20 +71,25 @@ class Term_Image_Admin_Control {
 			'data-attachment-id="' . $attachment_id . '"'
 		);
 
-		$edit_attributes = wp_parse_args( $common_attributes, array(
+		// Update Attributes
+		$update_attributes = wp_parse_args( $common_attributes, array(
 			'data-nonce="' . $nonce . '"',
+			'href="' . esc_url( admin_url( 'media-upload.php' ) . '?type=image&tab=library&post_id=0&TB_iframe=true' ) . '"'
+		) );
+
+		// Edit Image Link Attributes
+		$edit_attributes = wp_parse_args( $update_attributes, array(
 			'class="taxonomy-image-thumbnail"',
-			'href="' . esc_url( admin_url( 'media-upload.php' ) . '?type=image&tab=library&post_id=0&TB_iframe=true' ) . '"',
 			'title="' . esc_attr( sprintf( __( 'Associate an image with the %1$s named &#8220;%2$s&#8221;.', 'taxonomy-images' ), $name, $this->term->name ) ) . '"'
 		) );
 
-		$add_attributes = wp_parse_args( $common_attributes, array(
-			'data-nonce="' . $nonce . '"',
+		// Add Image Link Attributes
+		$add_attributes = wp_parse_args( $update_attributes, array(
 			'class="control upload"',
-			'href="' . esc_url( admin_url( 'media-upload.php' ) . '?type=image&tab=type&post_id=0&TB_iframe=true' ) . '"',
 			'title="' . esc_attr( sprintf( __( 'Upload a new image for this %s.', 'taxonomy-images' ), $name ) ) . '"'
 		) );
 
+		// Remove Image Link Attributes
 		$remove_attributes = wp_parse_args( $common_attributes, array(
 			'data-nonce="' . $nonce_remove . '"',
 			'class="control remove' . $hide . '"',
