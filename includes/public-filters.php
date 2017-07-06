@@ -111,7 +111,7 @@ class Public_Filters {
 
 		foreach ( (array) $terms as $key => $term ) {
 			$terms[ $key ]->image_id = 0;
-			$t = new Term( $term->term_id );
+			$t = new Term_Image( $term->term_id );
 			$i = $t->get_image_id();
 			if ( ! empty( $i ) ) {
 				$terms[ $key ]->image_id = $i;
@@ -205,7 +205,7 @@ class Public_Filters {
 
 		foreach ( (array) $terms as $key => $term ) {
 			$terms[ $key ]->image_id = 0;
-			$t = new Term( $term->term_id );
+			$t = new Term_Image( $term->term_id );
 			$i = $t->get_image_id();
 			if ( ! empty( $i ) ) {
 				$terms[ $key ]->image_id = $i;
@@ -414,7 +414,7 @@ class Public_Filters {
 			return 0;
 		}
 
-		$t = new Term( $obj->term_id );
+		$t = new Term_Image( $obj->term_id );
 
 		return $t->get_image_id();
 

@@ -113,7 +113,7 @@ class Cache {
 
 		foreach ( $term_ids as $term_id ) {
 
-			$t = new Term( $term_id );
+			$t = new Term_Image( $term_id );
 			$image_id = $t->get_image_id();
 
 			if ( empty( $image_id ) ) {

@@ -125,7 +125,7 @@ class Image_Admin_Control {
 
 		if ( $this->term ) {
 
-			$t = new Term( $this->term->term_id );
+			$t = new Term_Image( $this->term->term_id );
 			return $t->get_image_id();
 
 		}

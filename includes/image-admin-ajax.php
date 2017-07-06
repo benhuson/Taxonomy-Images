@@ -27,7 +27,7 @@ class Image_Admin_AJAX {
 		$image_id = self::get_posted_attachment_id();
 
 		// Save as term meta
-		$t = new Term( $term_id );
+		$t = new Term_Image( $term_id );
 		$updated = $t->update_image_id( $image_id );
 
 		if ( $updated && ! is_wp_error( $updated ) ) {
@@ -68,7 +68,7 @@ class Image_Admin_AJAX {
 		$term_id = self::get_posted_term_id();
 
 		// Delete term meta
-		$t = new Term( $term_id );
+		$t = new Term_Image( $term_id );
 		$deleted = $t->delete_image();
 
 		if ( $deleted ) {

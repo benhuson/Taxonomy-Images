@@ -61,7 +61,7 @@ if ( ! $taxonomy_images_has_php_version || ! $taxonomy_images_has_wp_version ) {
 
 // AJAX, Admin & Front-end
 require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/plugin.php' );
-require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/term.php' );
+require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/term-image.php' );
 require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/image.php' );
 
 if ( is_admin() && defined( 'DOING_AJAX' ) && DOING_AJAX ) {
