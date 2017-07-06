@@ -198,27 +198,29 @@ class Image_Admin_AJAX {
 	}
 
 	/**
-	 * Check Taxonomy Permissions.
+	 * Check Taxonomy Permissions
 	 *
-	 * Allows a permission check to be performed on a term
-	 * when all you know is the term_taxonomy_id.
+	 * Check edit permissions based on a term_id.
 	 *
-	 * @param   integer  term_taxonomy_id
-	 * @return  bool     True if user can edit terms, False if not.
+	 * @param   integer  term_id  Term ID.
+	 * @return  boolean           True if user can edit terms, False if not.
 	 */
 	private static function check_permissions( $term_id ) {
 
-		$term = new Term( $term_id );
+		$term = get_term( $term_id );
 
-		$tax = $term->get_taxonomy();
-		if ( empty( $tax ) ) {
-			return false;
-		}
+		if ( $term && ! is_wp_error( $term ) ) {
 
-		$taxonomy = get_taxonomy( $tax );
+			if ( empty( $term->taxonomy ) ) {
+				return false;
+			}
 
-		if ( isset( $taxonomy->cap->edit_terms ) ) {
-			return current_user_can( $taxonomy->cap->edit_terms );
+			$taxonomy = get_taxonomy( $term->taxonomy );
+
+			if ( isset( $taxonomy->cap->edit_terms ) ) {
+				return current_user_can( $taxonomy->cap->edit_terms );
+			}
+
 		}
 
 		return false;
