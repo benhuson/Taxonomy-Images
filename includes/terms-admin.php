@@ -75,9 +75,7 @@ class Terms_Admin {
 
 		if ( 'taxonomy_image_plugin' === $column_name ) {
 
-			$term = get_term( $term_id );
-
-			$control = new Image_Admin_Control( $term );
+			$control = new Term_Image_Admin_Control( $term_id );
 
 			return $row . $control->get_rendered();
 
@@ -100,7 +98,7 @@ class Terms_Admin {
 	public static function edit_form( $term, $taxonomy ) {
 
 		$field = new Image_Admin_Field( $term );
-		$control = new Image_Admin_Control( $term );
+		$control = new Term_Image_Admin_Control( $term->term_id );
 
 		?>
 		<tr class="form-field hide-if-no-js">
