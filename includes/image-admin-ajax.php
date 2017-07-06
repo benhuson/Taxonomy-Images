@@ -27,17 +27,17 @@ class Image_Admin_AJAX {
 		$image_id = self::get_posted_attachment_id();
 
 		// Save as term meta
-		$t = new Term( $term_id );
+		$t = new Term_Image( $term_id );
 		$updated = $t->update_image_id( $image_id );
 
 		if ( $updated && ! is_wp_error( $updated ) ) {
 
-			$image = new Image( $image_id );
+			$img_admin = new Term_Image_Admin( $term_id );
 
 			self::json_response( array(
 				'status'               => 'good',
 				'why'                  => esc_html__( 'Image successfully associated', 'taxonomy-images' ),
-				'attachment_thumb_src' => $image->get_url()
+				'attachment_thumb_src' => $img_admin->get_url()
 			) );
 
 		} else {
@@ -68,7 +68,7 @@ class Image_Admin_AJAX {
 		$term_id = self::get_posted_term_id();
 
 		// Delete term meta
-		$t = new Term( $term_id );
+		$t = new Term_Image( $term_id );
 		$deleted = $t->delete_image();
 
 		if ( $deleted ) {

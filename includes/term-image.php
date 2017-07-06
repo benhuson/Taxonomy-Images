@@ -2,12 +2,12 @@
 
 /**
  * @package     Taxonomy Images
- * @subpackage  Term
+ * @subpackage  Term Image
  */
 
 namespace TaxonomyImages;
 
-class Term {
+class Term_Image {
 
 	/**
 	 * Term ID

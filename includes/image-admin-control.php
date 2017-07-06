@@ -49,8 +49,8 @@ class Image_Admin_Control {
 
 		$hide = $attachment_id ? '' : ' hide';
 
-		$img = new Image( $attachment_id );
-		$img_url = $img->get_url();
+		$img_admin = new Term_Image_Admin( $term_id );
+		$img_url = $img_admin->get_url();
 
 		// Nonces
 		$nonce = wp_create_nonce( 'taxonomy-image-plugin-create-association' );
@@ -125,7 +125,7 @@ class Image_Admin_Control {
 
 		if ( $this->term ) {
 
-			$t = new Term( $this->term->term_id );
+			$t = new Term_Image( $this->term->term_id );
 			return $t->get_image_id();
 
 		}
