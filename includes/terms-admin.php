@@ -7,11 +7,6 @@
 
 namespace TaxonomyImages;
 
-add_action( 'admin_init', array( 'TaxonomyImages\Terms_Admin', 'add_admin_fields' ) );
-add_action( 'admin_enqueue_scripts', array( 'TaxonomyImages\Terms_Admin', 'enqueue_scripts' ) );
-add_action( 'admin_print_styles-edit-tags.php', array( 'TaxonomyImages\Terms_Admin', 'enqueue_styles' ) );  // Pre WordPress 4.5
-add_action( 'admin_print_styles-term.php', array( 'TaxonomyImages\Terms_Admin', 'enqueue_styles' ) );       // WordPress 4.5+
-
 class Terms_Admin {
 
 	/**

@@ -71,17 +71,25 @@ class Plugin {
 		require_once( trailingslashit( dirname( self::$file ) ) . 'includes/image-types.php' );
 		require_once( trailingslashit( dirname( self::$file ) ) . 'includes/image.php' );
 
+		add_action( 'init', array( 'TaxonomyImages\Image_Types', 'register_image_types' ) );
+		add_action( 'init', array( 'TaxonomyImages\Image', 'add_image_size' ) );
+
 		if ( is_admin() && defined( 'DOING_AJAX' ) && DOING_AJAX ) {
 
 			// AJAX only
 			require_once( trailingslashit( dirname( self::$file ) ) . 'includes/term-image-admin.php' );
 			require_once( trailingslashit( dirname( self::$file ) ) . 'includes/image-admin-ajax.php' );
 
+			add_action( 'wp_ajax_taxonomy_images_update_term_image', array( 'TaxonomyImages\Image_Admin_AJAX', 'update_term_image' ) );
+			add_action( 'wp_ajax_taxonomy_images_delete_term_image', array( 'TaxonomyImages\Image_Admin_AJAX', 'delete_term_image' ) );
+
 		} else {
 
 			// Admin & Front-end
 			require_once( trailingslashit( dirname( self::$file ) ) . 'includes/public-filters.php' );
 			require_once( trailingslashit( dirname( self::$file ) ) . 'includes/cache.php' );
+
+			add_action( 'template_redirect', array( 'TaxonomyImages\Cache', 'cache_queried_images' ) );
 
 			if ( is_admin() ) {
 
@@ -91,10 +99,20 @@ class Plugin {
 				require_once( trailingslashit( dirname( self::$file ) ) . 'includes/terms-admin.php' );
 				require_once( trailingslashit( dirname( self::$file ) ) . 'includes/settings-admin.php' );
 
+				add_action( 'admin_init', array( 'TaxonomyImages\Terms_Admin', 'add_admin_fields' ) );
+				add_action( 'admin_enqueue_scripts', array( 'TaxonomyImages\Terms_Admin', 'enqueue_scripts' ) );
+				add_action( 'admin_print_styles-edit-tags.php', array( 'TaxonomyImages\Terms_Admin', 'enqueue_styles' ) );  // Pre WordPress 4.5
+				add_action( 'admin_print_styles-term.php', array( 'TaxonomyImages\Terms_Admin', 'enqueue_styles' ) );       // WordPress 4.5+
+				add_action( 'admin_menu', array( 'TaxonomyImages\Settings_Admin', 'settings_menu' ) );
+				add_action( 'admin_init', array( 'TaxonomyImages\Settings_Admin', 'register_settings' ) );
+				add_filter( 'plugin_row_meta', array( 'TaxonomyImages\Settings_Admin', 'plugin_row_meta' ), 10, 2 );
+
 			} else {
 
 				// Front-end Only
 				require_once( trailingslashit( dirname( self::$file ) ) . 'includes/public-css.php' );
+
+				add_action( 'wp_enqueue_scripts', array( 'TaxonomyImages\Public_CSS', 'enqueue_styles' ) );
 
 			}
 
