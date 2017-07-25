@@ -97,16 +97,22 @@ class Terms_Admin {
 	 */
 	public static function edit_form( $term, $taxonomy ) {
 
-		$control = new Term_Image_Admin_Control( $term->term_id );
+		$image_types = Image_Types::get_image_types( $taxonomy );
 
-		?>
-		<tr class="form-field hide-if-no-js">
-			<th scope="row" valign="top">
-				<label for="description"><?php print esc_html__( 'Featured Image', 'taxonomy-images' ); ?></label>
-			</th>
-			<td><?php echo $control->get_rendered( 'large' ); ?></td>
-		</tr>
-		<?php
+		foreach ( $image_types as $image_type ) {
+
+			$control = new Term_Image_Admin_Control( $term->term_id, $image_type->get_id() );
+
+			?>
+			<tr class="form-field hide-if-no-js">
+				<th scope="row" valign="top">
+					<label for="description"><?php printf( esc_html__( '%s Image', 'taxonomy-images' ), esc_html( $image_type->get_label() ) ); ?></label>
+				</th>
+				<td><?php echo $control->get_rendered( 'large' ); ?></td>
+			</tr>
+			<?php
+
+		}
 
 	}
 

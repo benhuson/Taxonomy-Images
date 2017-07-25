@@ -24,15 +24,16 @@ class Image_Admin_AJAX {
 		self::verify_nonce( 'taxonomy-image-plugin-create-association' );
 
 		$term_id = self::get_posted_term_id();
+		$image_type = self::get_posted_image_type();
 		$image_id = self::get_posted_attachment_id();
 
 		// Save as term meta
-		$t = new Term_Image( $term_id );
+		$t = new Term_Image( $term_id, $image_type );
 		$updated = $t->update_image_id( $image_id );
 
 		if ( $updated && ! is_wp_error( $updated ) ) {
 
-			$img_admin = new Term_Image_Admin( $term_id );
+			$img_admin = new Term_Image_Admin( $term_id, $image_type );
 
 			self::json_response( array(
 				'status'               => 'good',
@@ -66,9 +67,10 @@ class Image_Admin_AJAX {
 		self::verify_nonce( 'taxonomy-image-plugin-remove-association' );
 
 		$term_id = self::get_posted_term_id();
+		$image_type = self::get_posted_image_type();
 
 		// Delete term meta
-		$t = new Term_Image( $term_id );
+		$t = new Term_Image( $term_id, $image_type );
 		$deleted = $t->delete_image();
 
 		if ( $deleted ) {
@@ -134,6 +136,29 @@ class Image_Admin_AJAX {
 		}
 
 		return $term_id;
+
+	}
+
+	/**
+	 * Get Posted Image Type
+	 *
+	 * @return  string  Image type.
+	 */
+	private static function get_posted_image_type() {
+
+		// Isset?
+		if ( ! isset( $_POST['image_type'] ) ) {
+
+			self::json_response( array(
+				'status' => 'bad',
+				'why'    => esc_html__( 'image_type not set', 'taxonomy-images' ),
+			) );
+
+		}
+
+		$image_type = sanitize_key( $_POST['image_type'] );
+
+		return $image_type;
 
 	}
 
