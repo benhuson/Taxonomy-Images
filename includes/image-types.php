@@ -7,8 +7,6 @@
 
 namespace TaxonomyImages;
 
-add_action( 'init', array( 'TaxonomyImages\Image_Types', 'register_image_types' ) );
-
 class Image_Types {
 
 	/**

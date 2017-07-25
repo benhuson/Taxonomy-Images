@@ -14,8 +14,6 @@
 
 namespace TaxonomyImages;
 
-add_action( 'wp_enqueue_scripts', array( 'TaxonomyImages\Public_CSS', 'enqueue_styles' ) );
-
 class Public_CSS {
 
 	/**

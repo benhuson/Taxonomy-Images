@@ -7,10 +7,6 @@
 
 namespace TaxonomyImages;
 
-add_action( 'admin_menu', array( 'TaxonomyImages\Settings_Admin', 'settings_menu' ) );
-add_action( 'admin_init', array( 'TaxonomyImages\Settings_Admin', 'register_settings' ) );
-add_filter( 'plugin_row_meta', array( 'TaxonomyImages\Settings_Admin', 'plugin_row_meta' ), 10, 2 );
-
 class Settings_Admin {
 
 	/**
