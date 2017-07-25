@@ -59,40 +59,6 @@ if ( ! $taxonomy_images_has_php_version || ! $taxonomy_images_has_wp_version ) {
 	return;
 }
 
-// AJAX, Admin & Front-end
+// Load Plugin
 require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/plugin.php' );
-require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/term-image.php' );
-require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/image-type.php' );
-require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/image-types.php' );
-require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/image.php' );
-
-if ( is_admin() && defined( 'DOING_AJAX' ) && DOING_AJAX ) {
-
-	// AJAX only
-	require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/term-image-admin.php' );
-	require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/image-admin-ajax.php' );
-
-} else {
-
-	// Admin & Front-end
-	require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/public-filters.php' );
-	require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/cache.php' );
-
-	if ( is_admin() ) {
-
-		// Admin only
-		require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/term-image-admin.php' );
-		require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/term-image-admin-control.php' );
-		require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/terms-admin.php' );
-		require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/settings-admin.php' );
-
-	} else {
-
-		// Front-end Only
-		require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/public-css.php' );
-
-	}
-
-}
-
 TaxonomyImages\Plugin::load( __FILE__ );

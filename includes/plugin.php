@@ -7,8 +7,6 @@
 
 namespace TaxonomyImages;
 
-add_action( 'init', array( 'TaxonomyImages\Plugin', 'load_textdomain' ) );
-
 class Plugin {
 
 	/**
@@ -43,6 +41,9 @@ class Plugin {
 	public static function load( $base_file ) {
 
 		self::set_base_file( $base_file );
+		self::include_files();
+
+		add_action( 'init', array( get_class(), 'load_textdomain' ) );
 
 	}
 
@@ -53,9 +54,51 @@ class Plugin {
 	 *
 	 * @param  string  $file  Base `__FILE__` of the plugin.
 	 */
-	public static function set_base_file( $file ) {
+	private static function set_base_file( $file ) {
 
 		self::$file = $file;
+
+	}
+
+	/**
+	 * Include Plugin Files
+	 */
+	private static function include_files() {
+
+		// AJAX, Admin & Front-end
+		require_once( trailingslashit( dirname( self::$file ) ) . 'includes/term-image.php' );
+		require_once( trailingslashit( dirname( self::$file ) ) . 'includes/image-type.php' );
+		require_once( trailingslashit( dirname( self::$file ) ) . 'includes/image-types.php' );
+		require_once( trailingslashit( dirname( self::$file ) ) . 'includes/image.php' );
+
+		if ( is_admin() && defined( 'DOING_AJAX' ) && DOING_AJAX ) {
+
+			// AJAX only
+			require_once( trailingslashit( dirname( self::$file ) ) . 'includes/term-image-admin.php' );
+			require_once( trailingslashit( dirname( self::$file ) ) . 'includes/image-admin-ajax.php' );
+
+		} else {
+
+			// Admin & Front-end
+			require_once( trailingslashit( dirname( self::$file ) ) . 'includes/public-filters.php' );
+			require_once( trailingslashit( dirname( self::$file ) ) . 'includes/cache.php' );
+
+			if ( is_admin() ) {
+
+				// Admin only
+				require_once( trailingslashit( dirname( self::$file ) ) . 'includes/term-image-admin.php' );
+				require_once( trailingslashit( dirname( self::$file ) ) . 'includes/term-image-admin-control.php' );
+				require_once( trailingslashit( dirname( self::$file ) ) . 'includes/terms-admin.php' );
+				require_once( trailingslashit( dirname( self::$file ) ) . 'includes/settings-admin.php' );
+
+			} else {
+
+				// Front-end Only
+				require_once( trailingslashit( dirname( self::$file ) ) . 'includes/public-css.php' );
+
+			}
+
+		}
 
 	}
 
