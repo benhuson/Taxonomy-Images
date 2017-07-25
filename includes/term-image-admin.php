@@ -74,7 +74,7 @@ class Term_Image_Admin extends Term_Image {
 
 		// Fullsize
 		if ( empty( $size ) ) {
-			return wp_get_attachment_url( $this->get_image_id() );;
+			return wp_get_attachment_url( $this->get_image_id() );
 		}
 
 		$img = image_get_intermediate_size( $this->get_image_id(), $size );
@@ -103,8 +103,10 @@ class Term_Image_Admin extends Term_Image {
 
 		if ( isset( $wp_upload_dir['basedir'] ) ) {
 
+			$image_id = $this->get_image_id();
+
 			// Create path to original uploaded image.
-			$path = trailingslashit( $wp_upload_dir['basedir'] ) . get_post_meta( $this->get_image_id(), '_wp_attached_file', true );
+			$path = trailingslashit( $wp_upload_dir['basedir'] ) . get_post_meta( $image_id, '_wp_attached_file', true );
 
 			if ( is_file( $path ) ) {
 
@@ -126,9 +128,9 @@ class Term_Image_Admin extends Term_Image {
 						$path = $new->generate_filename();
 						$new->save( $path );
 
-						$meta = wp_generate_attachment_metadata( $this->get_image_id(), $path );
-						wp_update_attachment_metadata( $this->get_image_id(), $meta );
-						$img = image_get_intermediate_size( $this->get_image_id(), $detail['name'] );
+						$meta = wp_generate_attachment_metadata( $image_id, $path );
+						wp_update_attachment_metadata( $image_id, $meta );
+						$img = image_get_intermediate_size( $image_id, $detail['name'] );
 
 						if ( isset( $img['url'] ) ) {
 							return $img['url'];

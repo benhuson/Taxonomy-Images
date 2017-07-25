@@ -41,6 +41,7 @@ class Term_Image_Admin_Control extends Term_Image_Admin {
 		// Control Attributes
 		$common_attributes = array(
 			'data-term-id="' . $term_id . '"',
+			'data-image-type="' . $this->get_type() . '"',
 			'data-attachment-id="' . $attachment_id . '"'
 		);
 
@@ -72,7 +73,7 @@ class Term_Image_Admin_Control extends Term_Image_Admin {
 		) );
 
 		// Control
-		$o  = '<div id="' . esc_attr( 'taxonomy-image-control-' . $term_id ) . '" class="taxonomy-image-control hide-if-no-js">';
+		$o  = '<div id="' . esc_attr( 'taxonomy-image-control-' . $this->get_type() . '-' . $term_id ) . '" class="taxonomy-image-control hide-if-no-js">';
 		$o .= '<a ' . implode( ' ', $edit_attributes ) . '><img id="' . esc_attr( 'taxonomy_image_plugin_' . $term_id ) . '" src="' . esc_url( $this->get_url() ) . '" alt="" /></a>';
 		$o .= '<a ' . implode( ' ', $add_attributes ) . '>' . esc_html__( 'Upload', 'taxonomy-images' ) . '</a>';
 		$o .= '<a ' . implode( ' ', $remove_attributes ) . '>' . esc_html__( 'Delete', 'taxonomy-images' ) . '</a>';

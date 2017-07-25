@@ -8,6 +8,7 @@ var taxonomy_images_file_frame;
 
 		// Store the old id (not sure if this is application when editing a term)
 		TaxonomyImagesMediaModal.termID = 0;
+		TaxonomyImagesMediaModal.imageType = '';
 
 		// When the remove icon is clicked...
 		$( '.wp-list-table, .form-table' ).on( 'click', '.taxonomy-image-control a.remove', function( event ) {
@@ -15,21 +16,23 @@ var taxonomy_images_file_frame;
 			event.preventDefault();
 
 			var term_id = $( this ).data( 'term-id' );
+			var image_type = $( this ).data( 'image-type' );
 
 			$.ajax( {
 				url      : ajaxurl,
 				type     : 'POST',
 				dataType : 'json',
 				data     : {
-					'action'   : 'taxonomy_images_delete_term_image',
-					'wp_nonce' : $( this ).data( 'nonce' ),
-					'term_id'    : $( this ).data( 'term-id' )
+					'action'     : 'taxonomy_images_delete_term_image',
+					'wp_nonce'   : $( this ).data( 'nonce' ),
+					'term_id'    : $( this ).data( 'term-id' ),
+					'image_type' : $( this ).data( 'image-type' )
 				},
 				cache     : false,
 				success   : function ( response ) {
 					if ( 'good' === response.status ) {
 
-						selector = $( '#taxonomy-image-control-' + term_id );
+						selector = $( '#taxonomy-image-control-' + image_type + '-' + term_id );
 
 						/* Update the image on the screen below */
 						selector.find( '.taxonomy-image-thumbnail img' ).attr( 'src', TaxonomyImagesMediaModal.default_img_src );
@@ -57,6 +60,7 @@ var taxonomy_images_file_frame;
 			button = $( this );
 
 			TaxonomyImagesMediaModal.termID = $( this ).data( 'term-id' );
+			TaxonomyImagesMediaModal.imageType = $( this ).data( 'image-type' );
 			TaxonomyImagesMediaModal.attachment_id = $( this ).data( 'attachment-id' );
 			TaxonomyImagesMediaModal.nonce = $( this ).data( 'nonce' );
 
@@ -71,6 +75,7 @@ var taxonomy_images_file_frame;
 
 				// Set the wp.media post id so the uploader grabs the term ID being edited
 				TaxonomyImagesMediaModal.termID = $( this ).data( 'term-id' );
+				TaxonomyImagesMediaModal.imageType = $( this ).data( 'image-type' );
 
 			}
 
@@ -100,6 +105,7 @@ var taxonomy_images_file_frame;
 				attachment = taxonomy_images_file_frame.state().get( 'selection' ).first().toJSON();
 
 				var term_id = TaxonomyImagesMediaModal.termID;
+				var image_type = TaxonomyImagesMediaModal.imageType;
 				var attachment_id = attachment.id;
 
 				// Do something with attachment.id and/or attachment.url here
@@ -111,7 +117,8 @@ var taxonomy_images_file_frame;
 						'action'        : 'taxonomy_images_update_term_image',
 						'wp_nonce'      : TaxonomyImagesMediaModal.nonce,
 						'attachment_id' : attachment.id,
-						'term_id'         : parseInt( TaxonomyImagesMediaModal.termID )
+						'term_id'       : parseInt( TaxonomyImagesMediaModal.termID ),
+						'image_type'    : TaxonomyImagesMediaModal.imageType 
 					},
 					success  : function ( response ) {
 						if ( 'good' === response.status ) {
@@ -126,7 +133,7 @@ var taxonomy_images_file_frame;
 								$( e ).find( '.remove-association' ).hide();
 							} );
 
-							selector = $( '#taxonomy-image-control-' + term_id );
+							selector = $( '#taxonomy-image-control-' + image_type + '-' + term_id );
 
 							/* Update the image on the screen below */
 							selector.find( '.taxonomy-image-thumbnail img' ).attr( 'src', response.attachment_thumb_src );
