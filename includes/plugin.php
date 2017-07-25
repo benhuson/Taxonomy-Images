@@ -46,9 +46,7 @@ class Plugin {
 	public static function load( $base_file ) {
 
 		self::set_base_file( $base_file );
-		self::include_files();
-
-		add_action( 'init', array( get_class(), 'load_textdomain' ) );
+		self::setup();
 
 	}
 
@@ -66,9 +64,9 @@ class Plugin {
 	}
 
 	/**
-	 * Include Plugin Files
+	 * Setup Plugin Files, Actions & Filters
 	 */
-	private static function include_files() {
+	private static function setup() {
 
 		// AJAX, Admin & Front-end
 		self::require_plugin_file( 'includes/term-image.php' );
@@ -76,6 +74,7 @@ class Plugin {
 		self::require_plugin_file( 'includes/image-types.php' );
 		self::require_plugin_file( 'includes/image.php' );
 
+		add_action( 'init', array( get_class(), 'load_textdomain' ) );
 		add_action( 'init', array( 'TaxonomyImages\Image_Types', 'register_image_types' ) );
 		add_action( 'init', array( 'TaxonomyImages\Image', 'add_image_size' ) );
 
