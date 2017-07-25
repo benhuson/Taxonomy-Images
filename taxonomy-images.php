@@ -95,6 +95,4 @@ if ( is_admin() && defined( 'DOING_AJAX' ) && DOING_AJAX ) {
 
 }
 
-TaxonomyImages\Plugin::set_base_file( __FILE__ );
-
-register_activation_hook( TaxonomyImages\Plugin::file(), array( 'TaxonomyImages\Plugin', 'activate' ) );
+TaxonomyImages\Plugin::load( __FILE__ );

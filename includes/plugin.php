@@ -38,6 +38,15 @@ class Plugin {
 	}
 
 	/**
+	 * Load Plugin
+	 */
+	public static function load( $base_file ) {
+
+		self::set_base_file( $base_file );
+
+	}
+
+	/**
 	 * Set Plugin Base File
 	 *
 	 * @internal  Private. Only used for initially defining the plugin base file.
@@ -116,7 +125,7 @@ class Plugin {
 	/**
 	 * Activate
 	 *
-	 * Called by the plugin activation hook.
+	 * @todo  Check for plugin update on `admin_init` to run this method.
 	 *
 	 * @internal  Private. Only used when activating the plugin.
 	 */
