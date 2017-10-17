@@ -532,9 +532,10 @@ function taxonomy_images_plugin_get_queried_term_image_data( $default, $args = a
 
 	$data = array();
 
-	if ( in_array( $args['image_size'], array( 'full', 'fullsize' ) ) ) {
+	if ( empty( $data = image_get_intermediate_size( $ID, $args['image_size'] ) ) ) {
+		
 		$src = wp_get_attachment_image_src( $ID, 'full' );
-
+		
 		if ( isset( $src[0] ) ) {
 			$data['url'] = $src[0];
 		}
@@ -544,8 +545,6 @@ function taxonomy_images_plugin_get_queried_term_image_data( $default, $args = a
 		if ( isset( $src[2] ) ) {
 			$data['height'] = $src[2];
 		}
-	} else {
-		$data = image_get_intermediate_size( $ID, $args['image_size'] );
 	}
 
 	if ( ! empty( $data ) ) {
