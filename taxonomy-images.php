@@ -214,7 +214,7 @@ function taxonomy_image_plugin_get_image_src( $id ) {
 	 * No image can be found.
 	 * Return path to blank-image.png.
 	 */
-	return Taxonomy_Images_Config::url( 'blank.png' );
+	return Taxonomy_Images_Config::url( 'images/blank.png' );
 
 }
 
