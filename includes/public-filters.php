@@ -534,9 +534,9 @@ function taxonomy_images_plugin_get_queried_term_image_data( $default, $args = a
 		return array();
 	}
 
-	$data = array();
+	$data = image_get_intermediate_size( $ID, $args['image_size'] );
 
-	if ( empty( $data = image_get_intermediate_size( $ID, $args['image_size'] ) ) ) {
+	if ( empty( $data ) ) {
 		
 		$src = wp_get_attachment_image_src( $ID, 'full' );
 		
