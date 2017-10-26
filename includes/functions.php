@@ -396,18 +396,9 @@ function taxonomy_image_plugin_json_response( $args ) {
 function taxonomy_image_plugin_check_permissions( $tt_id ) {
 
 	$t = new Taxonomy_Images_Term( $tt_id, true );
-	$tax = $t->get_taxonomy();
 
-	if ( empty( $tax ) ) {
-		return false;
-	}
+	return $t->current_user_can_edit();
 
-	$taxonomy = get_taxonomy( $tax );
-	if ( ! isset( $taxonomy->cap->edit_terms ) ) {
-		return false;
-	}
-
-	return current_user_can( $taxonomy->cap->edit_terms );
 }
 
 /**

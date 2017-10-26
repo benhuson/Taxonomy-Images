@@ -228,6 +228,28 @@ class Taxonomy_Images_Term {
 	}
 
 	/**
+	 * Current User Can Edit
+	 *
+	 * @return  boolean
+	 */
+	public function current_user_can_edit() {
+
+		$tax = $this->get_taxonomy();
+
+		if ( empty( $tax ) ) {
+			return false;
+		}
+
+		$taxonomy = get_taxonomy( $tax );
+		if ( ! isset( $taxonomy->cap->edit_terms ) ) {
+			return false;
+		}
+
+		return current_user_can( $taxonomy->cap->edit_terms );
+
+	}
+
+	/**
 	 * Update Image ID
 	 *
 	 * @param   integer  $id  Image ID.
