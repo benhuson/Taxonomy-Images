@@ -383,25 +383,6 @@ function taxonomy_image_plugin_json_response( $args ) {
 }
 
 /**
- * Check Taxonomy Permissions.
- *
- * Allows a permission check to be performed on a term
- * when all you know is the term_taxonomy_id.
- *
- * @param     int       term_taxonomy_id
- * @return    bool      True if user can edit terms, False if not.
- *
- * @access    private
- */
-function taxonomy_image_plugin_check_permissions( $tt_id ) {
-
-	$t = new Taxonomy_Images_Term( $tt_id, true );
-
-	return $t->current_user_can_edit();
-
-}
-
-/**
  * Create an association.
  *
  * Callback for the wp_ajax_{$_GET['action']} hook.
@@ -421,13 +402,6 @@ function taxonomy_image_plugin_create_association() {
 		taxonomy_image_plugin_json_response( array(
 			'status' => 'bad',
 			'why'    => esc_html__( 'tt_id is empty', 'taxonomy-images' ),
-		) );
-	}
-
-	if ( ! taxonomy_image_plugin_check_permissions( $tt_id ) ) {
-		taxonomy_image_plugin_json_response( array(
-			'status' => 'bad',
-			'why'    => esc_html__( 'You do not have the correct capability to manage this term', 'taxonomy-images' ),
 		) );
 	}
 
@@ -461,6 +435,13 @@ function taxonomy_image_plugin_create_association() {
 	}
 
 	$t = new Taxonomy_Images_Term( $tt_id, true );
+
+	if ( ! $t->current_user_can_edit() ) {
+		taxonomy_image_plugin_json_response( array(
+			'status' => 'bad',
+			'why'    => esc_html__( 'You do not have the correct capability to manage this term', 'taxonomy-images' ),
+		) );
+	}
 
 	if ( $t->update_image_id( $image_id ) ) {
 		taxonomy_image_plugin_json_response( array(
@@ -503,13 +484,6 @@ function taxonomy_image_plugin_remove_association() {
 		) );
 	}
 
-	if ( ! taxonomy_image_plugin_check_permissions( $tt_id ) ) {
-		taxonomy_image_plugin_json_response( array(
-			'status' => 'bad',
-			'why'    => esc_html__( 'You do not have the correct capability to manage this term', 'taxonomy-images' ),
-		) );
-	}
-
 	if ( ! isset( $_POST['wp_nonce'] ) ) {
 		taxonomy_image_plugin_json_response( array(
 			'status' => 'bad',
@@ -525,6 +499,14 @@ function taxonomy_image_plugin_remove_association() {
 	}
 
 	$t = new Taxonomy_Images_Term( $tt_id, true );
+
+	if ( ! $t->current_user_can_edit() ) {
+		taxonomy_image_plugin_json_response( array(
+			'status' => 'bad',
+			'why'    => esc_html__( 'You do not have the correct capability to manage this term', 'taxonomy-images' ),
+		) );
+	}
+
 	$img = $t->get_image_id();
 
 	if ( ! $img ) {
