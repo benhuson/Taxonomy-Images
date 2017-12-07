@@ -1,6 +1,25 @@
 <?php
 
 /**
+ * Check Taxonomy Permissions.
+ *
+ * Allows a permission check to be performed on a term
+ * when all you know is the term_taxonomy_id.
+ *
+ * @param     int       term_taxonomy_id
+ * @return    bool      True if user can edit terms, False if not.
+ *
+ * @access    private
+ */
+function taxonomy_image_plugin_check_permissions( $tt_id ) {
+
+	$t = new Taxonomy_Images_Term( $tt_id, true );
+
+	return $t->current_user_can_edit();
+
+}
+
+/**
  * Please Use Filter.
  *
  * Report to user that they are directly calling a function
