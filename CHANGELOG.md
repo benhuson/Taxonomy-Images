@@ -4,6 +4,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Changed
+- Control, blank and default images moves to `images` folder.
+
 ## [0.9.7] - 2017-02-16
 
 ### Changed

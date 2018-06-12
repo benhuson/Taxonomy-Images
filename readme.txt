@@ -241,6 +241,9 @@ Complete rewrite. Better everything. Many bug fixes.
 
 == Changelog ==
 
+= Unreleased =
+* __UPDATE:__ Control, blank and default images moves to `images` folder.
+
 = 0.9.7 =
 * __UPDATE:__ Remove use of deprecated `image_resize` function.
 * __UPDATE:__ Bump minimum WordPress version to 3.5.
