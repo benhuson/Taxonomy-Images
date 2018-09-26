@@ -104,6 +104,13 @@ class Plugin {
 	private static $theme = null;
 
 	/**
+	 * Legacy Class
+	 *
+	 * @var  Legacy|null
+	 */
+	private static $legacy = null;
+
+	/**
 	 * Load
 	 *
 	 * Require plugin files depending on the context: AJAX, Admin, Public.
@@ -112,6 +119,16 @@ class Plugin {
 	 * @internal  Private. Called via the `plugins_loaded` action.
 	 */
 	public static function load() {
+
+		/**
+		 * Legacy Migration & Compatibility
+		 */
+
+		self::require_plugin_files( array(
+			'plugin/includes/legacy-class.php'
+		) );
+
+		self::$legacy = new Legacy();
 
 		/**
 		 * AJAX, Admin & Front-end
