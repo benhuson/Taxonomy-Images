@@ -34,7 +34,7 @@ if ( ! defined( 'TAXONOMY_IMAGES_FILE' ) ) {
 	define( 'TAXONOMY_IMAGES_FILE', __FILE__ );
 }
 
-if ( version_compare( PHP_VERSION, '5.3.0', '>' ) && version_compare( $wp_version, '4.4', '>=' ) ) {
+if ( version_compare( PHP_VERSION, '5.3.0', '>' ) && version_compare( $wp_version, '4.4', '>=' ) && apply_filters( 'taxonomy_images/use_term_meta', false ) ) {
 
 	// Load term meta plugin version which requires PHP 5.3 and taxonomy meta support
 	require_once( trailingslashit( dirname( TAXONOMY_IMAGES_FILE ) ) . 'plugin/plugin.php' );
