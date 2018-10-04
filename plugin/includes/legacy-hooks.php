@@ -28,7 +28,7 @@ class Legacy_Hooks {
 	/**
 	 * Setup Hooks
 	 */
-	protected function setup_hooks() {
+	public function setup_hooks() {
 
 		add_filter( 'taxonomy-images-get-terms', array( $this, 'get_terms' ), 10, 2 );
 		add_filter( 'taxonomy-images-get-the-terms', array( $this, 'get_the_terms' ), 10, 2 );
@@ -81,7 +81,61 @@ class Legacy_Hooks {
 	 */
 	public function get_terms( $default, $args = array() ) {
 
-		return default;
+		$filter = 'taxonomy-images-get-terms';
+
+		$this->check_current_filter( __FUNCTION__, $filter );
+
+		$args = wp_parse_args( $args, array(
+			'cache_images'  => true,
+			'having_images' => true,
+			'taxonomy'      => 'category',
+			'term_args'     => array(),
+		) );
+
+		$args['taxonomy'] = explode( ',', $args['taxonomy'] );
+		$args['taxonomy'] = array_map( 'trim', $args['taxonomy'] );
+
+		// @todo  Check if taxonomy supported in settings
+
+		$terms = get_terms( $args['taxonomy'], $args['term_args'] );
+
+		if ( is_wp_error( $terms ) ) {
+			return array();
+		}
+
+		$image_ids = array();
+		$terms_with_images = array();
+
+		foreach ( (array) $terms as $key => $term ) {
+			$terms[ $key ]->image_id = 0;
+
+			$t = new Term_Image( $term->term_id );
+			$img = $t->get_image_id();
+
+			if ( $img ) {
+				$terms[ $key ]->image_id = $img;
+				$image_ids[] = $img;
+				if ( ! empty( $args['having_images'] ) ) {
+					$terms_with_images[] = $terms[ $key ];
+				}
+			}
+
+		}
+
+		$image_ids = array_unique( $image_ids );
+
+		if ( ! empty( $args['cache_images'] ) ) {
+			$images = array();
+			if ( ! empty( $image_ids ) ) {
+				$images = get_children( array( 'include' => implode( ',', $image_ids ) ) );
+			}
+		}
+
+		if ( ! empty( $terms_with_images ) ) {
+			return $terms_with_images;
+		}
+
+		return $terms;
 
 	}
 
@@ -119,7 +173,54 @@ class Legacy_Hooks {
 	 */
 	public function get_the_terms( $default, $args = array() ) {
 
-		return default;
+		$filter = 'taxonomy-images-get-the-terms';
+
+		$this->check_current_filter( __FUNCTION__, $filter );
+
+		$args = wp_parse_args( $args, array(
+			'having_images' => true,
+			'post_id'       => 0,
+			'taxonomy'      => 'category',
+		) );
+
+		// @todo  Check if taxonomy supported in settings
+
+		if ( empty( $args['post_id'] ) ) {
+			$args['post_id'] = get_the_ID();
+		}
+
+		$terms = get_the_terms( $args['post_id'], $args['taxonomy'] );
+
+		if ( is_wp_error( $terms ) ) {
+			return array();
+		}
+
+		if ( empty( $terms ) ) {
+			return array();
+		}
+
+		$terms_with_images = array();
+
+		foreach ( (array) $terms as $key => $term ) {
+			$terms[ $key ]->image_id = 0;
+
+			$t = new Term_Image( $term->term_id );
+			$img = $t->get_image_id();
+
+			if ( $img ) {
+				$terms[ $key ]->image_id = $img;
+				if ( ! empty( $args['having_images'] ) ) {
+					$terms_with_images[] = $terms[ $key ];
+				}
+			}
+
+		}
+
+		if ( ! empty( $terms_with_images ) ) {
+			return $terms_with_images;
+		}
+
+		return $terms;
 
 	}
 
@@ -166,7 +267,51 @@ class Legacy_Hooks {
 	 */
 	public function list_the_terms( $default, $args = array() ) {
 
-		return default;
+		$filter = 'taxonomy-images-list-the-terms';
+
+		$this->check_current_filter( __FUNCTION__, $filter );
+
+		$args = wp_parse_args( $args, array(
+			'after'        => '</ul>',
+			'after_image'  => '</li>',
+			'before'       => '<ul class="taxonomy-images-the-terms">',
+			'before_image' => '<li>',
+			'image_size'   => 'thumbnail',
+			'post_id'      => 0,
+			'taxonomy'     => 'category',
+		) );
+
+		$args['having_images'] = true;
+
+		// @todo  Check if taxonomy supported in settings
+
+		$terms = apply_filters( 'taxonomy-images-get-the-terms', '', $args );
+
+		if ( empty( $terms ) ) {
+			return '';
+		}
+
+		$output = '';
+
+		foreach( $terms as $term ) {
+
+			if ( ! isset( $term->image_id ) ) {
+				continue;
+			}
+
+			$image = wp_get_attachment_image( $term->image_id, $args['image_size'] );
+
+			if ( ! empty( $image ) ) {
+				$output .= $args['before_image'] . '<a href="' . esc_url( get_term_link( $term, $term->taxonomy ) ) . '">' . $image .'</a>' . $args['after_image'];
+			}
+
+		}
+
+		if ( ! empty( $output ) ) {
+			return $args['before'] . $output . $args['after'];
+		}
+
+		return '';
 
 	}
 
@@ -198,9 +343,32 @@ class Legacy_Hooks {
 	 * @access  private  Use the 'taxonomy-images-queried-term-image' filter.
 	 * @since   0.7
 	 */
-	public function queried_term_image( $default, $args = array() ) {
+	public function queried_term_image( $default = '', $args = array() ) {
 
-		return default;
+		$filter = 'taxonomy-images-queried-term-image';
+
+		$this->check_current_filter( __FUNCTION__, $filter );
+
+		$args = wp_parse_args( $args, array(
+			'after'      => '',
+			'attr'       => array(),
+			'before'     => '',
+			'image_size' => 'thumbnail',
+		) );
+
+		$image_id = apply_filters( 'taxonomy-images-queried-term-image-id', 0 );
+
+		if ( ! empty( $image_id ) ) {
+
+			$html = wp_get_attachment_image( $image_id, $args['image_size'], false, $args['attr'] );
+
+			if ( ! empty( $html ) ) {
+				return $args['before'] . $html . $args['after'];
+			}
+
+		}
+
+		return '';
 
 	}
 
@@ -232,7 +400,45 @@ class Legacy_Hooks {
 	 */
 	public function queried_term_image_data( $default, $args = array() ) {
 
-		return default;
+		$filter = 'taxonomy-images-queried-term-image-data';
+
+		$this->check_current_filter( __FUNCTION__, $filter );
+
+		$args = wp_parse_args( $args, array(
+			'image_size' => 'thumbnail',
+		) );
+
+		$image_id = apply_filters( 'taxonomy-images-queried-term-image-id', 0 );
+
+		if ( empty( $image_id ) ) {
+			return array();
+		}
+
+		$data = image_get_intermediate_size( $image_id, $args['image_size'] );
+
+		if ( empty( $data ) ) {
+
+			$src = wp_get_attachment_image_src( $image_id, 'full' );
+
+			if ( isset( $src[0] ) ) {
+				$data['url'] = $src[0];
+			}
+
+			if ( isset( $src[1] ) ) {
+				$data['width'] = $src[1];
+			}
+
+			if ( isset( $src[2] ) ) {
+				$data['height'] = $src[2];
+			}
+
+		}
+
+		if ( ! empty( $data ) ) {
+			return $data;
+		}
+
+		return array();
 
 	}
 
@@ -257,9 +463,24 @@ class Legacy_Hooks {
 	 * @access  private  Use the 'taxonomy-images-queried-term-image-id' filter.
 	 * @since   0.7
 	 */
-	public function queried_term_image_id( $default ) {
+	public function queried_term_image_id( $default = 0 ) {
 
-		return default;
+		$filter = 'taxonomy-images-queried-term-image-id';
+
+		$this->check_current_filter( __FUNCTION__, $filter );
+
+		$obj = get_queried_object();
+
+		if ( is_a( $obj, 'WP_Term' ) ) {
+
+			// @todo  Check if taxonomy supported in settings
+
+			$t = new Term_Image( $obj->term_id );
+			return absint( $t->get_image_id() );
+
+		}
+
+		return 0;
 
 	}
 
@@ -286,7 +507,19 @@ class Legacy_Hooks {
 	 */
 	public function queried_term_image_object( $default ) {
 
-		return default;
+		$filter = 'taxonomy-images-queried-term-image-object';
+
+		$this->check_current_filter( __FUNCTION__, $filter );
+
+		$image_id = apply_filters( 'taxonomy-images-queried-term-image-id', 0 );
+
+		$image = new \stdClass;
+
+		if ( ! empty( $image_id ) ) {
+			$image = get_post( $image_id );
+		}
+
+		return $image;
 
 	}
 
@@ -315,9 +548,60 @@ class Legacy_Hooks {
 	 * @access  private  Use the 'taxonomy-images-queried-term-image-url' filter.
 	 * @since   0.7
 	 */
-	public function queried_term_image_url( $default, $args = array() ) {
+	public function queried_term_image_url( $default = '', $args = array() ) {
 
-		return default;
+		$filter = 'taxonomy-images-queried-term-image-url';
+
+		$this->check_current_filter( __FUNCTION__, $filter );
+
+		$args = wp_parse_args( $args, array(
+			'image_size' => 'thumbnail',
+		) );
+
+		$data = apply_filters( 'taxonomy-images-queried-term-image-data', array(), $args );
+
+		if ( isset( $data['url'] ) ) {
+			return $data['url'];
+		}
+
+		return '';
+
+	}
+
+	/**
+	 * Check Current Filter
+	 *
+	 * Check that the user is not directly calling a function instead
+	 * of using supported filters.
+	 *
+	 * @param  string  $function  Name of function called.
+	 * @param  string  $filter    Name of filter to use instead.
+	 */
+	private function check_current_filter( $function, $filter ) {
+
+		if ( current_filter() !== $filter ) {
+			$this->please_use_filter( $function, $filter );
+		}
+
+	}
+
+	/**
+	 * Please Use Filter
+	 *
+	 * Report to user that they are directly calling a function instead
+	 * of using supported filters.
+	 *
+	 * @todo  Log PHP error.
+	 *
+	 * @param  string  $function  Name of function called.
+	 * @param  string  $filter    Name of filter to use instead.
+	 */
+	private function please_use_filter( $function, $filter ) {
+
+		$error = sprintf( esc_html__( 'The %1$s has been called directly. Please use the %2$s filter instead.', 'taxonomy-images' ),
+			'<code>' . esc_html( $function . '()' ) . '</code>',
+			'<code>' . esc_html( $filter ) . '</code>'
+		);
 
 	}
 

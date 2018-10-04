@@ -130,6 +130,8 @@ class Plugin {
 		) );
 
 		$legacy_hooks = new Legacy_Hooks();
+		$legacy_hooks->setup_hooks();
+
 		self::$legacy = new Legacy();
 
 		/**
