@@ -34,7 +34,7 @@ if ( ! defined( 'TAXONOMY_IMAGES_FILE' ) ) {
 
 require_once( trailingslashit( dirname( TAXONOMY_IMAGES_FILE ) ) . 'plugin/includes/supported-class.php' );
 
-if ( Taxonomy_Images_Supported::plugin_supported() && apply_filters( 'taxonomy_images/use_term_meta', false ) ) {
+if ( Taxonomy_Images_Supported::plugin_supported() ) {
 
 	// Load term meta plugin version which requires PHP 5.3 and taxonomy meta support
 	require_once( trailingslashit( dirname( TAXONOMY_IMAGES_FILE ) ) . 'plugin/plugin.php' );

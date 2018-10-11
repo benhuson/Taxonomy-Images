@@ -19,7 +19,7 @@ class Taxonomy_Images_Supported {
 	 */
 	public static function plugin_supported() {
 
-		return self::php_version_supported() && self::wp_version_supported();
+		return self::php_version_supported() && self::wp_version_supported() && self::is_supported_by_default();
 
 	}
 
@@ -44,6 +44,20 @@ class Taxonomy_Images_Supported {
 		global $wp_version;
 
 		return version_compare( $wp_version, '4.4', '>=' );
+
+	}
+
+	/**
+	 * Is Supported By Default?
+	 *
+	 * Used to disable term meta by default until production-ready.
+	 * Can use filter in the meantime to add support.
+	 *
+	 * @return  boolean
+	 */
+	public static function is_supported_by_default() {
+
+		return apply_filters( 'taxonomy_images/use_term_meta', false );
 
 	}
 
