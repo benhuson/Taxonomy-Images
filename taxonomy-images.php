@@ -26,15 +26,15 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-global $wp_version;
-
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 if ( ! defined( 'TAXONOMY_IMAGES_FILE' ) ) {
 	define( 'TAXONOMY_IMAGES_FILE', __FILE__ );
 }
 
-if ( version_compare( PHP_VERSION, '5.3.0', '>' ) && version_compare( $wp_version, '4.4', '>=' ) && apply_filters( 'taxonomy_images/use_term_meta', false ) ) {
+require_once( trailingslashit( dirname( TAXONOMY_IMAGES_FILE ) ) . 'plugin/includes/supported-class.php' );
+
+if ( Taxonomy_Images_Supported::plugin_supported() && apply_filters( 'taxonomy_images/use_term_meta', false ) ) {
 
 	// Load term meta plugin version which requires PHP 5.3 and taxonomy meta support
 	require_once( trailingslashit( dirname( TAXONOMY_IMAGES_FILE ) ) . 'plugin/plugin.php' );
