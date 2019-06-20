@@ -1,32 +1,4 @@
 
-/* Modal */
-
-.taxonomy-images-modal .create-association .term-name {
-	font-style: italic;
-}
-
-.taxonomy-images-modal .create-association {
-	display: inline;
-}
-
-.taxonomy-images-modal .remove-association {
-	color: #bc0b0b;
-	cursor: pointer;
-	display: none;
-	text-decoration: underline;
-}
-
-.taxonomy-images-modal #tab-type_url,
-.taxonomy-images-modal .savesend input {
-	display: none !important;
-}
-
-body.taxonomy-images-modal {
-	background: #f1f1f1 !important;
-}
-
-/* Thumbnail */
-
 .taxonomy-image-thumbnail {
 	display: block;
 	margin-bottom: 3px;

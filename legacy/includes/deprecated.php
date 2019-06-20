@@ -1,6 +1,103 @@
 <?php
 
 /**
+ * Check Taxonomy Permissions.
+ *
+ * Allows a permission check to be performed on a term
+ * when all you know is the term_taxonomy_id.
+ *
+ * @param     int       term_taxonomy_id
+ * @return    bool      True if user can edit terms, False if not.
+ *
+ * @access    private
+ */
+function taxonomy_image_plugin_check_permissions( $tt_id ) {
+
+	$t = new Taxonomy_Images_Term( $tt_id, true );
+
+	return $t->current_user_can_edit();
+
+}
+
+/**
+ * Please Use Filter.
+ *
+ * Report to user that they are directly calling a function
+ * instead of using supported filters. A E_USER_NOTICE will
+ * be generated.
+ *
+ * @param     string         Name of function called.
+ * @param     string         Name of filter to use instead.
+ *
+ * @access    private
+ * @since     0.7
+ */
+function taxonomy_image_plugin_please_use_filter( $function, $filter ) {
+
+	Taxonomy_Images_Public_Filters::please_use_filter( $function, $filter );
+
+}
+
+/**
+ * Get Term Info.
+ *
+ * Returns term info by term_taxonomy_id.
+ *
+ * @deprecated
+ *
+ * @param     int       term_taxonomy_id
+ * @return    array     Keys: term_id (int) and taxonomy (string).
+ *
+ * @access    private
+ */
+function taxonomy_image_plugin_get_term_info( $tt_id ) {
+
+	$t = new Taxonomy_Images_Term( $tt_id, true );
+	$term = $t->get_term();
+
+	if ( $term ) {
+		return array(
+			'term_id'  => $term->term_id,
+			'taxonomy' => $term->taxonomy
+		);
+	}
+
+	return array();
+
+}
+
+/**
+ * Version Number.
+ *
+ * @deprecated
+ *
+ * @return    string    The plugin's version number.
+ * @access    private
+ * @since     0.7
+ * @alter     0.7.4
+ */
+function taxonomy_image_plugin_version() {
+
+	return Taxonomy_Images_Config::get_version();
+
+}
+
+/**
+ * Get a url to a file in this plugin.
+ *
+ * @deprecated
+ *
+ * @return    string
+ * @access    private
+ * @since     0.7
+ */
+function taxonomy_image_plugin_url( $file = '' ) {
+
+	return Taxonomy_Images_Config::url( $file );
+
+}
+
+/**
  * Deprecated Shortcode.
  *
  * @deprecated  Deprecated since version 0.7
@@ -25,7 +122,6 @@ function taxonomy_images_plugin_shortcode_deprecated( $atts = array() ) {
 	}
 
 	$terms = get_terms( $taxonomy );
-	$associations = taxonomy_image_plugin_get_associations( $refresh = false );
 
 	if ( ! is_wp_error( $terms ) ) {
 		foreach( (array) $terms as $term ) {
@@ -34,10 +130,10 @@ function taxonomy_images_plugin_shortcode_deprecated( $atts = array() ) {
 			$title_attr  = esc_attr( $term->name . ' (' . $term->count . ')' );
 			$description = apply_filters( 'the_content', $term->description );
 
-			$img = '';
-			if ( array_key_exists( $term->term_taxonomy_id, $associations ) ) {
-				$img = wp_get_attachment_image( $associations[ $term->term_taxonomy_id ], 'detail', false );
-			}
+			$t = new Taxonomy_Images_Term( $term );
+			$img_id = $t->get_image_id();
+
+			$img = $img_id ? wp_get_attachment_image( $img_id, 'detail', false ) : '';
 
 			if ( 'grid' == $template ) {
 				$o .= "\n\t" . '<div class="taxonomy_image_plugin-' . $template . '">';
@@ -88,14 +184,19 @@ class taxonomy_images_plugin {
 			global $wp_query;
 			$obj = $wp_query->get_queried_object();
 			if ( isset( $obj->term_taxonomy_id ) ) {
-				$term_tax_id = $obj->term_taxonomy_id;
+				$t = new Taxonomy_Images_Term( $obj );
 			} else {
 				return false;
 			}
+		} else {
+
+			$t = new Taxonomy_Images_Term( $term_tax_id, true );
+
 		}
-		$term_tax_id = (int) $term_tax_id;
-		if ( isset( $this->settings[ $term_tax_id ] ) ) {
-			$attachment_id = (int) $this->settings[ $term_tax_id ];
+
+		$attachment_id = $t->get_image_id();
+
+		if ( $attachment_id ) {
 			$alt           = get_post_meta( $attachment_id, '_wp_attachment_image_alt', true );
 			$attachment    = get_post( $attachment_id );
 			/* Just in case an attachment was deleted, but there is still a record for it in this plugins settings. */
