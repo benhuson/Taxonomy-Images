@@ -68,10 +68,10 @@ add_filter( 'taxonomy-images-queried-term-image-url',    'taxonomy_images_plugin
  * @since     0.7
  */
 function taxonomy_images_plugin_get_terms( $default, $args = array() ) {
+
 	$filter = 'taxonomy-images-get-terms';
-	if ( current_filter() !== $filter ) {
-		taxonomy_image_plugin_please_use_filter( __FUNCTION__, $filter );
-	}
+
+	Taxonomy_Images_Public_Filters::check_current_filter( __FUNCTION__, $filter );
 
 	$args = wp_parse_args( $args, array(
 		'cache_images'  => true,
@@ -103,13 +103,18 @@ function taxonomy_images_plugin_get_terms( $default, $args = array() ) {
 	$terms_with_images = array();
 	foreach ( (array) $terms as $key => $term ) {
 		$terms[ $key ]->image_id = 0;
-		if ( array_key_exists( $term->term_taxonomy_id, $assoc ) ) {
-			$terms[ $key ]->image_id = $assoc[ $term->term_taxonomy_id ];
-			$image_ids[] = $assoc[ $term->term_taxonomy_id ];
+
+		$t = new Taxonomy_Images_Term( $term );
+		$img = $t->get_image_id();
+
+		if ( $img ) {
+			$terms[ $key ]->image_id = $img;
+			$image_ids[] = $img;
 			if ( ! empty( $args['having_images'] ) ) {
 				$terms_with_images[] = $terms[ $key ];
 			}
 		}
+
 	}
 	$image_ids = array_unique( $image_ids );
 
@@ -160,10 +165,10 @@ function taxonomy_images_plugin_get_terms( $default, $args = array() ) {
  * @since     0.7
  */
 function taxonomy_images_plugin_get_the_terms( $default, $args = array() ) {
+
 	$filter = 'taxonomy-images-get-the-terms';
-	if ( $filter !== current_filter() ) {
-		taxonomy_image_plugin_please_use_filter( __FUNCTION__, $filter );
-	}
+
+	Taxonomy_Images_Public_Filters::check_current_filter( __FUNCTION__, $filter );
 
 	$args = wp_parse_args( $args, array(
 		'having_images' => true,
@@ -194,8 +199,12 @@ function taxonomy_images_plugin_get_the_terms( $default, $args = array() ) {
 	$terms_with_images = array();
 	foreach ( (array) $terms as $key => $term ) {
 		$terms[ $key ]->image_id = 0;
-		if ( array_key_exists( $term->term_taxonomy_id, $assoc ) ) {
-			$terms[ $key ]->image_id = $assoc[ $term->term_taxonomy_id ];
+
+		$t = new Taxonomy_Images_Term( $term );
+		$img = $t->get_image_id();
+
+		if ( $img ) {
+			$terms[ $key ]->image_id = $img;
 			if ( ! empty( $args['having_images'] ) ) {
 				$terms_with_images[] = $terms[ $key ];
 			}
@@ -250,10 +259,10 @@ function taxonomy_images_plugin_get_the_terms( $default, $args = array() ) {
  * @since     0.7
  */
 function taxonomy_images_plugin_list_the_terms( $default, $args = array() ) {
+
 	$filter = 'taxonomy-images-list-the-terms';
-	if ( current_filter() !== $filter ) {
-		taxonomy_image_plugin_please_use_filter( __FUNCTION__, $filter );
-	}
+
+	Taxonomy_Images_Public_Filters::check_current_filter( __FUNCTION__, $filter );
 
 	$args = wp_parse_args( $args, array(
 		'after'        => '</ul>',
@@ -324,10 +333,10 @@ function taxonomy_images_plugin_list_the_terms( $default, $args = array() ) {
  * @since     0.7
  */
 function taxonomy_images_plugin_get_queried_term_image( $default, $args = array() ) {
+
 	$filter = 'taxonomy-images-queried-term-image';
-	if ( current_filter() !== $filter ) {
-		taxonomy_image_plugin_please_use_filter( __FUNCTION__, $filter );
-	}
+
+	Taxonomy_Images_Public_Filters::check_current_filter( __FUNCTION__, $filter );
 
 	$args = wp_parse_args( $args, array(
 		'after'      => '',
@@ -374,10 +383,10 @@ function taxonomy_images_plugin_get_queried_term_image( $default, $args = array(
  * @since     0.7
  */
 function taxonomy_images_plugin_get_queried_term_image_id( $default ) {
+
 	$filter = 'taxonomy-images-queried-term-image-id';
-	if ( current_filter() !== $filter ) {
-		taxonomy_image_plugin_please_use_filter( __FUNCTION__, $filter );
-	}
+
+	Taxonomy_Images_Public_Filters::check_current_filter( __FUNCTION__, $filter );
 
 	$obj = get_queried_object();
 
@@ -395,15 +404,10 @@ function taxonomy_images_plugin_get_queried_term_image_id( $default ) {
 		return 0;
 	}
 
-	$associations = taxonomy_image_plugin_get_associations();
-	$tt_id = absint( $obj->term_taxonomy_id );
+	$t = new Taxonomy_Images_Term( $obj );
 
-	$ID = 0;
-	if ( array_key_exists( $tt_id, $associations ) ) {
-		$ID = absint( $associations[$tt_id] );
-	}
+	return $img = $t->get_image_id();
 
-	return $ID;
 }
 
 
@@ -429,10 +433,10 @@ function taxonomy_images_plugin_get_queried_term_image_id( $default ) {
  * @since     0.7
  */
 function taxonomy_images_plugin_get_queried_term_image_object( $default ) {
+
 	$filter = 'taxonomy-images-queried-term-image-object';
-	if ( current_filter() !== $filter ) {
-		taxonomy_image_plugin_please_use_filter( __FUNCTION__, $filter );
-	}
+
+	Taxonomy_Images_Public_Filters::check_current_filter( __FUNCTION__, $filter );
 
 	$ID = apply_filters( 'taxonomy-images-queried-term-image-id', 0 );
 
@@ -469,10 +473,10 @@ function taxonomy_images_plugin_get_queried_term_image_object( $default ) {
  * @since     0.7
  */
 function taxonomy_images_plugin_get_queried_term_image_url( $default, $args = array() ) {
+
 	$filter = 'taxonomy-images-queried-term-image-url';
-	if ( current_filter() !== $filter ) {
-		taxonomy_image_plugin_please_use_filter( __FUNCTION__, $filter );
-	}
+
+	Taxonomy_Images_Public_Filters::check_current_filter( __FUNCTION__, $filter );
 
 	$args = wp_parse_args( $args, array(
 		'image_size' => 'thumbnail',
@@ -515,10 +519,10 @@ function taxonomy_images_plugin_get_queried_term_image_url( $default, $args = ar
  * @alter     0.7.2
  */
 function taxonomy_images_plugin_get_queried_term_image_data( $default, $args = array() ) {
+
 	$filter = 'taxonomy-images-queried-term-image-data';
-	if ( current_filter() !== $filter ) {
-		taxonomy_image_plugin_please_use_filter( __FUNCTION__, $filter );
-	}
+
+	Taxonomy_Images_Public_Filters::check_current_filter( __FUNCTION__, $filter );
 
 	$args = wp_parse_args( $args, array(
 		'image_size' => 'thumbnail',
@@ -530,9 +534,9 @@ function taxonomy_images_plugin_get_queried_term_image_data( $default, $args = a
 		return array();
 	}
 
-	$data = array();
+	$data = image_get_intermediate_size( $ID, $args['image_size'] );
 
-	if ( empty( $data = image_get_intermediate_size( $ID, $args['image_size'] ) ) ) {
+	if ( empty( $data ) ) {
 		
 		$src = wp_get_attachment_image_src( $ID, 'full' );
 		
@@ -552,4 +556,48 @@ function taxonomy_images_plugin_get_queried_term_image_data( $default, $args = a
 	}
 
 	return array();
+}
+
+/**
+ * Public Filters Class
+ */
+class Taxonomy_Images_Public_Filters {
+
+	/**
+	 * Check Current Filter
+	 *
+	 * Check that the user is not directly calling a function instead
+	 * of using supported filters.
+	 *
+	 * @internal  Private. Use of this method is unsupported. Do not call this method directly.
+	 *
+	 * @param  string  $function  Name of function called.
+	 * @param  string  $filter    Name of filter to use instead.
+	 */
+	public static function check_current_filter( $function, $filter ) {
+
+		if ( current_filter() !== $filter ) {
+			self::please_use_filter( $function, $filter );
+		}
+
+	}
+
+	/**
+	 * Please Use Filter
+	 *
+	 * Report to user that they are directly calling a function instead
+	 * of using supported filters. A E_USER_NOTICE will be generated.
+	 *
+	 * @param  string  $function  Name of function called.
+	 * @param  string  $filter    Name of filter to use instead.
+	 */
+	private static function please_use_filter( $function, $filter ) {
+
+		trigger_error( sprintf( esc_html__( 'The %1$s has been called directly. Please use the %2$s filter instead.', 'taxonomy-images' ),
+			'<code>' . esc_html( $function . '()' ) . '</code>',
+			'<code>' . esc_html( $filter ) . '</code>'
+		) );
+
+	}
+
 }
