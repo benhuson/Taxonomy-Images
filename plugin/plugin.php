@@ -125,8 +125,12 @@ class Plugin {
 		 */
 
 		self::require_plugin_files( array(
-			'plugin/includes/legacy-class.php'
+			'plugin/includes/legacy-class.php',
+			'plugin/includes/legacy-hooks.php'
 		) );
+
+		$legacy_hooks = new Legacy_Hooks();
+		$legacy_hooks->setup_hooks();
 
 		self::$legacy = new Legacy();
 
