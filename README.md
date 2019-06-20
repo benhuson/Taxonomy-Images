@@ -221,6 +221,9 @@ Installation
 Upgrade Notice
 --------------
 
+### 1.0
+Fixed full image size sometimes not being returned. Prepare plugin structure for term meta compatibility.
+
 ### 0.9.7
 Remove use of deprecated `image_resize` function. Bump minimum WordPress version to 3.5.
 
