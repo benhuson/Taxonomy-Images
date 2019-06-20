@@ -26,6 +26,8 @@ class Taxonomy_Images_Supported {
 	/**
 	 * PHP Version Supported?
 	 *
+	 * 5.3+ required for namespace support.
+	 *
 	 * @return  boolean
 	 */
 	public static function php_version_supported() {
@@ -36,6 +38,8 @@ class Taxonomy_Images_Supported {
 
 	/**
 	 * WP Version Supported?
+	 *
+	 * WordPress 4.4 required for term meta support.
 	 *
 	 * @return  boolean
 	 */
