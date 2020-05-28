@@ -3,8 +3,8 @@ Contributors:         mfields, husobj, jamiemchale
 Donate link:          https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=QSYTTQZBRKQVE
 Tags:                 taxonomy, tag, category, term, image, upload, media
 Requires at least:    3.5
-Tested up to:         4.7.2
-Stable tag:           0.9.7
+Tested up to:         5.2.1
+Stable tag:           1.0
 License:              GPLv2 or later
 License URI:          http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -209,6 +209,9 @@ The original author of this plugin, Michael Fields, released a handful of plugin
 
 == Upgrade Notice ==
 
+= 1.0 =
+Fixed full image size sometimes not being returned. Prepare plugin structure for term meta compatibility.
+
 = 0.9.7 =
 Remove use of deprecated `image_resize` function. Bump minimum WordPress version to 3.5.
 
@@ -242,7 +245,11 @@ Complete rewrite. Better everything. Many bug fixes.
 == Changelog ==
 
 = Unreleased =
+
+= 1.0 =
+* __BUGFIX:__ Fixed full image size sometimes not being returned.
 * __UPDATE:__ Control, blank and default images moves to `images` folder.
+* __UPDATE:__ Prepare plugin structure for term meta compatibility.
 
 = 0.9.7 =
 * __UPDATE:__ Remove use of deprecated `image_resize` function.
