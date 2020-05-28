@@ -30,7 +30,7 @@ class Taxonomy_Images_Supported {
 	 *
 	 * @return  boolean
 	 */
-	public static function php_version_supported() {
+	protected static function php_version_supported() {
 
 		return version_compare( PHP_VERSION, '5.3.0', '>' );
 
@@ -43,7 +43,7 @@ class Taxonomy_Images_Supported {
 	 *
 	 * @return  boolean
 	 */
-	public static function wp_version_supported() {
+	protected static function wp_version_supported() {
 
 		global $wp_version;
 
@@ -59,7 +59,7 @@ class Taxonomy_Images_Supported {
 	 *
 	 * @return  boolean
 	 */
-	public static function is_supported_by_default() {
+	protected static function is_supported_by_default() {
 
 		return apply_filters( 'taxonomy_images/use_term_meta', false );
 
